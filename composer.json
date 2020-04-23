@@ -1,0 +1,26 @@
+{
+  "name": "der-spiegel/ww-elvis-client",
+  "description": "PHP client for the WoodWing Elvis DAM system https://www.woodwing.com/en/digital-asset-management-system",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": "^7.4.0",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^6.3",
+    "monolog/monolog": "^2.0",
+    "psr/log": "^1.1"
+  },
+  "config": {
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "DerSpiegel\\WoodWingElvisClient\\": "src/"
+    }
+  }
+}
