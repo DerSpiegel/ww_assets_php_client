@@ -4,12 +4,15 @@
 This PHP client library uses its [REST API](https://helpcenter.woodwing.com/hc/en-us/sections/360000141063-API-REST).
 
 This is not an official library supplied by the WoodWing vendor. 
-It has been jointly developed by the customer and WoodWing partner ProPublish during the WoodWing Elvis implementation 
-at the German [SPIEGEL Gruppe](https://www.spiegelgruppe.de), 2019-2020.  
+It has been developed during the WoodWing Elvis implementation at the German [SPIEGEL Gruppe](https://www.spiegelgruppe.de), 2019-2020.  
 
 ## Installation
 
-TODO: How to add to your project’s composer.json file
+Use [Composer](https://getcomposer.org/) to add this library your project’s composer.json file:
+
+```
+$ composer require der-spiegel/ww-elvis-client
+```
 
 ## Quick test 
 
@@ -37,3 +40,12 @@ $ docker run -it --rm --name ww-elvis-client-example \
   --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
   php:7.4-cli php MyExample.php
 ```
+
+### Authors
+
+* [Luís Ferreira](https://github.com/lfe-propublish) 
+* [Tim Strehle](https://github.com/tistre) - https://twitter.com/tistre
+
+### License
+
+This library is licensed under the MIT License - see the `LICENSE` file for details.

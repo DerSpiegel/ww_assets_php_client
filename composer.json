@@ -1,8 +1,21 @@
 {
   "name": "der-spiegel/ww-elvis-client",
   "description": "PHP client for the WoodWing Elvis DAM system https://www.woodwing.com/en/digital-asset-management-system",
+  "homepage": "https://github.com/DerSpiegel/ww_elvis_php_client",
   "type": "library",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Luís Ferreira",
+      "homepage": "https://github.com/lfe-propublish",
+      "role": "Developer"
+    },
+    {
+      "name": "Tim Strehle",
+      "homepage": "https://github.com/tistre",
+      "role": "Developer"
+    }
+  ],
   "require": {
     "php": "^7.4.0",
     "ext-ctype": "*",
