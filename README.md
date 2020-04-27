@@ -41,11 +41,11 @@ $ docker run -it --rm --name ww-elvis-client-example \
   php:7.4-cli php MyExample.php
 ```
 
-### Authors
+## Authors
 
 * [Luís Ferreira](https://github.com/lfe-propublish) 
 * [Tim Strehle](https://github.com/tistre) - https://twitter.com/tistre
 
-### License
+## License
 
 This library is licensed under the MIT License - see the `LICENSE` file for details.
