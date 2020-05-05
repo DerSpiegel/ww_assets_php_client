@@ -19,6 +19,10 @@ $elvisConfig = new ElvisConfig(
 
 $elvisClient = new ElvisClient($elvisConfig, $logger); // Create client
 
+$elvisClient->setHttpUserAgent(                        // Optional: Customize HTTP User-Agent
+    'ExampleOrg/UsageExample ' . $elvisClient->getHttpUserAgent()
+);
+
 $request = (new SearchRequest($elvisConfig))           // Create search request
     ->setQ('')                                      // Elvis query
     ->setMetadataToReturn(['']);                       // Metadata fields to return
