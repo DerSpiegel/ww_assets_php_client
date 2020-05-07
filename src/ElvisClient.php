@@ -251,6 +251,7 @@ class ElvisClient extends ElvisClientBase
                 'q' => $request->getQ(),
                 'ids' => $request->getIds(),
                 'folderPath' => $request->getFolderPath(),
+                'response' => $response
             ]
         );
 
