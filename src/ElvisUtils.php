@@ -68,10 +68,14 @@ class ElvisUtils
 
                 if (!is_array($oldValue)) {
                     $oldValue = (strlen($oldValue) === 0) ? [] : [$oldValue];
+                } else {
+                    $oldValue = array_unique($oldValue);
                 }
 
                 if (!is_array($newValue)) {
                     $newValue = (strlen($newValue) === 0) ? [] : [$newValue];
+                } else {
+                    $newValue = array_unique($newValue);
                 }
 
                 if ((count($oldValue) === count($newValue)) && empty(array_diff($oldValue, $newValue))) {

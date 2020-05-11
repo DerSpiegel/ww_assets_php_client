@@ -38,6 +38,10 @@ class ElvisClientBase
 
     protected LoggerInterface $logger;
 
+    protected Client $httpClient;
+
+    protected string $httpUserAgent = '';
+
     protected string $bearerToken = '';
 
     protected string $csrfToken;
@@ -65,15 +69,18 @@ class ElvisClientBase
         $this->config = $config;
         $this->logger = $logger;
 
+        $this->httpClient = $this->newHttpClient();
+        $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
+
         $this->authMethod = self::AUTH_METHOD_BEARER_TOKEN;
     }
 
 
     /**
      * @param bool $allowReLogin
-     * @return ElvisClientBase
+     * @return self
      */
-    public function setAllowReLogin(bool $allowReLogin): ElvisClientBase
+    public function setAllowReLogin(bool $allowReLogin): self
     {
         $this->allowReLogin = $allowReLogin;
         return $this;
@@ -133,10 +140,9 @@ class ElvisClientBase
         array $data = [],
         bool $multipart = true,
         bool $sendToken = true
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         $options = [
-            RequestOptions::HEADERS => [],
+            RequestOptions::HEADERS => ['User-Agent' => $this->getHttpUserAgent()],
             RequestOptions::TIMEOUT => $this->getRequestTimeout()
         ];
 
@@ -187,7 +193,7 @@ class ElvisClientBase
         $options[RequestOptions::COOKIES] = $jar;
 
         try {
-            $httpClient = new Client();
+            $httpClient = $this->httpClient;
             $response = $httpClient->request($method, $url, $options);
 
             // store cookies for further requests
@@ -283,6 +289,47 @@ class ElvisClientBase
                     break;
             }
         }
+    }
+
+
+    /**
+     * @return Client
+     */
+    protected function newHttpClient(): Client
+    {
+        return new Client();
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getDefaultHttpUserAgent(): string
+    {
+        return sprintf(
+            'der-spiegel/ww-elvis-client (https://github.com/DerSpiegel/ww_elvis_php_client) PHP/%s',
+            PHP_VERSION
+        );
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getHttpUserAgent(): string
+    {
+        return $this->httpUserAgent;
+    }
+
+
+    /**
+     * @param string $httpUserAgent
+     * @return self
+     */
+    public function setHttpUserAgent(string $httpUserAgent): self
+    {
+        $this->httpUserAgent = $httpUserAgent;
+        return $this;
     }
 
 

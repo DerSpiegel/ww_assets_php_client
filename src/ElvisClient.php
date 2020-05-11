@@ -251,6 +251,7 @@ class ElvisClient extends ElvisClientBase
                 'q' => $request->getQ(),
                 'ids' => $request->getIds(),
                 'folderPath' => $request->getFolderPath(),
+                'response' => $response
             ]
         );
 
@@ -417,7 +418,7 @@ class ElvisClient extends ElvisClientBase
     public function removeFromId(string $elvisId): ProcessResponse
     {
         // TODO: better name than remove*From*Id?
-        return $this->removeAsset((new RemoveRequest())->setQ(sprintf("id:%s", $elvisId)));
+        return $this->removeAsset((new RemoveRequest($this->config))->setQ(sprintf("id:%s", $elvisId)));
     }
 
 
