@@ -44,13 +44,13 @@ class ElvisClientBase
 
     protected string $bearerToken = '';
 
-    protected string $csrfToken;
+    protected string $csrfToken = '';
 
-    protected string $authCred;
+    protected string $authCred = '';
 
     protected array $cookies = [];
 
-    protected int $authMethod;
+    protected int $authMethod = self::AUTH_METHOD_BEARER_TOKEN;
 
     private array $loginAttempts = [];
 
@@ -71,8 +71,6 @@ class ElvisClientBase
 
         $this->httpClient = $this->newHttpClient();
         $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
-
-        $this->authMethod = self::AUTH_METHOD_BEARER_TOKEN;
     }
 
 
