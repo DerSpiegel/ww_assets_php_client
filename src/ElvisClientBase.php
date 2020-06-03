@@ -34,6 +34,16 @@ class ElvisClientBase
 
     const MAX_LOGIN_ATTEMPTS_PER_SECOND = 10;
 
+    const RELATION_TARGET_ANY = 'any';
+    const RELATION_TARGET_CHILD = 'child';
+    const RELATION_TARGET_PARENT = 'parent';
+
+    const RELATION_TYPE_CONTAINS = 'contains';
+    const RELATION_TYPE_DUPLICATE = 'duplicate';
+    const RELATION_TYPE_REFERENCES = 'references';
+    const RELATION_TYPE_RELATED = 'related';
+    const RELATION_TYPE_VARIATION = 'variation';
+
     protected ElvisConfig $config;
 
     protected LoggerInterface $logger;
@@ -44,13 +54,13 @@ class ElvisClientBase
 
     protected string $bearerToken = '';
 
-    protected string $csrfToken;
+    protected string $csrfToken = '';
 
-    protected string $authCred;
+    protected string $authCred = '';
 
     protected array $cookies = [];
 
-    protected int $authMethod;
+    protected int $authMethod = self::AUTH_METHOD_BEARER_TOKEN;
 
     private array $loginAttempts = [];
 
@@ -71,8 +81,6 @@ class ElvisClientBase
 
         $this->httpClient = $this->newHttpClient();
         $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
-
-        $this->authMethod = self::AUTH_METHOD_BEARER_TOKEN;
     }
 
 

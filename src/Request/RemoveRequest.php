@@ -13,8 +13,7 @@ class RemoveRequest extends Request
 {
     protected string $q;
 
-    // TODO: Shouldn't this be an array instead of a comma-separated string?
-    protected string $ids;
+    protected array $ids = [];
 
     protected string $folderPath;
 
@@ -40,19 +39,19 @@ class RemoveRequest extends Request
 
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getIds(): string
+    public function getIds(): array
     {
-        return $this->ids ?? '';
+        return $this->ids;
     }
 
 
     /**
-     * @param string $ids
+     * @param string[] $ids
      * @return self
      */
-    public function setIds(string $ids): self
+    public function setIds(array $ids): self
     {
         $this->ids = $ids;
         return $this;
@@ -77,6 +76,4 @@ class RemoveRequest extends Request
         $this->folderPath = $folderPath;
         return $this;
     }
-
-
 }

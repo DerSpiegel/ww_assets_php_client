@@ -82,7 +82,7 @@ $ docker run -it --rm --name ww-elvis-client-example \
 
 ## Authors
 
-* [Luís Ferreira](https://github.com/lfe-propublish) 
+* [Luís Ferreira](https://github.com/lcpaf) 
 * [Tim Strehle](https://github.com/tistre) - https://twitter.com/tistre
 
 ## License

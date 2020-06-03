@@ -25,6 +25,8 @@ class AssetResponse extends Response
 
     protected string $thumbnailUrl;
 
+    protected array $relation;
+
 
     /**
      * @param array $json
@@ -58,6 +60,10 @@ class AssetResponse extends Response
 
         if (isset($json['thumbnailUrl'])) {
             $this->thumbnailUrl = $json['thumbnailUrl'];
+        }
+
+        if (isset($json['relation']) && is_array($json['relation'])) {
+            $this->relation = $json['relation'];
         }
 
         return $this;
@@ -124,5 +130,14 @@ class AssetResponse extends Response
     public function getThumbnailUrl(): string
     {
         return $this->thumbnailUrl ?: '';
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getRelation(): array
+    {
+        return (is_array($this->relation) ? $this->relation : []);
     }
 }

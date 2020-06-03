@@ -15,11 +15,11 @@ use DerSpiegel\WoodWingElvisClient\ElvisConfig;
  */
 class LoginRequest extends Request
 {
-    protected string $username;
+    protected string $username = '';
 
-    protected string $password;
+    protected string $password = '';
 
-    protected string $clientType;
+    protected string $clientType = '';
 
     protected bool $returnProfile = false;
 
@@ -41,7 +41,7 @@ class LoginRequest extends Request
      */
     public function getClientType(): string
     {
-        return $this->clientType ?: '';
+        return $this->clientType;
     }
 
 
@@ -91,7 +91,7 @@ class LoginRequest extends Request
      */
     public function getUsername(): string
     {
-        return $this->username ?: '';
+        return $this->username;
     }
 
 
@@ -111,7 +111,7 @@ class LoginRequest extends Request
      */
     public function getPassword(): string
     {
-        return $this->password ?: '';
+        return $this->password;
     }
 
 
