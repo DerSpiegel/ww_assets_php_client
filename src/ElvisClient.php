@@ -11,6 +11,8 @@ use DerSpiegel\WoodWingElvisClient\Request\FolderResponse;
 use DerSpiegel\WoodWingElvisClient\Request\GetFolderRequest;
 use DerSpiegel\WoodWingElvisClient\Request\MoveRequest;
 use DerSpiegel\WoodWingElvisClient\Request\ProcessResponse;
+use DerSpiegel\WoodWingElvisClient\Request\RemoveFolderRequest;
+use DerSpiegel\WoodWingElvisClient\Request\RemoveRelationRequest;
 use DerSpiegel\WoodWingElvisClient\Request\RemoveRequest;
 use DerSpiegel\WoodWingElvisClient\Request\SearchRequest;
 use DerSpiegel\WoodWingElvisClient\Request\SearchResponse;
@@ -18,6 +20,7 @@ use DerSpiegel\WoodWingElvisClient\Request\UpdateBulkRequest;
 use DerSpiegel\WoodWingElvisClient\Request\UpdateFolderRequest;
 use DerSpiegel\WoodWingElvisClient\Request\UpdateRequest;
 use \Exception;
+use \RuntimeException;
 
 
 /**
@@ -237,7 +240,7 @@ class ElvisClient extends ElvisClientBase
             $response = $this->serviceRequest('remove', array_filter(
                 [
                     'q' => $request->getQ(),
-                    'ids' => $request->getIds(),
+                    'ids' => implode(',', $request->getIds()),
                     'folderPath' => $request->getFolderPath(),
                 ]
             ));
@@ -256,23 +259,6 @@ class ElvisClient extends ElvisClientBase
         );
 
         return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
-     * * Remove Folders
-     *
-     * @param string $folderId
-     */
-    public function removeFolder(string $folderId): void
-    {
-        // TODO: Use a request object
-        try {
-            // filter the array, so the actual folder gets remove, not only its contents ?!
-            $this->apiRequest('DELETE', "folder/{$folderId}");
-        } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
-        }
     }
 
 
@@ -310,6 +296,37 @@ class ElvisClient extends ElvisClientBase
                 'target2Id' => $request->getTarget2Id()
             ]
         );
+    }
+
+
+    /**
+     * * Remove Assets or Collections
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690326-Elvis-6-REST-API-remove-relation
+     * @param RemoveRelationRequest $request
+     * @return ProcessResponse
+     */
+    public function removeRelation(RemoveRelationRequest $request): ProcessResponse
+    {
+        try {
+            $response = $this->serviceRequest('removeRelation',
+                [
+                    'relationIds' => implode(',', $request->getRelationIds())
+                ]
+            );
+        } catch (Exception $e) {
+            throw new ElvisException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
+        }
+
+        $this->logger->info(sprintf('Relations removed'),
+            [
+                'method' => __METHOD__,
+                'ids' => $request->getRelationIds(),
+                'response' => $response
+            ]
+        );
+
+        return (new ProcessResponse())->fromJson($response);
     }
 
 
@@ -385,6 +402,10 @@ class ElvisClient extends ElvisClientBase
      */
     public function updateFolder(UpdateFolderRequest $request): FolderResponse
     {
+        if (trim($request->getId()) === '') {
+            throw new RuntimeException("%s: ID is empty in UpdateFolderRequest", __METHOD__);
+        }
+
         try {
             $response = $this->apiRequest('PUT', "folder/{$request->getId()}", [
                 'metadata' => (object)$request->getMetadata()
@@ -406,6 +427,36 @@ class ElvisClient extends ElvisClientBase
     }
 
 
+    /**
+     * Remove a folder
+     *
+     * From the new Elvis API (DELETE /api/folder/{id})
+     *
+     * @param RemoveFolderRequest $request
+     */
+    public function removeFolder(RemoveFolderRequest $request): void
+    {
+        if (trim($request->getId()) === '') {
+            throw new RuntimeException("%s: ID is empty in RemoveFolderRequest", __METHOD__);
+        }
+
+        try {
+            $response = $this->apiRequest('DELETE', sprintf('folder/%s', $request->getId()));
+        } catch (Exception $e) {
+            throw new ElvisException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
+        }
+
+        $this->logger->info(sprintf('Folder removed'),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getId(),
+                'folderPath' => $request->getPath(),
+                'response' => $response
+            ]
+        );
+    }
+
+
     /** Helper methods not part of the Elvis REST API */
 
 
@@ -415,10 +466,9 @@ class ElvisClient extends ElvisClientBase
      * @param string $elvisId
      * @return ProcessResponse
      */
-    public function removeFromId(string $elvisId): ProcessResponse
+    public function removeById(string $elvisId): ProcessResponse
     {
-        // TODO: better name than remove*From*Id?
-        return $this->removeAsset((new RemoveRequest($this->config))->setQ(sprintf("id:%s", $elvisId)));
+        return $this->removeAsset((new RemoveRequest($this->config))->setIds([$elvisId]));
     }
 
 
@@ -428,13 +478,63 @@ class ElvisClient extends ElvisClientBase
      * @param string $assetId
      * @param string $containerId
      */
-    public function addToContainer(string $assetId, string $containerId)
+    public function addToContainer(string $assetId, string $containerId): void
     {
         $request = (new CreateRelationRequest($this->getConfig()))
             ->setRelationType('contains')
             ->setTarget1Id($containerId)
             ->setTarget2Id($assetId);
+
         $this->createRelation($request);
+    }
+
+
+    /**
+     * @param string $assetId
+     * @param string $containerId
+     * @return ProcessResponse
+     */
+    public function removeFromContainer(string $assetId, string $containerId): ProcessResponse
+    {
+        $q = $this->getRelationSearchQ(
+                $containerId,
+                self::RELATION_TARGET_CHILD,
+                self::RELATION_TYPE_CONTAINS)
+            . sprintf(' id:%s', $assetId);
+
+        $searchRequest = (new SearchRequest($this->getConfig()))
+            ->setQ($q)
+            ->setMetadataToReturn(['id'])
+            ->setNum(2);
+
+        $searchResponse = $this->search($searchRequest);
+
+        if ($searchResponse->getTotalHits() === 0) {
+            return (new ProcessResponse())
+                ->fromJson(['processedCount' => 0, 'errorCount' => 0]);
+        }
+
+        $relationId = $searchResponse->getHits()[0]->getRelation()['relationId'] ?? '';
+
+        if ($relationId === '') {
+            throw new ElvisException(sprintf('%s: Relation ID not found in search response', __METHOD__));
+        }
+
+        $request = (new RemoveRelationRequest($this->getConfig()))
+            ->setRelationIds([$relationId]);
+
+        $response = $this->removeRelation($request);
+
+        $this->logger->info(sprintf('Relation removed'),
+            [
+                'method' => __METHOD__,
+                'assetId' => $assetId,
+                'containerId' => $containerId,
+                'relationId' => $relationId
+            ]
+        );
+
+        return $response;
     }
 
 
@@ -518,15 +618,31 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * @param string $assetId
+     * Get query for relation search
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002615423-The-Elvis-6-query-syntax#special-queries-relation-queries
+     *
+     * @param string $relatedTo
+     * @param string $relationTarget
      * @param string $relationType
-     * @return AssetResponse[]|array
+     * @return string
      */
-    public function searchRelations(string $assetId, string $relationType)
-    {
-        $request = (new SearchRequest($this->getConfig()))->setQ("relatedTo:$assetId relationType:$relationType");
-        $response = $this->search($request);
-        return $response->getHits();
+    public function getRelationSearchQ(
+        string $relatedTo,
+        string $relationTarget = '',
+        string $relationType = ''
+    ): string {
+        $q = sprintf('relatedTo:%s', $relatedTo);
+
+        if ($relationTarget !== '') {
+            $q .= sprintf(' relationTarget:%s', $relationTarget);
+        }
+
+        if ($relationType !== '') {
+            $q .= sprintf(' relationType:%s', $relationType);
+        }
+
+        return $q;
     }
 
 
