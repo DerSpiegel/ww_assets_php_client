@@ -541,7 +541,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Creates a collection from assetPath
      *
-     * @param string $assetPath
+     * @param string $assetPath Full path to collection, including .collection extension
      * @param array $metadata
      * @return AssetResponse
      */
