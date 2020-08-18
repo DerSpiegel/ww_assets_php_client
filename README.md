@@ -13,6 +13,7 @@ It has been developed during the WoodWing Elvis implementation at the German [SP
 * [Create](https://helpcenter.woodwing.com/hc/en-us/articles/115002690206-Elvis-6-REST-API-create): `CreateRequest`
 * [Update](https://helpcenter.woodwing.com/hc/en-us/articles/115002690426-Elvis-6-REST-API-update-check-in): `UpdateRequest`
 * [Update bulk](https://helpcenter.woodwing.com/hc/en-us/articles/115002690446-Elvis-6-REST-API-updatebulk): `UpdateBulkRequest`
+* [Copy asset](https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy): `CopyAssetRequest`
 * [Move / rename](https://helpcenter.woodwing.com/hc/en-us/articles/115002690306-Elvis-6-REST-API-move-rename): `MoveRequest`
 * [Remove](https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove): `RemoveRequest`
 * [Create relation](https://helpcenter.woodwing.com/hc/en-us/articles/115002663363-Elvis-6-REST-API-create-relation): `CreateRelationRequest`  

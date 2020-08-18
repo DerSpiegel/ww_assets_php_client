@@ -4,6 +4,7 @@ namespace DerSpiegel\WoodWingElvisClient;
 
 use DerSpiegel\WoodWingElvisClient\Exception\ElvisException;
 use DerSpiegel\WoodWingElvisClient\Request\AssetResponse;
+use DerSpiegel\WoodWingElvisClient\Request\CopyAssetRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateFolderRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateRelationRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateRequest;
@@ -172,6 +173,48 @@ class ElvisClient extends ElvisClientBase
                 'method' => __METHOD__,
                 'query' => $request->getQ(),
                 'metadata' => $request->getMetadata()
+            ]
+        );
+
+        return (new ProcessResponse())->fromJson($response);
+    }
+
+
+    /**
+     * * Copy asset
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
+     * @param CopyAssetRequest $request
+     * @return ProcessResponse
+     */
+    public function copyAsset(CopyAssetRequest $request): ProcessResponse
+    {
+        try {
+            $response = $this->serviceRequest('copy', [
+                'source' => $request->getSource(),
+                'target' => $request->getTarget(),
+                'fileReplacePolicy' => $request->getFileReplacePolicy()
+            ]);
+        } catch (Exception $e) {
+            throw new ElvisException(
+                sprintf(
+                    '%s: Copy from <%s> to <%s> failed: %s',
+                    __METHOD__,
+                    $request->getSource(),
+                    $request->getTarget(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Asset copied to <%s>', $request->getTarget()),
+            [
+                'method' => __METHOD__,
+                'source' => $request->getSource(),
+                'target' => $request->getTarget(),
+                'fileReplacePolicy' => $request->getFileReplacePolicy()
             ]
         );
 
