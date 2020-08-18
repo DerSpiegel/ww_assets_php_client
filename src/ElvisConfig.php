@@ -30,6 +30,12 @@ class ElvisConfig
     public function __construct(string $url, string $username, string $password, string $elasticsearchUrl = '')
     {
         $this->url = trim($url);
+
+        // If the Elvis URL doesn't end with a slash, append it
+        if (($this->url !== '') && (substr($this->url, -1) !== '/')) {
+            $this->url .= '/';
+        }
+
         $this->username = trim($username);
         $this->password = trim($password);
         $this->elasticsearchUrl = trim($elasticsearchUrl);
