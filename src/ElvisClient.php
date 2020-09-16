@@ -106,13 +106,23 @@ class ElvisClient extends ElvisClientBase
      */
     public function update(UpdateRequest $request): void
     {
-        // TODO: Implement fileData, clearCheckoutState
-
         $requestData = [
             'id' => $request->getId(),
-            'metadata' => json_encode($request->getMetadata()),
             'parseMetadataModifications' => $request->isParseMetadataModification() ? 'true' : 'false'
         ];
+
+        $metadata = $request->getMetadata();
+
+        if (count($metadata) > 0) {
+            $requestData['metadata'] = json_encode($metadata);
+        }
+
+        $fp = $request->getFiledata();
+
+        if (is_resource($fp)) {
+            $requestData['Filedata'] = $fp;
+            $requestData['clearCheckoutState'] = $request->isClearCheckoutState() ? 'true' : 'false';
+        }
 
         try {
             $this->serviceRequest('update', $requestData);
@@ -130,7 +140,12 @@ class ElvisClient extends ElvisClientBase
             );
         }
 
-        $this->logger->info(sprintf('Updated metadata for asset <%s>', $request->getId()),
+        $this->logger->info(
+            sprintf(
+                'Updated %s for asset <%s>',
+                implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
+                $request->getId()
+            ),
             [
                 'method' => __METHOD__,
                 'assetId' => $request->getId(),
@@ -193,7 +208,7 @@ class ElvisClient extends ElvisClientBase
     {
         try {
             $response = $this->serviceRequest(
-                sprintf('checkout/%s', urlencode($request->getAssetId())),
+                sprintf('checkout/%s', urlencode($request->getId())),
                 ['download' => $request->isDownload() ? 'true' : 'false']
             );
         } catch (Exception $e) {
@@ -201,7 +216,7 @@ class ElvisClient extends ElvisClientBase
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
-                    $request->getAssetId(),
+                    $request->getId(),
                     $e->getMessage()
                 ),
                 $e->getCode(),
@@ -209,10 +224,10 @@ class ElvisClient extends ElvisClientBase
             );
         }
 
-        $this->logger->info(sprintf('Asset <%s> checked out', $request->getAssetId()),
+        $this->logger->info(sprintf('Asset <%s> checked out', $request->getId()),
             [
                 'method' => __METHOD__,
-                'id' => $request->getAssetId(),
+                'id' => $request->getId(),
                 'download' => $request->isDownload()
             ]
         );
@@ -745,7 +760,7 @@ class ElvisClient extends ElvisClientBase
 
         $this->downloadFileByPath($assetResponse->getOriginalUrl(), $targetPath);
 
-        $this->logger->debug(sprintf('Original File Downloaded <%s>', $assetResponse->getId()),
+        $this->logger->debug(sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->getId(), $targetPath),
             [
                 'method' => __METHOD__,
                 'assetId' => $assetResponse->getId()
@@ -760,6 +775,8 @@ class ElvisClient extends ElvisClientBase
      */
     public function downloadOriginalFileByElvisId(AssetResponse $elvisAsset, string $targetPath)
     {
+        // TODO: Deprecate or fix; should be "byId" and expect a string $assetId
+
         $originalUrl = $elvisAsset->getOriginalUrl();
 
         $this->downloadFileByPath($originalUrl, $targetPath);

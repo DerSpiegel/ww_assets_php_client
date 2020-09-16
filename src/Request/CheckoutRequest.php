@@ -11,7 +11,7 @@ namespace DerSpiegel\WoodWingElvisClient\Request;
  */
 class CheckoutRequest extends Request
 {
-    protected string $assetId;
+    protected string $id;
 
     protected bool $download = false;
 
@@ -19,19 +19,19 @@ class CheckoutRequest extends Request
     /**
      * @return string
      */
-    public function getAssetId(): string
+    public function getId(): string
     {
-        return $this->assetId ?: '';
+        return $this->id ?: '';
     }
 
 
     /**
-     * @param string $assetId
+     * @param string $id
      * @return self
      */
-    public function setAssetId(string $assetId): self
+    public function setId(string $id): self
     {
-        $this->assetId = $assetId;
+        $this->id = $id;
         return $this;
     }
 
