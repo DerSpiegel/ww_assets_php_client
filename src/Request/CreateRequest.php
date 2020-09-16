@@ -2,8 +2,6 @@
 
 namespace DerSpiegel\WoodWingElvisClient\Request;
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
-
 
 /**
  * Class CreateRequest

@@ -4,6 +4,8 @@ namespace DerSpiegel\WoodWingElvisClient;
 
 use DerSpiegel\WoodWingElvisClient\Exception\ElvisException;
 use DerSpiegel\WoodWingElvisClient\Request\AssetResponse;
+use DerSpiegel\WoodWingElvisClient\Request\CheckoutRequest;
+use DerSpiegel\WoodWingElvisClient\Request\CheckoutResponse;
 use DerSpiegel\WoodWingElvisClient\Request\CopyAssetRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateFolderRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateRelationRequest;
@@ -181,7 +183,48 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * * Copy asset
+     * Check out asset
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @param CheckoutRequest $request
+     * @return CheckoutResponse
+     */
+    public function checkout(CheckoutRequest $request): CheckoutResponse
+    {
+        try {
+            $response = $this->serviceRequest(
+                sprintf('checkout/%s', urlencode($request->getAssetId())),
+                ['download' => $request->isDownload() ? 'true' : 'false']
+            );
+        } catch (Exception $e) {
+            throw new ElvisException(
+                sprintf(
+                    '%s: Checkout of asset <%s> failed: %s',
+                    __METHOD__,
+                    $request->getAssetId(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Asset <%s> checked out', $request->getAssetId()),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getAssetId(),
+                'download' => $request->isDownload()
+            ]
+        );
+
+        // TODO: Handle download
+
+        return (new CheckoutResponse())->fromJson($response);
+    }
+
+
+    /**
+     * Copy asset
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
      * @param CopyAssetRequest $request
@@ -223,7 +266,7 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * * Move/Rename Asset or Folder
+     * Move/Rename Asset or Folder
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690306-Elvis-6-REST-API-move-rename
      * @param MoveRequest $request
@@ -270,7 +313,7 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * * Remove Assets or Collections
+     * Remove Assets or Collections
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove
      * @param RemoveRequest $request
