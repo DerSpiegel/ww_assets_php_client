@@ -624,6 +624,12 @@ class ElvisClientBase
     protected function writeResponseBodyToPath(ResponseInterface $httpResponse, string $targetPath): void
     {
         $fp = fopen($targetPath, 'wb');
+
+        if ($fp === false) {
+            throw new ElvisException(sprintf('%s: Failed to open <%s> for writing', __METHOD__,
+                $targetPath));
+        }
+
         $ok = true;
 
         while ($data = $httpResponse->getBody()->read(1024)) {
