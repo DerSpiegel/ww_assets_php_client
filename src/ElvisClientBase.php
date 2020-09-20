@@ -299,12 +299,9 @@ class ElvisClientBase
 
                     // try again
                     return $this->apiRequest($method, $service, $data);
-
-                    break;
                 default:
                     // something went wrong
                     throw $e;
-                    break;
             }
         }
     }
@@ -374,13 +371,10 @@ class ElvisClientBase
         switch ($this->authMethod) {
             case self::AUTH_METHOD_BEARER_TOKEN:
                 return $this->getBearerToken($force);
-                break;
             case self::AUTH_METHOD_CSRF_TOKEN:
                 return $this->getCsrfToken($force);
-                break;
             case self::AUTH_METHOD_AUTHCRED:
                 return $this->getAuthCred();
-                break;
             default:
                 throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
                     $this->authMethod));
