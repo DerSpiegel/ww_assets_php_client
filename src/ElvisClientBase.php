@@ -11,6 +11,7 @@ use DerSpiegel\WoodWingElvisClient\Request\ApiLoginResponse;
 use DerSpiegel\WoodWingElvisClient\Request\LoginRequest;
 use DerSpiegel\WoodWingElvisClient\Request\LoginResponse;
 use DerSpiegel\WoodWingElvisClient\Request\LogoutResponse;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
@@ -19,7 +20,6 @@ use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Exception;
 
 
 /**
@@ -219,8 +219,21 @@ class ElvisClientBase
      * @param string $service
      * @param array $data
      * @return array
+     * @throws \JsonException
      */
     protected function serviceRequest(string $service, array $data = []): array
+    {
+        $httpResponse = $this->rawServiceRequest($service, $data);
+        return ElvisUtils::parseJsonResponse($httpResponse->getBody());
+    }
+
+
+    /**
+     * @param string $service
+     * @param array $data
+     * @return ResponseInterface
+     */
+    protected function rawServiceRequest(string $service, array $data = []): ResponseInterface
     {
         $url = sprintf(
             '%sservices/%s',
@@ -235,8 +248,7 @@ class ElvisClientBase
         }
 
         try {
-            $httpResponse = $this->request('POST', $url, $data, true, !$loginRequest);
-            return ElvisUtils::parseJsonResponse($httpResponse->getBody());
+            return $this->request('POST', $url, $data, true, !$loginRequest);
         } catch (RuntimeException $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
@@ -248,13 +260,10 @@ class ElvisClientBase
                     }
 
                     // try again
-                    return $this->serviceRequest($service, $data);
-
-                    break;
+                    return $this->rawServiceRequest($service, $data);
                 default:
                     // something went wrong
                     throw $e;
-                    break;
             }
         }
     }
@@ -265,6 +274,7 @@ class ElvisClientBase
      * @param string $service
      * @param array $data
      * @return array
+     * @throws \JsonException
      */
     protected function apiRequest(string $method, string $service, array $data = []): array
     {
@@ -289,12 +299,9 @@ class ElvisClientBase
 
                     // try again
                     return $this->apiRequest($method, $service, $data);
-
-                    break;
                 default:
                     // something went wrong
                     throw $e;
-                    break;
             }
         }
     }
@@ -364,13 +371,10 @@ class ElvisClientBase
         switch ($this->authMethod) {
             case self::AUTH_METHOD_BEARER_TOKEN:
                 return $this->getBearerToken($force);
-                break;
             case self::AUTH_METHOD_CSRF_TOKEN:
                 return $this->getCsrfToken($force);
-                break;
             case self::AUTH_METHOD_AUTHCRED:
                 return $this->getAuthCred();
-                break;
             default:
                 throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
                     $this->authMethod));
@@ -601,16 +605,31 @@ class ElvisClientBase
      * @param string $url
      * @param string $targetPath
      */
-    public function downloadFileByPath(string $url, string $targetPath): void
+    protected function downloadFileToPath(string $url, string $targetPath): void
     {
         try {
             $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
+            $this->writeResponseBodyToPath($httpResponse, $targetPath);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: The download failed: %s', __METHOD__, $e->getMessage()),
+            throw new ElvisException(sprintf('%s: Failed to download <%s>: %s', __METHOD__, $url, $e->getMessage()),
                 $e->getCode(), $e);
         }
+    }
 
+
+    /**
+     * @param ResponseInterface $httpResponse
+     * @param string $targetPath
+     */
+    protected function writeResponseBodyToPath(ResponseInterface $httpResponse, string $targetPath): void
+    {
         $fp = fopen($targetPath, 'wb');
+
+        if ($fp === false) {
+            throw new ElvisException(sprintf('%s: Failed to open <%s> for writing', __METHOD__,
+                $targetPath));
+        }
+
         $ok = true;
 
         while ($data = $httpResponse->getBody()->read(1024)) {
@@ -624,8 +643,8 @@ class ElvisClientBase
         fclose($fp);
 
         if (!$ok) {
-            throw new ElvisException(sprintf('%s: Failed to download <%s> original file to <%s>', __METHOD__,
-                $url, $targetPath), 404);
+            throw new ElvisException(sprintf('%s: Failed to write HTTP response to <%s>', __METHOD__,
+                $targetPath));
         }
     }
 

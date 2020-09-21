@@ -11,9 +11,32 @@ namespace DerSpiegel\WoodWingElvisClient\Request;
  */
 class UpdateRequest extends CreateRequest
 {
+    /** @var resource */
+    protected $filedata;
+
     protected string $id;
 
     protected bool $clearCheckoutState = true;
+
+
+    /**
+     * @return resource
+     */
+    public function getFiledata()
+    {
+        return $this->filedata;
+    }
+
+
+    /**
+     * @param resource $fp
+     * @return self
+     */
+    public function setFiledata($fp): self
+    {
+        $this->filedata = $fp;
+        return $this;
+    }
 
 
     /**

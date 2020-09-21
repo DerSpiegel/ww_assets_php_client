@@ -2,8 +2,6 @@
 
 namespace DerSpiegel\WoodWingElvisClient\Request;
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
-
 
 /**
  * Class CreateRequest
@@ -49,7 +47,7 @@ class CreateRequest extends Request
      */
     public function getMetadata(): array
     {
-        $metadata = (is_array($this->metadata) ? $this->metadata : []);
+        $metadata = (isset($this->metadata) ? $this->metadata : []);
 
         // for some reason, Elvis fails to clear up the metadata field if the sent value is an empty array
         foreach ($metadata as &$field) {

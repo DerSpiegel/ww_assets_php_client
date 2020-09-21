@@ -4,6 +4,8 @@ namespace DerSpiegel\WoodWingElvisClient;
 
 use DerSpiegel\WoodWingElvisClient\Exception\ElvisException;
 use DerSpiegel\WoodWingElvisClient\Request\AssetResponse;
+use DerSpiegel\WoodWingElvisClient\Request\CheckoutRequest;
+use DerSpiegel\WoodWingElvisClient\Request\CheckoutResponse;
 use DerSpiegel\WoodWingElvisClient\Request\CopyAssetRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateFolderRequest;
 use DerSpiegel\WoodWingElvisClient\Request\CreateRelationRequest;
@@ -104,13 +106,23 @@ class ElvisClient extends ElvisClientBase
      */
     public function update(UpdateRequest $request): void
     {
-        // TODO: Implement fileData, clearCheckoutState
-
         $requestData = [
             'id' => $request->getId(),
-            'metadata' => json_encode($request->getMetadata()),
             'parseMetadataModifications' => $request->isParseMetadataModification() ? 'true' : 'false'
         ];
+
+        $metadata = $request->getMetadata();
+
+        if (count($metadata) > 0) {
+            $requestData['metadata'] = json_encode($metadata);
+        }
+
+        $fp = $request->getFiledata();
+
+        if (is_resource($fp)) {
+            $requestData['Filedata'] = $fp;
+            $requestData['clearCheckoutState'] = $request->isClearCheckoutState() ? 'true' : 'false';
+        }
 
         try {
             $this->serviceRequest('update', $requestData);
@@ -128,7 +140,12 @@ class ElvisClient extends ElvisClientBase
             );
         }
 
-        $this->logger->info(sprintf('Updated metadata for asset <%s>', $request->getId()),
+        $this->logger->info(
+            sprintf(
+                'Updated %s for asset <%s>',
+                implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
+                $request->getId()
+            ),
             [
                 'method' => __METHOD__,
                 'assetId' => $request->getId(),
@@ -181,7 +198,91 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * * Copy asset
+     * Check out asset
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @param CheckoutRequest $request
+     * @return CheckoutResponse
+     */
+    public function checkout(CheckoutRequest $request): CheckoutResponse
+    {
+        // This method is designed to do a checkout without download
+        $request->setDownload(false);
+
+        try {
+            $response = $this->serviceRequest(
+                sprintf('checkout/%s', urlencode($request->getId())),
+                ['download' => $request->isDownload() ? 'true' : 'false']
+            );
+        } catch (Exception $e) {
+            throw new ElvisException(
+                sprintf(
+                    '%s: Checkout of asset <%s> failed: %s',
+                    __METHOD__,
+                    $request->getId(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Asset <%s> checked out', $request->getId()),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getId(),
+                'download' => $request->isDownload()
+            ]
+        );
+
+        return (new CheckoutResponse())->fromJson($response);
+    }
+
+
+    /**
+     * Check out and download asset
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @param CheckoutRequest $request
+     * @param string $targetPath
+     */
+    public function checkoutAndDownload(CheckoutRequest $request, string $targetPath): void
+    {
+        // This method is designed to do a checkout with download
+        $request->setDownload(true);
+
+        try {
+            $response = $this->rawServiceRequest(
+                sprintf('checkout/%s', urlencode($request->getId())),
+                ['download' => $request->isDownload() ? 'true' : 'false']
+            );
+
+            $this->writeResponseBodyToPath($response, $targetPath);
+        } catch (Exception $e) {
+            throw new ElvisException(
+                sprintf(
+                    '%s: Checkout of asset <%s> failed: %s',
+                    __METHOD__,
+                    $request->getId(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $request->getId(), $targetPath),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getId(),
+                'download' => $request->isDownload()
+            ]
+        );
+    }
+
+
+    /**
+     * Copy asset
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
      * @param CopyAssetRequest $request
@@ -223,7 +324,7 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * * Move/Rename Asset or Folder
+     * Move/Rename Asset or Folder
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690306-Elvis-6-REST-API-move-rename
      * @param MoveRequest $request
@@ -270,7 +371,7 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * * Remove Assets or Collections
+     * Remove Assets or Collections
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove
      * @param RemoveRequest $request
@@ -700,9 +801,9 @@ class ElvisClient extends ElvisClientBase
             throw new ElvisException(sprintf('%s: Original URL is empty', __METHOD__), 404);
         }
 
-        $this->downloadFileByPath($assetResponse->getOriginalUrl(), $targetPath);
+        $this->downloadFileToPath($assetResponse->getOriginalUrl(), $targetPath);
 
-        $this->logger->debug(sprintf('Original File Downloaded <%s>', $assetResponse->getId()),
+        $this->logger->debug(sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->getId(), $targetPath),
             [
                 'method' => __METHOD__,
                 'assetId' => $assetResponse->getId()
@@ -717,9 +818,11 @@ class ElvisClient extends ElvisClientBase
      */
     public function downloadOriginalFileByElvisId(AssetResponse $elvisAsset, string $targetPath)
     {
+        // TODO: Deprecate or fix; should be "byId" and expect a string $assetId
+
         $originalUrl = $elvisAsset->getOriginalUrl();
 
-        $this->downloadFileByPath($originalUrl, $targetPath);
+        $this->downloadFileToPath($originalUrl, $targetPath);
 
         $this->logger->debug(sprintf('Original File Downloaded <%s>', $originalUrl),
             [
