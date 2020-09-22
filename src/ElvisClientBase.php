@@ -248,7 +248,13 @@ class ElvisClientBase
         }
 
         try {
-            return $this->request('POST', $url, $data, true, !$loginRequest);
+            $httpResponse = $this->request('POST', $url, $data, true, !$loginRequest);
+
+            // Even usually-binary responses like "checkout and download" return JSON on error (i.e. "not logged in").
+            // So when we get JSON back, run it through ElvisUtils::parseJsonResponse() which throws an exception on error.
+            if (strpos($httpResponse->getHeaderLine('content-type'), 'application/json') === 0) {
+                ElvisUtils::parseJsonResponse($httpResponse->getBody());
+            }
         } catch (RuntimeException $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
@@ -266,6 +272,8 @@ class ElvisClientBase
                     throw $e;
             }
         }
+
+        return $httpResponse;
     }
 
 
