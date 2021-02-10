@@ -20,6 +20,8 @@ class SearchResponse extends Response
     /** @var AssetResponse[] */
     protected array $hits;
 
+    protected array $facets;
+
 
     /**
      * @param array $json
@@ -45,6 +47,10 @@ class SearchResponse extends Response
             foreach ($json['hits'] as $hitJson) {
                 $this->hits[] = (new AssetResponse())->fromJson($hitJson);
             }
+        }
+
+        if (isset($json['facets']) && is_array($json['facets'])) {
+            $this->facets = $json['facets'];
         }
 
         return $this;
@@ -84,5 +90,14 @@ class SearchResponse extends Response
     public function getHits(): array
     {
         return (is_array($this->hits) ? $this->hits : []);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getFacets(): array
+    {
+        return (is_array($this->facets) ? $this->facets : []);
     }
 }
