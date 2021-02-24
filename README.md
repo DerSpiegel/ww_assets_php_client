@@ -29,17 +29,9 @@ Use [Composer](https://getcomposer.org/) to add this library your project’s co
 $ composer require der-spiegel/ww-elvis-client
 ```
 
-## Quick test using Docker
+## Quick test 
 
 Here’s how to do a quick test, starting from scratch with a new project (Docker required):
-
-### Build image
-
-```
-$ git clone https://github.com/DerSpiegel/ww_elvis_php_client.git
-$ cd ww_elvis_php_client
-$ docker build -t ww-elvis-client-example -f Dockerfile .
-```
 
 ### Install dependencies using Composer
 
@@ -47,7 +39,7 @@ $ docker build -t ww-elvis-client-example -f Dockerfile .
 $ docker run --rm --interactive --tty \
   --volume $PWD:/app \
   --volume ${COMPOSER_HOME:-$HOME/.composer}:/tmp \
-  ww-elvis-client-example composer require der-spiegel/ww-elvis-client monolog/monolog
+  composer require der-spiegel/ww-elvis-client monolog/monolog
 ```
 
 ### Copy and edit the example script
@@ -86,7 +78,7 @@ foreach ($response->getHits() as $assetResponse) {     // Loop through results
 ```
 $ docker run -it --rm --name ww-elvis-client-example \
   --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
-  ww-elvis-client-example php MyExample.php
+  php:7.4-cli php MyExample.php
 ```
 
 ## Authors
