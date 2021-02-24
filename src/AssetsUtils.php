@@ -16,7 +16,7 @@ class AssetsUtils
      * @param string $id
      * @return bool
      */
-    public static function isElvisId(string $id): bool
+    public static function isAssetsId(string $id): bool
     {
         return (strlen($id) === 22);
     }
@@ -34,7 +34,7 @@ class AssetsUtils
         $json = json_decode($jsonString, true, 512, JSON_THROW_ON_ERROR);
 
         if (isset($json['errorcode']) && isset($json['message'])) {
-            throw new RuntimeException(sprintf('%s: Elvis error: %s', __METHOD__, $json['message']),
+            throw new RuntimeException(sprintf('%s: Assets error: %s', __METHOD__, $json['message']),
                 $json['errorcode']);
         }
 

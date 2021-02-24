@@ -32,11 +32,11 @@ use \RuntimeException;
  */
 class AssetsClient extends AssetsClientBase
 {
-    /** Elvis REST API methods */
+    /** Assets REST API methods */
 
 
     /**
-     * Search for Elvis assets
+     * Search for assets
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690386-Elvis-6-REST-API-search
      * @param SearchRequest $request
@@ -477,7 +477,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Get folder metadata
      *
-     * From the new Elvis API (GET /api/folder/get)
+     * From the new Assets API (GET /api/folder/get)
      *
      * @param GetFolderRequest $request
      * @return FolderResponse
@@ -507,7 +507,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Create folder with metadata
      *
-     * From the new Elvis API (POST /api/folder)
+     * From the new Assets API (POST /api/folder)
      *
      * @param CreateFolderRequest $request
      * @return FolderResponse
@@ -539,7 +539,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Update folder metadata
      *
-     * From the new Elvis API (PUT /api/folder/{id})
+     * From the new Assets API (PUT /api/folder/{id})
      *
      * @param UpdateFolderRequest $request
      * @return FolderResponse
@@ -574,7 +574,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Remove a folder
      *
-     * From the new Elvis API (DELETE /api/folder/{id})
+     * From the new Assets API (DELETE /api/folder/{id})
      *
      * @param RemoveFolderRequest $request
      */
@@ -601,18 +601,18 @@ class AssetsClient extends AssetsClientBase
     }
 
 
-    /** Helper methods not part of the Elvis REST API */
+    /** Helper methods not part of the Assets REST API */
 
 
     /**
      * Remove asset by assetId
      *
-     * @param string $elvisId
+     * @param string $assetId
      * @return ProcessResponse
      */
-    public function removeById(string $elvisId): ProcessResponse
+    public function removeById(string $assetId): ProcessResponse
     {
-        return $this->removeAsset((new RemoveRequest($this->config))->setIds([$elvisId]));
+        return $this->removeAsset((new RemoveRequest($this->config))->setIds([$assetId]));
     }
 
 
@@ -702,7 +702,7 @@ class AssetsClient extends AssetsClientBase
 
 
     /**
-     * Search for an Elvis asset by ID and return all or selected metadata
+     * Search for an asset by ID and return all or selected metadata
      *
      * @param string $assetId
      * @param array $metadataToReturn
@@ -733,7 +733,7 @@ class AssetsClient extends AssetsClientBase
 
 
     /**
-     * Search for an Elvis asset and return its ID
+     * Search for an asset and return its ID
      *
      * @param string $q
      * @param bool $failIfMultipleHits When more than asset is found: If true, raise exception. If false, return first match.
@@ -813,21 +813,21 @@ class AssetsClient extends AssetsClientBase
 
 
     /**
-     * @param AssetResponse $elvisAsset
+     * @param AssetResponse $assetResponse
      * @param string $targetPath
      */
-    public function downloadOriginalFileByElvisId(AssetResponse $elvisAsset, string $targetPath)
+    public function downloadOriginalFileById(AssetResponse $assetResponse, string $targetPath)
     {
         // TODO: Deprecate or fix; should be "byId" and expect a string $assetId
 
-        $originalUrl = $elvisAsset->getOriginalUrl();
+        $originalUrl = $assetResponse->getOriginalUrl();
 
         $this->downloadFileToPath($originalUrl, $targetPath);
 
         $this->logger->debug(sprintf('Original File Downloaded <%s>', $originalUrl),
             [
                 'method' => __METHOD__,
-                'assetId' => $elvisAsset->getId()
+                'assetId' => $assetResponse->getId()
             ]
         );
     }

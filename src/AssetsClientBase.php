@@ -68,7 +68,7 @@ class AssetsClientBase
 
 
     /**
-     * ElvisServer constructor.
+     * AssetsClientBase constructor.
      * @param AssetsConfig $config
      * @param LoggerInterface $logger
      */
@@ -207,7 +207,7 @@ class AssetsClientBase
 
             return $response;
         } catch (GuzzleException $e) {
-            // throw RuntimeException instead, to match the exception thrown by `ElvisServerBase::parseJsonResponse`
+            // throw RuntimeException instead, to match the exception thrown by `AssetsServerBase::parseJsonResponse`
             throw new RuntimeException($e->getMessage(), $e->getCode());
         }
     }
@@ -445,12 +445,12 @@ class AssetsClientBase
         $response = $this->apiLogin($request);
 
         if (!$response->isLoginSuccess()) {
-            throw new RuntimeException(sprintf('%s: Elvis API login failed: %s', __METHOD__,
+            throw new RuntimeException(sprintf('%s: Assets API login failed: %s', __METHOD__,
                 $response->getLoginFaultMessage()));
         }
 
         if (strlen($response->getAuthToken()) === 0) {
-            throw new RuntimeException(sprintf('%s: Elvis API login succeeded, but authToken is empty', __METHOD__));
+            throw new RuntimeException(sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__));
         }
 
         $this->bearerToken = 'Bearer ' . $response->getAuthToken();
@@ -518,12 +518,12 @@ class AssetsClientBase
         $response = $this->login($request);
 
         if (!$response->isLoginSuccess()) {
-            throw new RuntimeException(sprintf('%s: Elvis login failed: %s', __METHOD__,
+            throw new RuntimeException(sprintf('%s: Assets login failed: %s', __METHOD__,
                 $response->getLoginFaultMessage()));
         }
 
         if (strlen($response->getCsrfToken()) === 0) {
-            throw new RuntimeException(sprintf('%s: Elvis login succeeded, but csrfToken is empty', __METHOD__));
+            throw new RuntimeException(sprintf('%s: Assets login succeeded, but csrfToken is empty', __METHOD__));
         }
 
         $this->csrfToken = $response->getCsrfToken();

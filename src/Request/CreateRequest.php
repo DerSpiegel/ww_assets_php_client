@@ -49,7 +49,7 @@ class CreateRequest extends Request
     {
         $metadata = (isset($this->metadata) ? $this->metadata : []);
 
-        // for some reason, Elvis fails to clear up the metadata field if the sent value is an empty array
+        // for some reason, Assets fails to clear up the metadata field if the sent value is an empty array
         foreach ($metadata as &$field) {
             if (is_array($field) && empty($field)) {
                 $field = "";

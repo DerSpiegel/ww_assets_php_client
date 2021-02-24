@@ -31,7 +31,7 @@ class AssetsConfig
     {
         $this->url = trim($url);
 
-        // If the Elvis URL doesn't end with a slash, append it
+        // If the Assets URL doesn't end with a slash, append it
         if (($this->url !== '') && (substr($this->url, -1) !== '/')) {
             $this->url .= '/';
         }

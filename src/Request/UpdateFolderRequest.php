@@ -8,7 +8,7 @@ use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 /**
  * Class UpdateFolderRequest
  *
- * From the new Elvis API (PUT /api/folder/{id})
+ * From the new Assets API (PUT /api/folder/{id})
  *
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */

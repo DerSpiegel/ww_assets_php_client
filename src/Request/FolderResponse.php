@@ -6,7 +6,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 /**
  * Class FolderResponse
  *
- * From the new Elvis API (GET /api/folder/get)
+ * From the new Assets API (GET /api/folder/get)
  *
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */

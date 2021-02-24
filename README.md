@@ -1,10 +1,10 @@
-# A PHP client for WoodWing Elvis DAM
+# A PHP client for WoodWing Assets
 
-[WoodWing Elvis](https://www.woodwing.com/en/digital-asset-management-system) is a DAM (Digital Asset Management) system.
+[WoodWing Assets](https://www.woodwing.com/en/digital-asset-management-system) is a DAM (Digital Asset Management) system.
 This PHP client library uses its [REST API](https://helpcenter.woodwing.com/hc/en-us/sections/360000141063-API-REST).
 
 This is not an official library supplied by the WoodWing vendor. 
-It has been developed during the WoodWing Elvis implementation at the German [SPIEGEL Gruppe](https://www.spiegelgruppe.de), 2019-2020.
+It has been developed during the WoodWing Assets implementation at the German [SPIEGEL Gruppe](https://www.spiegelgruppe.de), 2019-2020.
 
 ## Functionality
 
@@ -46,27 +46,27 @@ $ docker run --rm --interactive --tty \
 
 `$ cp vendor/der-spiegel/ww-elvis-client/UsageExample.php MyExample.php`
 
-Edit your copy, setting the correct Elvis URL, username (API user preferred) and password in this section:
+Edit your copy, setting the correct Assets URL, username (API user preferred) and password in this section:
 
 ```php
-$elvisConfig = new AssetsConfig(
-    'https://elvis.example.com/', // Elvis URL (without app/ or services/ postfix)
-    'username',                   // Elvis user name (API user preferred)
-    'password'                    // That user's password
+$assetsConfig = new AssetsConfig(
+    'https://assets.example.com/', // Assets URL (without app/ or services/ postfix)
+    'username',                    // Assets user name (API user preferred)
+    'password'                     // That user's password
 );
 ```
 
-The example script performs a simple search across all Elvis assets (visible for that user)
+The example script performs a simple search across all assets (visible for that user)
 and returns the first 50 asset IDs – you can leave it as is for a first test:
 
 ```php
-$elvisClient = new AssetsClient($elvisConfig, $logger); // Create client
+$assetsClient = new AssetsClient($assetsConfig, $logger); // Create client
 
-$request = (new SearchRequest($elvisConfig))           // Create search request
-    ->setQ('')                                         // Elvis query
+$request = (new SearchRequest($assetsConfig))          // Create search request
+    ->setQ('')                                         // Assets query
     ->setMetadataToReturn(['']);                       // Metadata fields to return
 
-$response = $elvisClient->search($request);            // Perform search
+$response = $assetsClient->search($request);            // Perform search
 
 foreach ($response->getHits() as $assetResponse) {     // Loop through results
     echo $assetResponse->getId() . "\n";               // Access asset metadata

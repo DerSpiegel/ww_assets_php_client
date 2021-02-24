@@ -8,7 +8,7 @@ use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 /**
  * Class CreateFolderRequest
  *
- * From the new Elvis API (POST /api/folder)
+ * From the new Assets API (POST /api/folder)
  *
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
