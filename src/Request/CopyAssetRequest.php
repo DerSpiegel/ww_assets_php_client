@@ -40,7 +40,7 @@ class CopyAssetRequest extends Request
      * @param string $source
      * @return self
      */
-    public function setSource($source): self
+    public function setSource(string $source): self
     {
         $this->source = $source;
         return $this;
@@ -62,7 +62,7 @@ class CopyAssetRequest extends Request
      * @param string $target
      * @return self
      */
-    public function setTarget($target): self
+    public function setTarget(string $target): self
     {
         $this->target = $target;
         return $this;
@@ -82,7 +82,7 @@ class CopyAssetRequest extends Request
      * @param string $fileReplacePolicy
      * @return self
      */
-    public function setFileReplacePolicy($fileReplacePolicy): self
+    public function setFileReplacePolicy(string $fileReplacePolicy): self
     {
         $this->fileReplacePolicy = $fileReplacePolicy;
         return $this;

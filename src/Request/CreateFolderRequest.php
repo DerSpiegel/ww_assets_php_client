@@ -2,8 +2,6 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
-
 
 /**
  * Class CreateFolderRequest

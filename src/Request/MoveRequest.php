@@ -48,7 +48,7 @@ class MoveRequest extends Request
      * @param string $source
      * @return self
      */
-    public function setSource($source): self
+    public function setSource(string $source): self
     {
         $this->source = $source;
         return $this;
@@ -68,7 +68,7 @@ class MoveRequest extends Request
      * @param string $target
      * @return self
      */
-    public function setTarget($target): self
+    public function setTarget(string $target): self
     {
         $this->target = $target;
         return $this;
@@ -88,7 +88,7 @@ class MoveRequest extends Request
      * @param string $folderReplacePolicy
      * @return self
      */
-    public function setFolderReplacePolicy($folderReplacePolicy): self
+    public function setFolderReplacePolicy(string $folderReplacePolicy): self
     {
         $this->folderReplacePolicy = $folderReplacePolicy;
         return $this;
@@ -108,7 +108,7 @@ class MoveRequest extends Request
      * @param string $fileReplacePolicy
      * @return self
      */
-    public function setFileReplacePolicy($fileReplacePolicy): self
+    public function setFileReplacePolicy(string $fileReplacePolicy): self
     {
         $this->fileReplacePolicy = $fileReplacePolicy;
         return $this;
@@ -128,7 +128,7 @@ class MoveRequest extends Request
      * @param string $filterQuery
      * @return self
      */
-    public function setFilterQuery($filterQuery): self
+    public function setFilterQuery(string $filterQuery): self
     {
         $this->filterQuery = $filterQuery;
         return $this;

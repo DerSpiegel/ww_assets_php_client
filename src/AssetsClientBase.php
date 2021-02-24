@@ -15,6 +15,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -217,7 +218,7 @@ class AssetsClientBase
      * @param string $service
      * @param array $data
      * @return array
-     * @throws \JsonException
+     * @throws JsonException
      */
     protected function serviceRequest(string $service, array $data = []): array
     {
@@ -280,7 +281,7 @@ class AssetsClientBase
      * @param string $service
      * @param array $data
      * @return array
-     * @throws \JsonException
+     * @throws JsonException
      */
     protected function apiRequest(string $method, string $service, array $data = []): array
     {
@@ -483,7 +484,7 @@ class AssetsClientBase
     /**
      * @param string $authCred
      */
-    public function setAuthCred($authCred): void
+    public function setAuthCred(string $authCred): void
     {
         $this->authCred = $authCred;
         $this->setAuthMethod(self::AUTH_METHOD_AUTHCRED);

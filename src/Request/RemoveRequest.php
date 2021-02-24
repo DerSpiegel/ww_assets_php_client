@@ -31,7 +31,7 @@ class RemoveRequest extends Request
      * @param string $q
      * @return self
      */
-    public function setQ($q): self
+    public function setQ(string $q): self
     {
         $this->q = $q;
         return $this;
