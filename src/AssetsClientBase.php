@@ -2,8 +2,8 @@
 
 namespace DerSpiegel\WoodWingAssetsClient;
 
-use DerSpiegel\WoodWingAssetsClient\Exception\ElvisException;
-use DerSpiegel\WoodWingAssetsClient\Exception\NotAuthorizedElvisException;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use DerSpiegel\WoodWingAssetsClient\Exception\NotAuthorizedAssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request\ApiLoginRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\ApiLoginResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\LoginRequest;
@@ -21,10 +21,10 @@ use RuntimeException;
 
 
 /**
- * Class ElvisClientBase
+ * Class AssetsClientBase
  * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisClientBase
+class AssetsClientBase
 {
     const AUTH_METHOD_BEARER_TOKEN = 1;
     const AUTH_METHOD_CSRF_TOKEN = 2;
@@ -42,7 +42,7 @@ class ElvisClientBase
     const RELATION_TYPE_RELATED = 'related';
     const RELATION_TYPE_VARIATION = 'variation';
 
-    protected ElvisConfig $config;
+    protected AssetsConfig $config;
 
     protected LoggerInterface $logger;
 
@@ -69,10 +69,10 @@ class ElvisClientBase
 
     /**
      * ElvisServer constructor.
-     * @param ElvisConfig $config
+     * @param AssetsConfig $config
      * @param LoggerInterface $logger
      */
-    public function __construct(ElvisConfig $config, LoggerInterface $logger)
+    public function __construct(AssetsConfig $config, LoggerInterface $logger)
     {
         $this->config = $config;
         $this->logger = $logger;
@@ -103,9 +103,9 @@ class ElvisClientBase
 
 
     /**
-     * @return ElvisConfig
+     * @return AssetsConfig
      */
-    public function getConfig(): ElvisConfig
+    public function getConfig(): AssetsConfig
     {
         return $this->config;
     }
@@ -222,7 +222,7 @@ class ElvisClientBase
     protected function serviceRequest(string $service, array $data = []): array
     {
         $httpResponse = $this->rawServiceRequest($service, $data);
-        return ElvisUtils::parseJsonResponse($httpResponse->getBody());
+        return AssetsUtils::parseJsonResponse($httpResponse->getBody());
     }
 
 
@@ -249,9 +249,9 @@ class ElvisClientBase
             $httpResponse = $this->request('POST', $url, $data, true, !$loginRequest);
 
             // Even usually-binary responses like "checkout and download" return JSON on error (i.e. "not logged in").
-            // So when we get JSON back, run it through ElvisUtils::parseJsonResponse() which throws an exception on error.
+            // So when we get JSON back, run it through AssetsUtils::parseJsonResponse() which throws an exception on error.
             if (strpos($httpResponse->getHeaderLine('content-type'), 'application/json') === 0) {
-                ElvisUtils::parseJsonResponse($httpResponse->getBody());
+                AssetsUtils::parseJsonResponse($httpResponse->getBody());
             }
         } catch (RuntimeException $e) {
             switch ($e->getCode()) {
@@ -292,7 +292,7 @@ class ElvisClientBase
 
         try {
             $httpResponse = $this->request($method, $url, $data, false, true);
-            return ElvisUtils::parseJsonResponse($httpResponse->getBody());
+            return AssetsUtils::parseJsonResponse($httpResponse->getBody());
         } catch (RuntimeException $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
@@ -437,7 +437,7 @@ class ElvisClientBase
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedElvisException(sprintf("%s: Not Authorized", __METHOD__), 401);
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
         }
 
         $request = new ApiLoginRequest($this->getConfig());
@@ -510,7 +510,7 @@ class ElvisClientBase
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedElvisException(sprintf("%s: Not Authorized", __METHOD__), 401);
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
         }
 
         $request = new LoginRequest($this->getConfig());
@@ -617,7 +617,7 @@ class ElvisClientBase
             $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
             $this->writeResponseBodyToPath($httpResponse, $targetPath);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Failed to download <%s>: %s', __METHOD__, $url, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Failed to download <%s>: %s', __METHOD__, $url, $e->getMessage()),
                 $e->getCode(), $e);
         }
     }
@@ -632,7 +632,7 @@ class ElvisClientBase
         $fp = fopen($targetPath, 'wb');
 
         if ($fp === false) {
-            throw new ElvisException(sprintf('%s: Failed to open <%s> for writing', __METHOD__,
+            throw new AssetsException(sprintf('%s: Failed to open <%s> for writing', __METHOD__,
                 $targetPath));
         }
 
@@ -649,7 +649,7 @@ class ElvisClientBase
         fclose($fp);
 
         if (!$ok) {
-            throw new ElvisException(sprintf('%s: Failed to write HTTP response to <%s>', __METHOD__,
+            throw new AssetsException(sprintf('%s: Failed to write HTTP response to <%s>', __METHOD__,
                 $targetPath));
         }
     }

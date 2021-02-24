@@ -49,7 +49,7 @@ $ docker run --rm --interactive --tty \
 Edit your copy, setting the correct Elvis URL, username (API user preferred) and password in this section:
 
 ```php
-$elvisConfig = new ElvisConfig(
+$elvisConfig = new AssetsConfig(
     'https://elvis.example.com/', // Elvis URL (without app/ or services/ postfix)
     'username',                   // Elvis user name (API user preferred)
     'password'                    // That user's password
@@ -60,7 +60,7 @@ The example script performs a simple search across all Elvis assets (visible for
 and returns the first 50 asset IDs – you can leave it as is for a first test:
 
 ```php
-$elvisClient = new ElvisClient($elvisConfig, $logger); // Create client
+$elvisClient = new AssetsClient($elvisConfig, $logger); // Create client
 
 $request = (new SearchRequest($elvisConfig))           // Create search request
     ->setQ('')                                         // Elvis query

@@ -6,10 +6,10 @@ use RuntimeException;
 
 
 /**
- * Class ElvisUtils
+ * Class AssetsUtils
  * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisUtils
+class AssetsUtils
 {
 
     /**

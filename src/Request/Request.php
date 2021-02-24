@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 
 
 /**
@@ -12,14 +12,14 @@ use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
  */
 abstract class Request
 {
-    protected ElvisConfig $config;
+    protected AssetsConfig $config;
 
 
     /**
      * UpdateFolderRequest constructor.
-     * @param ElvisConfig $config
+     * @param AssetsConfig $config
      */
-    public function __construct(ElvisConfig $config)
+    public function __construct(AssetsConfig $config)
     {
         $this->config = $config;
     }

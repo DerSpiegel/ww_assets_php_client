@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 
 
 /**

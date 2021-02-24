@@ -6,10 +6,10 @@ use \RuntimeException;
 
 
 /**
- * Class ElvisConfig
+ * Class AssetsConfig
  * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisConfig
+class AssetsConfig
 {
     protected string $username;
 
@@ -21,7 +21,7 @@ class ElvisConfig
 
 
     /**
-     * ElvisConfig constructor.
+     * AssetsConfig constructor.
      * @param string $url
      * @param string $username
      * @param string $password

@@ -4,10 +4,10 @@ namespace DerSpiegel\WoodWingAssetsClient\Exception;
 
 
 /**
- * Class NotAuthorizedElvisException
+ * Class NotAuthorizedAssetsException
  * @package DerSpiegel\WoodWingAssetsClient\Exception
  */
-class NotAuthorizedElvisException extends ElvisException
+class NotAuthorizedAssetsException extends AssetsException
 {
 
 }

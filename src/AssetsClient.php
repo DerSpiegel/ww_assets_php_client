@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient;
 
-use DerSpiegel\WoodWingAssetsClient\Exception\ElvisException;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutResponse;
@@ -27,10 +27,10 @@ use \RuntimeException;
 
 
 /**
- * Class ElvisClient
+ * Class AssetsClient
  * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisClient extends ElvisClientBase
+class AssetsClient extends AssetsClientBase
 {
     /** Elvis REST API methods */
 
@@ -47,7 +47,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->serviceRequest('search', $request->toArray());
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
+            throw new AssetsException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
                 $e);
         }
 
@@ -82,7 +82,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->serviceRequest('create', $data);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
         }
 
         $assetResponse = (new AssetResponse())->fromJson($response);
@@ -127,7 +127,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $this->serviceRequest('update', $requestData);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Update failed for asset <%s> - <%s> - <%s>',
                     __METHOD__,
@@ -173,7 +173,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->serviceRequest('updatebulk', $requestData);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Update Bulk failed for query <%s> - <%s> - <%s>',
                     __METHOD__,
@@ -215,7 +215,7 @@ class ElvisClient extends ElvisClientBase
                 ['download' => $request->isDownload() ? 'true' : 'false']
             );
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
@@ -259,7 +259,7 @@ class ElvisClient extends ElvisClientBase
 
             $this->writeResponseBodyToPath($response, $targetPath);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
@@ -297,7 +297,7 @@ class ElvisClient extends ElvisClientBase
                 'fileReplacePolicy' => $request->getFileReplacePolicy()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Copy from <%s> to <%s> failed: %s',
                     __METHOD__,
@@ -342,7 +342,7 @@ class ElvisClient extends ElvisClientBase
                 'flattenFolders' => $request->isFlattenFolders() ? 'true' : 'false'
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Move/Rename from <%s> to <%s> failed: %s',
                     __METHOD__,
@@ -389,7 +389,7 @@ class ElvisClient extends ElvisClientBase
                 ]
             ));
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(sprintf('Assets/Folders removed'),
@@ -423,7 +423,7 @@ class ElvisClient extends ElvisClientBase
                 ]
             );
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Create relation failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Create relation failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(
@@ -459,7 +459,7 @@ class ElvisClient extends ElvisClientBase
                 ]
             );
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(sprintf('Relations removed'),
@@ -489,7 +489,7 @@ class ElvisClient extends ElvisClientBase
                 'path' => $request->getPath()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
@@ -520,7 +520,7 @@ class ElvisClient extends ElvisClientBase
                 'metadata' => (object)$request->getMetadata()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
@@ -555,7 +555,7 @@ class ElvisClient extends ElvisClientBase
                 'metadata' => (object)$request->getMetadata()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
@@ -587,7 +587,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->apiRequest('DELETE', sprintf('folder/%s', $request->getId()));
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(sprintf('Folder removed'),
@@ -661,7 +661,7 @@ class ElvisClient extends ElvisClientBase
         $relationId = $searchResponse->getHits()[0]->getRelation()['relationId'] ?? '';
 
         if ($relationId === '') {
-            throw new ElvisException(sprintf('%s: Relation ID not found in search response', __METHOD__));
+            throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));
         }
 
         $request = (new RemoveRelationRequest($this->getConfig()))
@@ -720,12 +720,12 @@ class ElvisClient extends ElvisClientBase
         $response = $this->search($request);
 
         if ($response->getTotalHits() === 0) {
-            throw new ElvisException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $assetId), 404);
+            throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $assetId), 404);
         }
 
         if ($response->getTotalHits() > 1) {
             // god help us if this happens
-            throw new ElvisException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $assetId), 404);
+            throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $assetId), 404);
         }
 
         return $response->getHits()[0];
@@ -749,11 +749,11 @@ class ElvisClient extends ElvisClientBase
         $response = $this->search($request);
 
         if ($response->getTotalHits() === 0) {
-            throw new ElvisException(sprintf('%s: No asset found for query <%s>', __METHOD__, $q), 404);
+            throw new AssetsException(sprintf('%s: No asset found for query <%s>', __METHOD__, $q), 404);
         }
 
         if (($response->getTotalHits() > 1) && $failIfMultipleHits) {
-            throw new ElvisException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
+            throw new AssetsException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
                 $response->getTotalHits(), $q), 404);
         }
 
@@ -798,7 +798,7 @@ class ElvisClient extends ElvisClientBase
     public function downloadOriginalFile(AssetResponse $assetResponse, string $targetPath): void
     {
         if (strlen($assetResponse->getOriginalUrl()) === 0) {
-            throw new ElvisException(sprintf('%s: Original URL is empty', __METHOD__), 404);
+            throw new AssetsException(sprintf('%s: Original URL is empty', __METHOD__), 404);
         }
 
         $this->downloadFileToPath($assetResponse->getOriginalUrl(), $targetPath);

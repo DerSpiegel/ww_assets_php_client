@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 
 
 /**
@@ -25,9 +25,9 @@ class LoginRequest extends Request
 
     /**
      * LoginRequest constructor.
-     * @param ElvisConfig $config
+     * @param AssetsConfig $config
      */
-    public function __construct(ElvisConfig $config)
+    public function __construct(AssetsConfig $config)
     {
         parent::__construct($config);
 
@@ -76,9 +76,9 @@ class LoginRequest extends Request
 
 
     /**
-     * @param ElvisConfig $config
+     * @param AssetsConfig $config
      */
-    protected function setFromConfig(ElvisConfig $config): void
+    protected function setFromConfig(AssetsConfig $config): void
     {
         $this->setUsername($config->getUsername());
         $this->setPassword($config->getPassword());

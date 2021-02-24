@@ -6,10 +6,10 @@ use \RuntimeException;
 
 
 /**
- * Class ElvisException
+ * Class AssetsException
  * @package DerSpiegel\WoodWingAssetsClient\Exception
  */
-class ElvisException extends RuntimeException
+class AssetsException extends RuntimeException
 {
 
 }
