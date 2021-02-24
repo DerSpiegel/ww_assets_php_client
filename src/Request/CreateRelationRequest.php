@@ -1,15 +1,15 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
 
 
 /**
  * Class CreateRelationRequest
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663363-Elvis-6-REST-API-create-relation
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CreateRelationRequest extends Request
 {

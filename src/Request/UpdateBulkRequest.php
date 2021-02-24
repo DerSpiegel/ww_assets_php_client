@@ -1,13 +1,13 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 /**
  * Class UpdateBulkRequest
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690446-Elvis-6-REST-API-updatebulk
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class UpdateBulkRequest extends CreateRequest
 {

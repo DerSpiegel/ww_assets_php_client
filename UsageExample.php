@@ -1,8 +1,8 @@
 <?php
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
-use DerSpiegel\WoodWingElvisClient\ElvisClient;
-use DerSpiegel\WoodWingElvisClient\Request\SearchRequest;
+use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\ElvisClient;
+use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
 

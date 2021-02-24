@@ -1,34 +1,34 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient;
+namespace DerSpiegel\WoodWingAssetsClient;
 
-use DerSpiegel\WoodWingElvisClient\Exception\ElvisException;
-use DerSpiegel\WoodWingElvisClient\Request\AssetResponse;
-use DerSpiegel\WoodWingElvisClient\Request\CheckoutRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CheckoutResponse;
-use DerSpiegel\WoodWingElvisClient\Request\CopyAssetRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CreateFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CreateRelationRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CreateRequest;
-use DerSpiegel\WoodWingElvisClient\Request\FolderResponse;
-use DerSpiegel\WoodWingElvisClient\Request\GetFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\MoveRequest;
-use DerSpiegel\WoodWingElvisClient\Request\ProcessResponse;
-use DerSpiegel\WoodWingElvisClient\Request\RemoveFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\RemoveRelationRequest;
-use DerSpiegel\WoodWingElvisClient\Request\RemoveRequest;
-use DerSpiegel\WoodWingElvisClient\Request\SearchRequest;
-use DerSpiegel\WoodWingElvisClient\Request\SearchResponse;
-use DerSpiegel\WoodWingElvisClient\Request\UpdateBulkRequest;
-use DerSpiegel\WoodWingElvisClient\Request\UpdateFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\UpdateRequest;
+use DerSpiegel\WoodWingAssetsClient\Exception\ElvisException;
+use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CheckoutResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\CopyAssetRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CreateFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CreateRelationRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\FolderResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\GetFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\MoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\RemoveFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\RemoveRelationRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\SearchResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateBulkRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
 use \Exception;
 use \RuntimeException;
 
 
 /**
  * Class ElvisClient
- * @package DerSpiegel\WoodWingElvisClient
+ * @package DerSpiegel\WoodWingAssetsClient
  */
 class ElvisClient extends ElvisClientBase
 {

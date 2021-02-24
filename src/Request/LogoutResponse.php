@@ -1,12 +1,12 @@
 <?php
 
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
 
 /**
  * Class LogoutResponse
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690286-Elvis-6-REST-API-logout
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LogoutResponse extends Response
 {

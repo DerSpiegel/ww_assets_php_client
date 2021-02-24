@@ -1,6 +1,6 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 /**
@@ -8,7 +8,7 @@ namespace DerSpiegel\WoodWingElvisClient\Request;
  *
  * From the new Elvis API (DELETE /api/folder/{id})
  *
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class RemoveFolderRequest extends Request
 {

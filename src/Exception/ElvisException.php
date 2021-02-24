@@ -1,13 +1,13 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Exception;
+namespace DerSpiegel\WoodWingAssetsClient\Exception;
 
 use \RuntimeException;
 
 
 /**
  * Class ElvisException
- * @package DerSpiegel\WoodWingElvisClient\Exception
+ * @package DerSpiegel\WoodWingAssetsClient\Exception
  */
 class ElvisException extends RuntimeException
 {

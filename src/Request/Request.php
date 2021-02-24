@@ -1,14 +1,14 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
 
 
 /**
  * Class Request
  *
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 abstract class Request
 {

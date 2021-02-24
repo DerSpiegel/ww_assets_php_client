@@ -1,16 +1,14 @@
 <?php
 
+namespace DerSpiegel\WoodWingAssetsClient;
 
-namespace DerSpiegel\WoodWingElvisClient;
-
-
-use DerSpiegel\WoodWingElvisClient\Exception\ElvisException;
-use DerSpiegel\WoodWingElvisClient\Exception\NotAuthorizedElvisException;
-use DerSpiegel\WoodWingElvisClient\Request\ApiLoginRequest;
-use DerSpiegel\WoodWingElvisClient\Request\ApiLoginResponse;
-use DerSpiegel\WoodWingElvisClient\Request\LoginRequest;
-use DerSpiegel\WoodWingElvisClient\Request\LoginResponse;
-use DerSpiegel\WoodWingElvisClient\Request\LogoutResponse;
+use DerSpiegel\WoodWingAssetsClient\Exception\ElvisException;
+use DerSpiegel\WoodWingAssetsClient\Exception\NotAuthorizedElvisException;
+use DerSpiegel\WoodWingAssetsClient\Request\ApiLoginRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\ApiLoginResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\LoginRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\LoginResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\LogoutResponse;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -24,7 +22,7 @@ use RuntimeException;
 
 /**
  * Class ElvisClientBase
- * @package DerSpiegel\WoodWingElvisClient
+ * @package DerSpiegel\WoodWingAssetsClient
  */
 class ElvisClientBase
 {

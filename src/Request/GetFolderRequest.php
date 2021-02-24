@@ -1,8 +1,8 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
 
 
 /**
@@ -10,7 +10,7 @@ use DerSpiegel\WoodWingElvisClient\ElvisConfig;
  *
  * From the new Elvis API (GET /api/folder/get)
  *
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class GetFolderRequest extends Request
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 /**
  * Class CopyAssetRequest
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CopyAssetRequest extends Request
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Exception;
+namespace DerSpiegel\WoodWingAssetsClient\Exception;
 
 
 /**
  * Class NotAuthorizedElvisException
- * @package DerSpiegel\WoodWingElvisClient\Exception
+ * @package DerSpiegel\WoodWingAssetsClient\Exception
  */
 class NotAuthorizedElvisException extends ElvisException
 {

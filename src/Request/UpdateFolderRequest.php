@@ -1,9 +1,8 @@
 <?php
 
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
-
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\ElvisConfig;
 
 
 /**
@@ -11,7 +10,7 @@ use DerSpiegel\WoodWingElvisClient\ElvisConfig;
  *
  * From the new Elvis API (PUT /api/folder/{id})
  *
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class UpdateFolderRequest extends Request
 {
