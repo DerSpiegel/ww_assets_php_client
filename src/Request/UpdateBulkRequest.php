@@ -6,7 +6,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 /**
  * Class UpdateBulkRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690446-Elvis-6-REST-API-updatebulk
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class UpdateBulkRequest extends CreateRequest

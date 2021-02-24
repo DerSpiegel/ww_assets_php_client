@@ -25,7 +25,7 @@ class AssetsUtils
     /**
      * Parse JSON response string into array, throw exception on error response
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690246-Elvis-6-REST-API-error-handling
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851272-Assets-Server-REST-API-error-handling
      * @param string $jsonString
      * @return array
      */

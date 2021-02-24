@@ -533,7 +533,7 @@ class AssetsClientBase
 
 
     /**
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115004785283-Elvis-6-REST-API-API-login
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login
      * @param ApiLoginRequest $request
      * @return ApiLoginResponse
      */
@@ -559,7 +559,7 @@ class AssetsClientBase
 
 
     /**
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663443-Elvis-6-REST-API-login
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
      * @param LoginRequest $request
      * @return LoginResponse
      */

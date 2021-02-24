@@ -6,7 +6,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 /**
  * Class RemoveRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class RemoveRequest extends Request

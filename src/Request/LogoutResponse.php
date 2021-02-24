@@ -5,7 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 /**
  * Class LogoutResponse
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690286-Elvis-6-REST-API-logout
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268851-Assets-Server-REST-API-logout
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LogoutResponse extends Response

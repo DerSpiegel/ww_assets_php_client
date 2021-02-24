@@ -8,7 +8,7 @@ use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 /**
  * Class CreateRelationRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663363-Elvis-6-REST-API-create-relation
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CreateRelationRequest extends Request

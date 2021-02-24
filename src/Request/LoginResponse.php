@@ -6,7 +6,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 /**
  * Class LoginResponse
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663443-Elvis-6-REST-API-login
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LoginResponse extends Response

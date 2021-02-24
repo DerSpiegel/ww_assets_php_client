@@ -7,7 +7,7 @@ use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 /**
  * Class ApiLoginRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115004785283-Elvis-6-REST-API-API-login
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class ApiLoginRequest extends Request

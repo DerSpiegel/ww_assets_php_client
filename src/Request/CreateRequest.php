@@ -6,7 +6,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 /**
  * Class CreateRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690206-Elvis-6-REST-API-create
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CreateRequest extends Request

@@ -6,7 +6,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 /**
  * Class CopyAssetRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CopyAssetRequest extends Request

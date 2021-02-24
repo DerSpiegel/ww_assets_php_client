@@ -38,7 +38,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Search for assets
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690386-Elvis-6-REST-API-search
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search
      * @param SearchRequest $request
      * @return SearchResponse
      */
@@ -65,7 +65,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Create (upload) an asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690206-Elvis-6-REST-API-create
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create
      * @param CreateRequest $request
      * @return AssetResponse
      */
@@ -101,7 +101,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Update an asset's metadata
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690426-Elvis-6-REST-API-update-check-in
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in
      * @param UpdateRequest $request
      */
     public function update(UpdateRequest $request): void
@@ -158,7 +158,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Update metadata from a bunch of assets
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690446-Elvis-6-REST-API-updatebulk
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk
      * @param UpdateBulkRequest $request
      * @return ProcessResponse
      */
@@ -200,7 +200,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Check out asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
      * @param CheckoutRequest $request
      * @return CheckoutResponse
      */
@@ -242,7 +242,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Check out and download asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
      * @param CheckoutRequest $request
      * @param string $targetPath
      */
@@ -284,7 +284,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Copy asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
      * @param CopyAssetRequest $request
      * @return ProcessResponse
      */
@@ -326,7 +326,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Move/Rename Asset or Folder
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690306-Elvis-6-REST-API-move-rename
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename
      * @param MoveRequest $request
      * @return ProcessResponse
      */
@@ -373,7 +373,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Remove Assets or Collections
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove
      * @param RemoveRequest $request
      * @return ProcessResponse
      */
@@ -409,7 +409,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Create a relation between two assets
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663363-Elvis-6-REST-API-create-relation
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation
      * @param CreateRelationRequest $request
      */
     public function createRelation(CreateRelationRequest $request): void
@@ -446,7 +446,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * * Remove Assets or Collections
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690326-Elvis-6-REST-API-remove-relation
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851332-Assets-Server-REST-API-remove-relation
      * @param RemoveRelationRequest $request
      * @return ProcessResponse
      */
@@ -764,7 +764,7 @@ class AssetsClient extends AssetsClientBase
     /**
      * Get query for relation search
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002615423-The-Elvis-6-query-syntax#special-queries-relation-queries
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041854172#additional-queries
      *
      * @param string $relatedTo
      * @param string $relationTarget

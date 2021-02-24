@@ -5,7 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 /**
  * Class CheckoutResponse
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
  * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CheckoutResponse extends Response

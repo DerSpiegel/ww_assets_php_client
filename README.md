@@ -1,22 +1,22 @@
 # A PHP client for WoodWing Assets
 
 [WoodWing Assets](https://www.woodwing.com/en/digital-asset-management-system) is a DAM (Digital Asset Management) system.
-This PHP client library uses its [REST API](https://helpcenter.woodwing.com/hc/en-us/sections/360000141063-API-REST).
+This PHP client library uses its [REST API](https://helpcenter.woodwing.com/hc/en-us/sections/360008455892-APIs-REST).
 
 This is not an official library supplied by the WoodWing vendor. 
 It has been developed during the WoodWing Assets implementation at the German [SPIEGEL Gruppe](https://www.spiegelgruppe.de), 2019-2020.
 
 ## Functionality
 
-* [API login](https://helpcenter.woodwing.com/hc/en-us/articles/115004785283)
-* [Search](https://helpcenter.woodwing.com/hc/en-us/articles/115002690386-Elvis-6-REST-API-search): `SearchRequest`
-* [Create](https://helpcenter.woodwing.com/hc/en-us/articles/115002690206-Elvis-6-REST-API-create): `CreateRequest`
-* [Update](https://helpcenter.woodwing.com/hc/en-us/articles/115002690426-Elvis-6-REST-API-update-check-in): `UpdateRequest`
-* [Update bulk](https://helpcenter.woodwing.com/hc/en-us/articles/115002690446-Elvis-6-REST-API-updatebulk): `UpdateBulkRequest`
-* [Copy asset](https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy): `CopyAssetRequest`
-* [Move / rename](https://helpcenter.woodwing.com/hc/en-us/articles/115002690306-Elvis-6-REST-API-move-rename): `MoveRequest`
-* [Remove](https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove): `RemoveRequest`
-* [Create relation](https://helpcenter.woodwing.com/hc/en-us/articles/115002663363-Elvis-6-REST-API-create-relation): `CreateRelationRequest`  
+* [API login](https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login)
+* [Search](https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search): `SearchRequest`
+* [Create](https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create): `CreateRequest`
+* [Update](https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in): `UpdateRequest`
+* [Update bulk](https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk): `UpdateBulkRequest`
+* [Copy asset](https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy): `CopyAssetRequest`
+* [Move / rename](https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename): `MoveRequest`
+* [Remove](https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove): `RemoveRequest`
+* [Create relation](https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation): `CreateRelationRequest`  
 * Create folder: `CreateFolderRequest`
 * Get folder metadata: `GetFolderRequest`
 * Update folder metadata: `UpdateFolderRequest`
