@@ -22,7 +22,6 @@
     "ext-iconv": "*",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^6.3",
-    "monolog/monolog": "^2.2",
     "psr/log": "^1.1"
   },
   "config": {
