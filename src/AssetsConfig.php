@@ -1,15 +1,15 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient;
+namespace DerSpiegel\WoodWingAssetsClient;
 
 use \RuntimeException;
 
 
 /**
- * Class ElvisConfig
- * @package DerSpiegel\WoodWingElvisClient
+ * Class AssetsConfig
+ * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisConfig
+class AssetsConfig
 {
     protected string $username;
 
@@ -21,7 +21,7 @@ class ElvisConfig
 
 
     /**
-     * ElvisConfig constructor.
+     * AssetsConfig constructor.
      * @param string $url
      * @param string $username
      * @param string $password
@@ -31,7 +31,7 @@ class ElvisConfig
     {
         $this->url = trim($url);
 
-        // If the Elvis URL doesn't end with a slash, append it
+        // If the Assets URL doesn't end with a slash, append it
         if (($this->url !== '') && (substr($this->url, -1) !== '/')) {
             $this->url .= '/';
         }

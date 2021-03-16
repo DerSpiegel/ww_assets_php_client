@@ -1,13 +1,13 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 /**
  * Class RemoveRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class RemoveRequest extends Request
 {
@@ -31,7 +31,7 @@ class RemoveRequest extends Request
      * @param string $q
      * @return self
      */
-    public function setQ($q): self
+    public function setQ(string $q): self
     {
         $this->q = $q;
         return $this;

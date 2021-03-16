@@ -1,13 +1,13 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 /**
  * Class AssetResponse
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690386-Elvis-6-REST-API-search
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class AssetResponse extends Response
 {

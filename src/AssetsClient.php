@@ -1,44 +1,44 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient;
+namespace DerSpiegel\WoodWingAssetsClient;
 
-use DerSpiegel\WoodWingElvisClient\Exception\ElvisException;
-use DerSpiegel\WoodWingElvisClient\Request\AssetResponse;
-use DerSpiegel\WoodWingElvisClient\Request\CheckoutRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CheckoutResponse;
-use DerSpiegel\WoodWingElvisClient\Request\CopyAssetRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CreateFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CreateRelationRequest;
-use DerSpiegel\WoodWingElvisClient\Request\CreateRequest;
-use DerSpiegel\WoodWingElvisClient\Request\FolderResponse;
-use DerSpiegel\WoodWingElvisClient\Request\GetFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\MoveRequest;
-use DerSpiegel\WoodWingElvisClient\Request\ProcessResponse;
-use DerSpiegel\WoodWingElvisClient\Request\RemoveFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\RemoveRelationRequest;
-use DerSpiegel\WoodWingElvisClient\Request\RemoveRequest;
-use DerSpiegel\WoodWingElvisClient\Request\SearchRequest;
-use DerSpiegel\WoodWingElvisClient\Request\SearchResponse;
-use DerSpiegel\WoodWingElvisClient\Request\UpdateBulkRequest;
-use DerSpiegel\WoodWingElvisClient\Request\UpdateFolderRequest;
-use DerSpiegel\WoodWingElvisClient\Request\UpdateRequest;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CheckoutResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\CopyAssetRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CreateFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CreateRelationRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\FolderResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\GetFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\MoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\RemoveFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\RemoveRelationRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\SearchResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateBulkRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
 use \Exception;
 use \RuntimeException;
 
 
 /**
- * Class ElvisClient
- * @package DerSpiegel\WoodWingElvisClient
+ * Class AssetsClient
+ * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisClient extends ElvisClientBase
+class AssetsClient extends AssetsClientBase
 {
-    /** Elvis REST API methods */
+    /** Assets REST API methods */
 
 
     /**
-     * Search for Elvis assets
+     * Search for assets
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690386-Elvis-6-REST-API-search
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search
      * @param SearchRequest $request
      * @return SearchResponse
      */
@@ -47,7 +47,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->serviceRequest('search', $request->toArray());
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
+            throw new AssetsException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
                 $e);
         }
 
@@ -65,7 +65,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Create (upload) an asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690206-Elvis-6-REST-API-create
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create
      * @param CreateRequest $request
      * @return AssetResponse
      */
@@ -82,7 +82,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->serviceRequest('create', $data);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
         }
 
         $assetResponse = (new AssetResponse())->fromJson($response);
@@ -101,7 +101,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Update an asset's metadata
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690426-Elvis-6-REST-API-update-check-in
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in
      * @param UpdateRequest $request
      */
     public function update(UpdateRequest $request): void
@@ -127,7 +127,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $this->serviceRequest('update', $requestData);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Update failed for asset <%s> - <%s> - <%s>',
                     __METHOD__,
@@ -158,7 +158,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Update metadata from a bunch of assets
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690446-Elvis-6-REST-API-updatebulk
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk
      * @param UpdateBulkRequest $request
      * @return ProcessResponse
      */
@@ -173,7 +173,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->serviceRequest('updatebulk', $requestData);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Update Bulk failed for query <%s> - <%s> - <%s>',
                     __METHOD__,
@@ -200,7 +200,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Check out asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
      * @param CheckoutRequest $request
      * @return CheckoutResponse
      */
@@ -215,7 +215,7 @@ class ElvisClient extends ElvisClientBase
                 ['download' => $request->isDownload() ? 'true' : 'false']
             );
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
@@ -242,7 +242,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Check out and download asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690146-Elvis-6-REST-API-checkout
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
      * @param CheckoutRequest $request
      * @param string $targetPath
      */
@@ -259,7 +259,7 @@ class ElvisClient extends ElvisClientBase
 
             $this->writeResponseBodyToPath($response, $targetPath);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
@@ -284,7 +284,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Copy asset
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690166-Elvis-6-REST-API-copy
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
      * @param CopyAssetRequest $request
      * @return ProcessResponse
      */
@@ -297,7 +297,7 @@ class ElvisClient extends ElvisClientBase
                 'fileReplacePolicy' => $request->getFileReplacePolicy()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Copy from <%s> to <%s> failed: %s',
                     __METHOD__,
@@ -326,7 +326,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Move/Rename Asset or Folder
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690306-Elvis-6-REST-API-move-rename
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename
      * @param MoveRequest $request
      * @return ProcessResponse
      */
@@ -342,7 +342,7 @@ class ElvisClient extends ElvisClientBase
                 'flattenFolders' => $request->isFlattenFolders() ? 'true' : 'false'
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(
+            throw new AssetsException(
                 sprintf(
                     '%s: Move/Rename from <%s> to <%s> failed: %s',
                     __METHOD__,
@@ -373,7 +373,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Remove Assets or Collections
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663483-Elvis-6-REST-API-remove
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove
      * @param RemoveRequest $request
      * @return ProcessResponse
      */
@@ -389,7 +389,7 @@ class ElvisClient extends ElvisClientBase
                 ]
             ));
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(sprintf('Assets/Folders removed'),
@@ -409,7 +409,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Create a relation between two assets
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663363-Elvis-6-REST-API-create-relation
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation
      * @param CreateRelationRequest $request
      */
     public function createRelation(CreateRelationRequest $request): void
@@ -423,7 +423,7 @@ class ElvisClient extends ElvisClientBase
                 ]
             );
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Create relation failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Create relation failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(
@@ -446,7 +446,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * * Remove Assets or Collections
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690326-Elvis-6-REST-API-remove-relation
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851332-Assets-Server-REST-API-remove-relation
      * @param RemoveRelationRequest $request
      * @return ProcessResponse
      */
@@ -459,7 +459,7 @@ class ElvisClient extends ElvisClientBase
                 ]
             );
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(sprintf('Relations removed'),
@@ -477,7 +477,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Get folder metadata
      *
-     * From the new Elvis API (GET /api/folder/get)
+     * From the new Assets API (GET /api/folder/get)
      *
      * @param GetFolderRequest $request
      * @return FolderResponse
@@ -489,7 +489,7 @@ class ElvisClient extends ElvisClientBase
                 'path' => $request->getPath()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
@@ -507,7 +507,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Create folder with metadata
      *
-     * From the new Elvis API (POST /api/folder)
+     * From the new Assets API (POST /api/folder)
      *
      * @param CreateFolderRequest $request
      * @return FolderResponse
@@ -520,7 +520,7 @@ class ElvisClient extends ElvisClientBase
                 'metadata' => (object)$request->getMetadata()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
@@ -539,7 +539,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Update folder metadata
      *
-     * From the new Elvis API (PUT /api/folder/{id})
+     * From the new Assets API (PUT /api/folder/{id})
      *
      * @param UpdateFolderRequest $request
      * @return FolderResponse
@@ -555,7 +555,7 @@ class ElvisClient extends ElvisClientBase
                 'metadata' => (object)$request->getMetadata()
             ]);
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
+            throw new AssetsException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
@@ -574,7 +574,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Remove a folder
      *
-     * From the new Elvis API (DELETE /api/folder/{id})
+     * From the new Assets API (DELETE /api/folder/{id})
      *
      * @param RemoveFolderRequest $request
      */
@@ -587,7 +587,7 @@ class ElvisClient extends ElvisClientBase
         try {
             $response = $this->apiRequest('DELETE', sprintf('folder/%s', $request->getId()));
         } catch (Exception $e) {
-            throw new ElvisException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
+            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
 
         $this->logger->info(sprintf('Folder removed'),
@@ -601,18 +601,18 @@ class ElvisClient extends ElvisClientBase
     }
 
 
-    /** Helper methods not part of the Elvis REST API */
+    /** Helper methods not part of the Assets REST API */
 
 
     /**
      * Remove asset by assetId
      *
-     * @param string $elvisId
+     * @param string $assetId
      * @return ProcessResponse
      */
-    public function removeById(string $elvisId): ProcessResponse
+    public function removeById(string $assetId): ProcessResponse
     {
-        return $this->removeAsset((new RemoveRequest($this->config))->setIds([$elvisId]));
+        return $this->removeAsset((new RemoveRequest($this->config))->setIds([$assetId]));
     }
 
 
@@ -661,7 +661,7 @@ class ElvisClient extends ElvisClientBase
         $relationId = $searchResponse->getHits()[0]->getRelation()['relationId'] ?? '';
 
         if ($relationId === '') {
-            throw new ElvisException(sprintf('%s: Relation ID not found in search response', __METHOD__));
+            throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));
         }
 
         $request = (new RemoveRelationRequest($this->getConfig()))
@@ -702,7 +702,7 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * Search for an Elvis asset by ID and return all or selected metadata
+     * Search for an asset by ID and return all or selected metadata
      *
      * @param string $assetId
      * @param array $metadataToReturn
@@ -720,12 +720,12 @@ class ElvisClient extends ElvisClientBase
         $response = $this->search($request);
 
         if ($response->getTotalHits() === 0) {
-            throw new ElvisException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $assetId), 404);
+            throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $assetId), 404);
         }
 
         if ($response->getTotalHits() > 1) {
             // god help us if this happens
-            throw new ElvisException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $assetId), 404);
+            throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $assetId), 404);
         }
 
         return $response->getHits()[0];
@@ -733,7 +733,7 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * Search for an Elvis asset and return its ID
+     * Search for an asset and return its ID
      *
      * @param string $q
      * @param bool $failIfMultipleHits When more than asset is found: If true, raise exception. If false, return first match.
@@ -749,11 +749,11 @@ class ElvisClient extends ElvisClientBase
         $response = $this->search($request);
 
         if ($response->getTotalHits() === 0) {
-            throw new ElvisException(sprintf('%s: No asset found for query <%s>', __METHOD__, $q), 404);
+            throw new AssetsException(sprintf('%s: No asset found for query <%s>', __METHOD__, $q), 404);
         }
 
         if (($response->getTotalHits() > 1) && $failIfMultipleHits) {
-            throw new ElvisException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
+            throw new AssetsException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
                 $response->getTotalHits(), $q), 404);
         }
 
@@ -764,7 +764,7 @@ class ElvisClient extends ElvisClientBase
     /**
      * Get query for relation search
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002615423-The-Elvis-6-query-syntax#special-queries-relation-queries
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041854172#additional-queries
      *
      * @param string $relatedTo
      * @param string $relationTarget
@@ -798,7 +798,7 @@ class ElvisClient extends ElvisClientBase
     public function downloadOriginalFile(AssetResponse $assetResponse, string $targetPath): void
     {
         if (strlen($assetResponse->getOriginalUrl()) === 0) {
-            throw new ElvisException(sprintf('%s: Original URL is empty', __METHOD__), 404);
+            throw new AssetsException(sprintf('%s: Original URL is empty', __METHOD__), 404);
         }
 
         $this->downloadFileToPath($assetResponse->getOriginalUrl(), $targetPath);
@@ -813,21 +813,21 @@ class ElvisClient extends ElvisClientBase
 
 
     /**
-     * @param AssetResponse $elvisAsset
+     * @param AssetResponse $assetResponse
      * @param string $targetPath
      */
-    public function downloadOriginalFileByElvisId(AssetResponse $elvisAsset, string $targetPath)
+    public function downloadOriginalFileById(AssetResponse $assetResponse, string $targetPath)
     {
         // TODO: Deprecate or fix; should be "byId" and expect a string $assetId
 
-        $originalUrl = $elvisAsset->getOriginalUrl();
+        $originalUrl = $assetResponse->getOriginalUrl();
 
         $this->downloadFileToPath($originalUrl, $targetPath);
 
         $this->logger->debug(sprintf('Original File Downloaded <%s>', $originalUrl),
             [
                 'method' => __METHOD__,
-                'assetId' => $elvisAsset->getId()
+                'assetId' => $assetResponse->getId()
             ]
         );
     }
