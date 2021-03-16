@@ -76,7 +76,7 @@ foreach ($response->getHits() as $assetResponse) {     // Loop through results
 ### Then run your copy
 
 ```
-$ docker run -it --rm --name ww-elvis-client-example \
+$ docker run -it --rm --name assets-client-example \
   --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
   php:cli php MyExample.php
 ```
