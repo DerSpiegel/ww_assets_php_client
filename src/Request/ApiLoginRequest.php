@@ -1,14 +1,14 @@
 <?php
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-use DerSpiegel\WoodWingElvisClient\ElvisConfig;
+use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 
 /**
  * Class ApiLoginRequest
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115004785283-Elvis-6-REST-API-API-login
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class ApiLoginRequest extends Request
 {
@@ -21,9 +21,9 @@ class ApiLoginRequest extends Request
 
     /**
      * ApiLoginRequest constructor.
-     * @param ElvisConfig $config
+     * @param AssetsConfig $config
      */
-    public function __construct(ElvisConfig $config)
+    public function __construct(AssetsConfig $config)
     {
         parent::__construct($config);
 
@@ -32,9 +32,9 @@ class ApiLoginRequest extends Request
 
 
     /**
-     * @param ElvisConfig $config
+     * @param AssetsConfig $config
      */
-    protected function setFromConfig(ElvisConfig $config): void
+    protected function setFromConfig(AssetsConfig $config): void
     {
         $this->setUsername($config->getUsername());
         $this->setPassword($config->getPassword());

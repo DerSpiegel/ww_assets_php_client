@@ -1,23 +1,22 @@
 <?php
 
-
-namespace DerSpiegel\WoodWingElvisClient;
+namespace DerSpiegel\WoodWingAssetsClient;
 
 use RuntimeException;
 
 
 /**
- * Class ElvisUtils
- * @package DerSpiegel\WoodWingElvisClient
+ * Class AssetsUtils
+ * @package DerSpiegel\WoodWingAssetsClient
  */
-class ElvisUtils
+class AssetsUtils
 {
 
     /**
      * @param string $id
      * @return bool
      */
-    public static function isElvisId(string $id): bool
+    public static function isAssetsId(string $id): bool
     {
         return (strlen($id) === 22);
     }
@@ -26,7 +25,7 @@ class ElvisUtils
     /**
      * Parse JSON response string into array, throw exception on error response
      *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002690246-Elvis-6-REST-API-error-handling
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851272-Assets-Server-REST-API-error-handling
      * @param string $jsonString
      * @return array
      */
@@ -35,7 +34,7 @@ class ElvisUtils
         $json = json_decode($jsonString, true, 512, JSON_THROW_ON_ERROR);
 
         if (isset($json['errorcode']) && isset($json['message'])) {
-            throw new RuntimeException(sprintf('%s: Elvis error: %s', __METHOD__, $json['message']),
+            throw new RuntimeException(sprintf('%s: Assets error: %s', __METHOD__, $json['message']),
                 $json['errorcode']);
         }
 

@@ -1,14 +1,13 @@
 <?php
 
-
-namespace DerSpiegel\WoodWingElvisClient\Request;
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 /**
  * Class LoginResponse
  *
- * @see https://helpcenter.woodwing.com/hc/en-us/articles/115002663443-Elvis-6-REST-API-login
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LoginResponse extends Response
 {

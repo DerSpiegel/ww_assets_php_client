@@ -1,11 +1,11 @@
 <?php
 
+namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-namespace DerSpiegel\WoodWingElvisClient\Request;
 
 /**
  * Class ProcessResponse
- * @package DerSpiegel\WoodWingElvisClient\Request
+ * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class ProcessResponse extends Response
 {
