@@ -43,7 +43,7 @@ class AssetsConfig
 
 
     /**
-     * @return string
+     * @return string Base, absolute Assets URL, ends with a slash
      */
     public function getUrl(): string
     {
