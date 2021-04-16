@@ -30,6 +30,6 @@ class LogoutResponse extends Response
      */
     public function isLogoutSuccess(): bool
     {
-        return boolval($this->logoutSuccess);
+        return $this->logoutSuccess;
     }
 }

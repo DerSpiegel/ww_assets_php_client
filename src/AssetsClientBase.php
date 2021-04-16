@@ -292,7 +292,7 @@ class AssetsClientBase
         );
 
         try {
-            $httpResponse = $this->request($method, $url, $data, false, true);
+            $httpResponse = $this->request($method, $url, $data, false);
             return AssetsUtils::parseJsonResponse($httpResponse->getBody());
         } catch (RuntimeException $e) {
             switch ($e->getCode()) {

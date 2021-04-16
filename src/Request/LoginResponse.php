@@ -57,7 +57,7 @@ class LoginResponse extends Response
      */
     public function isLoginSuccess(): bool
     {
-        return boolval($this->loginSuccess);
+        return $this->loginSuccess;
     }
 
 

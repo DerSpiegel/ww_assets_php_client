@@ -22,8 +22,8 @@ use DerSpiegel\WoodWingAssetsClient\Request\SearchResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateBulkRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
-use \Exception;
-use \RuntimeException;
+use Exception;
+use RuntimeException;
 
 
 /**
@@ -392,7 +392,7 @@ class AssetsClient extends AssetsClientBase
             throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
 
-        $this->logger->info(sprintf('Assets/Folders removed'),
+        $this->logger->info('Assets/Folders removed',
             [
                 'method' => __METHOD__,
                 'q' => $request->getQ(),
@@ -462,7 +462,7 @@ class AssetsClient extends AssetsClientBase
             throw new AssetsException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
         }
 
-        $this->logger->info(sprintf('Relations removed'),
+        $this->logger->info('Relations removed',
             [
                 'method' => __METHOD__,
                 'ids' => $request->getRelationIds(),
@@ -590,7 +590,7 @@ class AssetsClient extends AssetsClientBase
             throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
 
-        $this->logger->info(sprintf('Folder removed'),
+        $this->logger->info('Folder removed',
             [
                 'method' => __METHOD__,
                 'id' => $request->getId(),
@@ -669,7 +669,7 @@ class AssetsClient extends AssetsClientBase
 
         $response = $this->removeRelation($request);
 
-        $this->logger->info(sprintf('Relation removed'),
+        $this->logger->info('Relation removed',
             [
                 'method' => __METHOD__,
                 'assetId' => $assetId,

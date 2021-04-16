@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient;
 
-use \RuntimeException;
+use RuntimeException;
 
 
 /**
