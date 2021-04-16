@@ -47,7 +47,7 @@ class CreateRequest extends Request
      */
     public function getMetadata(): array
     {
-        $metadata = (isset($this->metadata) ? $this->metadata : []);
+        $metadata = $this->metadata ?? [];
 
         // for some reason, Assets fails to clear up the metadata field if the sent value is an empty array
         foreach ($metadata as &$field) {

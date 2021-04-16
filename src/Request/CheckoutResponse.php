@@ -44,7 +44,7 @@ class CheckoutResponse extends Response
      */
     public function getCheckedOut(): int
     {
-        return intval($this->checkedOut);
+        return $this->checkedOut;
     }
 
 

@@ -62,7 +62,7 @@ class SearchResponse extends Response
      */
     public function getFirstResult(): int
     {
-        return intval($this->firstResult);
+        return $this->firstResult;
     }
 
 
@@ -71,7 +71,7 @@ class SearchResponse extends Response
      */
     public function getMaxResultHits(): int
     {
-        return intval($this->maxResultHits);
+        return $this->maxResultHits;
     }
 
 
@@ -80,7 +80,7 @@ class SearchResponse extends Response
      */
     public function getTotalHits(): int
     {
-        return max(0, intval($this->totalHits));
+        return max(0, $this->totalHits);
     }
 
 

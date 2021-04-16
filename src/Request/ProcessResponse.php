@@ -37,7 +37,7 @@ class ProcessResponse extends Response
      */
     public function getProcessedCount(): int
     {
-        return intval($this->processedCount);
+        return $this->processedCount;
     }
 
 
@@ -46,6 +46,6 @@ class ProcessResponse extends Response
      */
     public function getErrorCount(): int
     {
-        return intval($this->errorCount);
+        return $this->errorCount;
     }
 }
