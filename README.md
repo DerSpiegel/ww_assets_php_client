@@ -10,6 +10,7 @@ It has been developed during the WoodWing Assets implementation at the German [S
 
 * [API login](https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login)
 * [Search](https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search): `SearchRequest`
+* [Browse](https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse): `BrowseRequest`
 * [Create](https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create): `CreateRequest`
 * [Update](https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in): `UpdateRequest`
 * [Update bulk](https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk): `UpdateBulkRequest`

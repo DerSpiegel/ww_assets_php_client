@@ -4,6 +4,8 @@ namespace DerSpiegel\WoodWingAssetsClient;
 
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\BrowseRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\BrowseResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CopyAssetRequest;
@@ -51,7 +53,7 @@ class AssetsClient extends AssetsClientBase
                 $e);
         }
 
-        $this->logger->debug('Search Performed',
+        $this->logger->debug('Search performed',
             [
                 'method' => __METHOD__,
                 'query' => $request->getQ()
@@ -59,6 +61,33 @@ class AssetsClient extends AssetsClientBase
         );
 
         return (new SearchResponse())->fromJson($response);
+    }
+
+
+    /**
+     * Browse folders and collections
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse
+     * @param BrowseRequest $request
+     * @return BrowseResponse
+     */
+    public function browse(BrowseRequest $request): BrowseResponse
+    {
+        try {
+            $response = $this->serviceRequest('browse', $request->toArray());
+        } catch (Exception $e) {
+            throw new AssetsException(sprintf('%s: Browse failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
+                $e);
+        }
+
+        $this->logger->debug('Browse performed',
+            [
+                'method' => __METHOD__,
+                'path' => $request->getPath()
+            ]
+        );
+
+        return (new BrowseResponse())->fromJson($response);
     }
 
 
