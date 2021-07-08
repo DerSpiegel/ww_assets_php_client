@@ -11,7 +11,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class BrowseResponse extends Response
 {
-    protected array $items;
+    protected array $items = [];
 
 
     /**

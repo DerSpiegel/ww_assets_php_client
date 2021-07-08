@@ -11,21 +11,14 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class AssetResponse extends Response
 {
-    protected string $id;
-
-    protected string $permissions;
-
-    protected array $metadata;
-
-    protected string $highlightedText;
-
-    protected string $originalUrl;
-
-    protected string $previewUrl;
-
-    protected string $thumbnailUrl;
-
-    protected array $relation;
+    protected string $id = '';
+    protected string $permissions = '';
+    protected array $metadata = [];
+    protected string $highlightedText = '';
+    protected string $originalUrl = '';
+    protected string $previewUrl = '';
+    protected string $thumbnailUrl = '';
+    protected array $relation = [];
 
 
     /**
@@ -75,7 +68,7 @@ class AssetResponse extends Response
      */
     public function getId(): string
     {
-        return $this->id ?: '';
+        return $this->id;
     }
 
 
@@ -84,7 +77,7 @@ class AssetResponse extends Response
      */
     public function getPermissions(): string
     {
-        return $this->permissions ?: '';
+        return $this->permissions;
     }
 
 
@@ -93,7 +86,7 @@ class AssetResponse extends Response
      */
     public function getMetadata(): array
     {
-        return (is_array($this->metadata) ? $this->metadata : []);
+        return $this->metadata;
     }
 
 
@@ -102,7 +95,7 @@ class AssetResponse extends Response
      */
     public function getHighlightedText(): string
     {
-        return $this->highlightedText ?: '';
+        return $this->highlightedText;
     }
 
 
@@ -111,7 +104,7 @@ class AssetResponse extends Response
      */
     public function getOriginalUrl(): string
     {
-        return $this->originalUrl ?: '';
+        return $this->originalUrl;
     }
 
 
@@ -120,7 +113,7 @@ class AssetResponse extends Response
      */
     public function getPreviewUrl(): string
     {
-        return $this->previewUrl ?: '';
+        return $this->previewUrl;
     }
 
 
@@ -129,7 +122,7 @@ class AssetResponse extends Response
      */
     public function getThumbnailUrl(): string
     {
-        return $this->thumbnailUrl ?: '';
+        return $this->thumbnailUrl;
     }
 
 
@@ -138,6 +131,6 @@ class AssetResponse extends Response
      */
     public function getRelation(): array
     {
-        return (is_array($this->relation) ? $this->relation : []);
+        return $this->relation;
     }
 }

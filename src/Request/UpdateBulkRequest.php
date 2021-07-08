@@ -11,10 +11,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class UpdateBulkRequest extends CreateRequest
 {
-    protected string $id;
-
-    protected string $q;
-
+    protected string $id = '';
+    protected string $q = '';
     protected bool $async = false;
 
 
@@ -23,7 +21,7 @@ class UpdateBulkRequest extends CreateRequest
      */
     public function getId(): string
     {
-        return $this->id ?: '';
+        return $this->id;
     }
 
 

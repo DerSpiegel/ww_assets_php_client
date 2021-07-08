@@ -12,7 +12,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class GetFolderRequest extends Request
 {
-    protected string $path;
+    protected string $path = '';
 
 
     /**
@@ -20,7 +20,7 @@ class GetFolderRequest extends Request
      */
     public function getPath(): string
     {
-        return $this->path ?: '';
+        return $this->path;
     }
 
 

@@ -14,8 +14,7 @@ class UpdateRequest extends CreateRequest
     /** @var resource */
     protected $filedata;
 
-    protected string $id;
-
+    protected string $id = '';
     protected bool $clearCheckoutState = true;
 
 
@@ -44,7 +43,7 @@ class UpdateRequest extends CreateRequest
      */
     public function getId(): string
     {
-        return $this->id ?: '';
+        return $this->id;
     }
 
 

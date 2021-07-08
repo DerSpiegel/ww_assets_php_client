@@ -9,9 +9,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class ProcessResponse extends Response
 {
-    protected int $processedCount;
-
-    protected int $errorCount;
+    protected int $processedCount = 0;
+    protected int $errorCount = 0;
 
 
     /**

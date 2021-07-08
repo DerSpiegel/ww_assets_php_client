@@ -11,13 +11,10 @@ use RuntimeException;
  */
 class AssetsConfig
 {
-    protected string $username;
-
-    protected string $password;
-
-    protected string $url;
-
-    protected string $elasticsearchUrl;
+    protected string $username = '';
+    protected string $password = '';
+    protected string $url = '';
+    protected string $elasticsearchUrl = '';
 
 
     /**

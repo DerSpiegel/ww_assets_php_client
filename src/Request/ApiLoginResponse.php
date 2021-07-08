@@ -11,13 +11,10 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class ApiLoginResponse extends Response
 {
-    protected bool $loginSuccess;
-
-    protected string $loginFaultMessage;
-
-    protected string $serverVersion;
-
-    protected string $authToken;
+    protected bool $loginSuccess = false;
+    protected string $loginFaultMessage = '';
+    protected string $serverVersion = '';
+    protected string $authToken = '';
 
 
     /**
@@ -60,7 +57,7 @@ class ApiLoginResponse extends Response
      */
     public function getLoginFaultMessage(): string
     {
-        return $this->loginFaultMessage ?: '';
+        return $this->loginFaultMessage;
     }
 
 
@@ -69,7 +66,7 @@ class ApiLoginResponse extends Response
      */
     public function getServerVersion(): string
     {
-        return $this->serverVersion ?: '';
+        return $this->serverVersion;
     }
 
 
@@ -78,6 +75,6 @@ class ApiLoginResponse extends Response
      */
     public function getAuthToken(): string
     {
-        return $this->authToken ?: '';
+        return $this->authToken;
     }
 }

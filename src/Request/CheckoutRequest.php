@@ -11,8 +11,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class CheckoutRequest extends Request
 {
-    protected string $id;
-
+    protected string $id = '';
     protected bool $download = false;
 
 
@@ -21,7 +20,7 @@ class CheckoutRequest extends Request
      */
     public function getId(): string
     {
-        return $this->id ?: '';
+        return $this->id;
     }
 
 

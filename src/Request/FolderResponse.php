@@ -12,15 +12,11 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class FolderResponse extends Response
 {
-    protected string $id;
-
-    protected array $metadata;
-
-    protected string $name;
-
-    protected string $path;
-
-    protected string $permissions;
+    protected string $id = '';
+    protected array $metadata = [];
+    protected string $name = '';
+    protected string $path = '';
+    protected string $permissions = '';
 
 
     /**
@@ -58,7 +54,7 @@ class FolderResponse extends Response
      */
     public function getId(): string
     {
-        return $this->id ?: '';
+        return $this->id;
     }
 
 
@@ -67,7 +63,7 @@ class FolderResponse extends Response
      */
     public function getPermissions(): string
     {
-        return $this->permissions ?: '';
+        return $this->permissions;
     }
 
 
@@ -76,7 +72,7 @@ class FolderResponse extends Response
      */
     public function getMetadata(): array
     {
-        return (is_array($this->metadata) ? $this->metadata : []);
+        return $this->metadata;
     }
 
 
@@ -85,7 +81,7 @@ class FolderResponse extends Response
      */
     public function getName(): string
     {
-        return $this->name ?: '';
+        return $this->name;
     }
 
 
@@ -94,6 +90,6 @@ class FolderResponse extends Response
      */
     public function getPath(): string
     {
-        return $this->path ?: '';
+        return $this->path;
     }
 }

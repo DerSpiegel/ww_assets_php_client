@@ -10,11 +10,9 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class CheckoutResponse extends Response
 {
-    protected int $checkedOut;
-
-    protected string $checkedOutBy;
-
-    protected string $checkedOutOnClient;
+    protected int $checkedOut = 0;
+    protected string $checkedOutBy = '';
+    protected string $checkedOutOnClient = '';
 
 
     /**
@@ -53,7 +51,7 @@ class CheckoutResponse extends Response
      */
     public function getCheckedOutBy(): string
     {
-        return $this->checkedOutBy ?? '';
+        return $this->checkedOutBy;
     }
 
 
@@ -62,7 +60,6 @@ class CheckoutResponse extends Response
      */
     public function getCheckedOutOnClient(): string
     {
-        return $this->checkedOutOnClient ?? '';
+        return $this->checkedOutOnClient;
     }
-
 }

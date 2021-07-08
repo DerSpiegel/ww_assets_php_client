@@ -20,11 +20,9 @@ class CreateRelationRequest extends Request
     const RELATION_TYPE_VARIATION = 'variation';
     const RELATION_TYPE_VARIATION_OF = 'variation-of';
 
-    protected string $relationType;
-
-    protected string $target1Id;
-
-    protected string $target2Id;
+    protected string $relationType = '';
+    protected string $target1Id = '';
+    protected string $target2Id = '';
 
 
     /**
@@ -32,7 +30,7 @@ class CreateRelationRequest extends Request
      */
     public function getRelationType(): string
     {
-        return $this->relationType ?: '';
+        return $this->relationType;
     }
 
 
@@ -52,7 +50,7 @@ class CreateRelationRequest extends Request
      */
     public function getTarget1Id(): string
     {
-        return $this->target1Id ?: '';
+        return $this->target1Id;
     }
 
 
@@ -72,7 +70,7 @@ class CreateRelationRequest extends Request
      */
     public function getTarget2Id(): string
     {
-        return $this->target2Id ?: '';
+        return $this->target2Id;
     }
 
 
