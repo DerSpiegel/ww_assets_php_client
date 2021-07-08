@@ -19,9 +19,7 @@ class SearchRequest extends Request
     const RETURN_HIGHLIGHTED_TEXT_DEFAULT = true;
 
     protected string $q = '';
-
     protected int $start = self::START_DEFAULT;
-
     protected int $num = self::NUM_DEFAULT;
 
     /** @var string[] */
@@ -34,7 +32,6 @@ class SearchRequest extends Request
     protected array $facets = [];
 
     protected bool $appendRequestSecret = self::APPEND_REQUEST_SECRET_DEFAULT;
-
     protected bool $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT;
 
 

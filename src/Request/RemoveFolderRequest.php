@@ -12,9 +12,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class RemoveFolderRequest extends Request
 {
-    protected string $id;
-
-    protected string $path;
+    protected string $id = '';
+    protected string $path = '';
 
 
     /**
@@ -22,7 +21,7 @@ class RemoveFolderRequest extends Request
      */
     public function getId(): string
     {
-        return $this->id ?? '';
+        return $this->id;
     }
 
 
@@ -42,7 +41,7 @@ class RemoveFolderRequest extends Request
      */
     public function getPath(): string
     {
-        return $this->path ?? '';
+        return $this->path;
     }
 
 

@@ -12,11 +12,9 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class UpdateFolderRequest extends Request
 {
-    protected string $id;
-
-    protected string $path;
-
-    protected array $metadata;
+    protected string $id = '';
+    protected string $path = '';
+    protected array $metadata = [];
 
 
     /**
@@ -24,7 +22,7 @@ class UpdateFolderRequest extends Request
      */
     public function getId(): string
     {
-        return $this->id ?? '';
+        return $this->id;
     }
 
 
@@ -44,7 +42,7 @@ class UpdateFolderRequest extends Request
      */
     public function getPath(): string
     {
-        return $this->path ?? '';
+        return $this->path;
     }
 
 
@@ -66,7 +64,7 @@ class UpdateFolderRequest extends Request
      */
     public function getMetadata(): array
     {
-        return (is_array($this->metadata) ? $this->metadata : []);
+        return $this->metadata;
     }
 
 

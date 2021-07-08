@@ -44,27 +44,17 @@ class AssetsClientBase
     const RELATION_TYPE_VARIATION = 'variation';
 
     protected AssetsConfig $config;
-
     protected LoggerInterface $logger;
-
     protected Client $httpClient;
 
-    protected string $httpUserAgent = '';
-
-    protected string $bearerToken = '';
-
-    protected string $csrfToken = '';
-
-    protected string $authCred = '';
-
-    protected array $cookies = [];
-
-    protected int $authMethod = self::AUTH_METHOD_BEARER_TOKEN;
-
-    private array $loginAttempts = [];
-
     private bool $allowReLogin = true;
-
+    protected string $authCred = '';
+    protected int $authMethod = self::AUTH_METHOD_BEARER_TOKEN;
+    protected string $bearerToken = '';
+    protected array $cookies = [];
+    protected string $csrfToken = '';
+    protected string $httpUserAgent = '';
+    private array $loginAttempts = [];
     protected int $requestTimeout = 60;
 
 

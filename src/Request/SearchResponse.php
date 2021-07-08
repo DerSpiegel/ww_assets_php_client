@@ -11,16 +11,14 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class SearchResponse extends Response
 {
-    protected int $firstResult;
-
-    protected int $maxResultHits;
-
-    protected int $totalHits;
+    protected int $firstResult = 0;
+    protected int $maxResultHits = 0;
+    protected int $totalHits = 0;
 
     /** @var AssetResponse[] */
-    protected array $hits;
+    protected array $hits = [];
 
-    protected array $facets;
+    protected array $facets = [];
 
 
     /**
@@ -89,7 +87,7 @@ class SearchResponse extends Response
      */
     public function getHits(): array
     {
-        return (is_array($this->hits) ? $this->hits : []);
+        return $this->hits;
     }
 
 
@@ -98,6 +96,6 @@ class SearchResponse extends Response
      */
     public function getFacets(): array
     {
-        return (is_array($this->facets) ? $this->facets : []);
+        return $this->facets;
     }
 }

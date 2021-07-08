@@ -10,7 +10,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class LogoutResponse extends Response
 {
-    protected bool $logoutSuccess;
+    protected bool $logoutSuccess = false;
 
     /**
      * @param array $json

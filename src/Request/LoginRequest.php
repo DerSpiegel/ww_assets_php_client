@@ -15,11 +15,8 @@ use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 class LoginRequest extends Request
 {
     protected string $username = '';
-
     protected string $password = '';
-
     protected string $clientType = '';
-
     protected bool $returnProfile = false;
 
 

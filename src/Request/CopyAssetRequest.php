@@ -18,10 +18,8 @@ class CopyAssetRequest extends Request
     const FILE_REPLACE_POLICY_THROW_EXCEPTION = 'THROW_EXCEPTION';
     const FILE_REPLACE_POLICY_DO_NOTHING = 'DO_NOTHING';
 
-    protected string $source;
-
-    protected string $target;
-
+    protected string $source = '';
+    protected string $target = '';
     protected string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME;
 
 
@@ -31,7 +29,7 @@ class CopyAssetRequest extends Request
      */
     public function getSource(): string
     {
-        return $this->source ?: '';
+        return $this->source;
     }
 
 
@@ -53,7 +51,7 @@ class CopyAssetRequest extends Request
      */
     public function getTarget(): string
     {
-        return $this->target ?: '';
+        return $this->target;
     }
 
 

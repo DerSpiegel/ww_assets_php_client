@@ -12,11 +12,9 @@ use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
  */
 class ApiLoginRequest extends Request
 {
-    protected string $username;
-
-    protected string $password;
-
-    protected string $clientId;
+    protected string $username = '';
+    protected string $password = '';
+    protected string $clientId = '';
 
 
     /**
@@ -46,7 +44,7 @@ class ApiLoginRequest extends Request
      */
     public function getUsername(): string
     {
-        return $this->username ?: '';
+        return $this->username;
     }
 
 
@@ -66,7 +64,7 @@ class ApiLoginRequest extends Request
      */
     public function getPassword(): string
     {
-        return $this->password ?: '';
+        return $this->password;
     }
 
 
@@ -86,7 +84,7 @@ class ApiLoginRequest extends Request
      */
     public function getClientId(): string
     {
-        return $this->clientId ?? '';
+        return $this->clientId;
     }
 
 

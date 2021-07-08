@@ -22,16 +22,11 @@ class MoveRequest extends Request
     const FILE_REPLACE_POLICY_THROW_EXCEPTION = 'THROW_EXCEPTION';
     const FILE_REPLACE_POLICY_DO_NOTHING = 'DO_NOTHING';
 
-    protected string $source;
-
-    protected string $target;
-
+    protected string $source = '';
+    protected string $target = '';
     protected string $folderReplacePolicy = self::FOLDER_REPLACE_POLICY_AUTO_RENAME;
-
     protected string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME;
-
     protected string $filterQuery = '';
-
     protected bool $flattenFolders = false;
 
 
@@ -40,7 +35,7 @@ class MoveRequest extends Request
      */
     public function getSource(): string
     {
-        return $this->source ?: '';
+        return $this->source;
     }
 
 
@@ -60,7 +55,7 @@ class MoveRequest extends Request
      */
     public function getTarget(): string
     {
-        return $this->target ?: '';
+        return $this->target;
     }
 
 

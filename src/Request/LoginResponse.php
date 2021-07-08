@@ -11,16 +11,14 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class LoginResponse extends Response
 {
-    protected bool $loginSuccess;
-
-    protected string $loginFaultMessage;
-
-    protected string $serverVersion;
+    protected bool $loginSuccess = false;
+    protected string $loginFaultMessage = '';
+    protected string $serverVersion = '';
 
     // TODO: implement the userProfile model??
-    protected array $userProfile;
+    protected array $userProfile = [];
 
-    protected string $csrfToken;
+    protected string $csrfToken = '';
 
 
     /**
@@ -66,7 +64,7 @@ class LoginResponse extends Response
      */
     public function getLoginFaultMessage(): string
     {
-        return $this->loginFaultMessage ?: '';
+        return $this->loginFaultMessage;
     }
 
 
@@ -75,7 +73,7 @@ class LoginResponse extends Response
      */
     public function getServerVersion(): string
     {
-        return $this->serverVersion ?: '';
+        return $this->serverVersion;
     }
 
 
@@ -84,7 +82,7 @@ class LoginResponse extends Response
      */
     public function getUserProfile(): array
     {
-        return $this->userProfile ?: [];
+        return $this->userProfile;
     }
 
 
@@ -93,6 +91,6 @@ class LoginResponse extends Response
      */
     public function getCsrfToken(): string
     {
-        return $this->csrfToken ?: '';
+        return $this->csrfToken;
     }
 }

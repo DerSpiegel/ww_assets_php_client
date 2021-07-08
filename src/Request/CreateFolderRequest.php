@@ -12,9 +12,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class CreateFolderRequest extends Request
 {
-    protected string $path;
-
-    protected array $metadata;
+    protected string $path = '';
+    protected array $metadata = [];
 
 
     /**
@@ -22,7 +21,7 @@ class CreateFolderRequest extends Request
      */
     public function getPath(): string
     {
-        return $this->path ?: '';
+        return $this->path;
     }
 
 
@@ -42,7 +41,7 @@ class CreateFolderRequest extends Request
      */
     public function getMetadata(): array
     {
-        return (is_array($this->metadata) ? $this->metadata : []);
+        return $this->metadata;
     }
 
 
