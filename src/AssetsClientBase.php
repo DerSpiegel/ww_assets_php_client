@@ -14,10 +14,14 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
 use GuzzleHttp\RequestOptions;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use RuntimeException;
 
 
@@ -309,7 +313,17 @@ class AssetsClientBase
      */
     protected function newHttpClient(): Client
     {
-        return new Client();
+        $stack = HandlerStack::create();
+
+        $stack->push(
+            Middleware::log(
+                $this->logger,
+                new MessageFormatter('AssetsClient {method} request to {uri}. Assets response: {res_body}'),
+                LogLevel::DEBUG
+            )
+        );
+
+        return new Client(['handler' => $stack]);
     }
 
 
