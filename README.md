@@ -37,10 +37,11 @@ Here’s how to do a quick test, starting from scratch with a new project (Docke
 ### Install dependencies using Composer
 
 ```
+$ mkdir MyExample && cd MyExample
 $ docker run --rm --interactive --tty \
   --volume $PWD:/app \
   --volume ${COMPOSER_HOME:-$HOME/.composer}:/tmp \
-  composer require der-spiegel/ww-elvis-client monolog/monolog
+  composer/composer require der-spiegel/ww-elvis-client monolog/monolog
 ```
 
 ### Copy and edit the example script
