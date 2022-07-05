@@ -318,7 +318,7 @@ class AssetsClientBase
         $stack->push(
             Middleware::log(
                 $this->logger,
-                new MessageFormatter('AssetsClient {method} request to {uri}. Assets response: {res_body}'),
+                new MessageFormatter('AssetsClient {method} request to {uri}. Assets response headers: {res_headers}'),
                 LogLevel::DEBUG
             )
         );
