@@ -66,7 +66,7 @@ class AssetsUtils
                 // Special handling for arrays of values: We don't care about the order of values
 
                 if (!is_array($oldValue)) {
-                    $oldValue = (strlen($oldValue) === 0) ? [] : [$oldValue];
+                    $oldValue = (strlen((string)$oldValue) === 0) ? [] : [$oldValue];
                 } else {
                     $oldValue = array_unique($oldValue);
                 }
