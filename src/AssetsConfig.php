@@ -15,6 +15,7 @@ class AssetsConfig
     protected string $password = '';
     protected string $url = '';
     protected string $elasticsearchUrl = '';
+    protected bool $verifySslCertificate = true;
 
 
     /**
@@ -24,7 +25,7 @@ class AssetsConfig
      * @param string $password
      * @param string $elasticsearchUrl
      */
-    public function __construct(string $url, string $username, string $password, string $elasticsearchUrl = '')
+    public function __construct(string $url, string $username, string $password, string $elasticsearchUrl = '', bool $verifySslCertificate = true)
     {
         $this->url = trim($url);
 
@@ -36,6 +37,7 @@ class AssetsConfig
         $this->username = trim($username);
         $this->password = trim($password);
         $this->elasticsearchUrl = trim($elasticsearchUrl);
+        $this->verifySslCertificate = $verifySslCertificate;
     }
 
 
@@ -72,6 +74,14 @@ class AssetsConfig
     public function getElasticsearchUrl(): string
     {
         return $this->elasticsearchUrl;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVerifySslCertificate(): bool
+    {
+        return $this->verifySslCertificate;
     }
 
 
