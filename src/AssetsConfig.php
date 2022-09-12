@@ -24,6 +24,7 @@ class AssetsConfig
      * @param string $username
      * @param string $password
      * @param string $elasticsearchUrl
+     * @param bool $verifySslCertificate
      */
     public function __construct(string $url, string $username, string $password, string $elasticsearchUrl = '', bool $verifySslCertificate = true)
     {
