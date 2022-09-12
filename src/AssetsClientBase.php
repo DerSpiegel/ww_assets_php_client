@@ -138,13 +138,15 @@ class AssetsClientBase
     protected function request(
         string $method,
         string $url,
-        array $data = [],
-        bool $multipart = true,
-        bool $sendToken = true
-    ): ResponseInterface {
+        array  $data = [],
+        bool   $multipart = true,
+        bool   $sendToken = true
+    ): ResponseInterface
+    {
         $options = [
             RequestOptions::HEADERS => ['User-Agent' => $this->getHttpUserAgent()],
-            RequestOptions::TIMEOUT => $this->getRequestTimeout()
+            RequestOptions::TIMEOUT => $this->getRequestTimeout(),
+            RequestOptions::VERIFY => $this->getConfig()->isVerifySslCertificate()
         ];
 
         if ($sendToken) {
