@@ -3,6 +3,12 @@
 namespace DerSpiegel\WoodWingAssetsClient;
 
 use RuntimeException;
+use Twig\Environment;
+use Twig\Extension\EscaperExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Loader\ArrayLoader;
+use Twig\Sandbox\SecurityPolicy;
+use Twig\TemplateWrapper;
 
 
 /**
@@ -88,5 +94,100 @@ class AssetsUtils
                 }
             }
         }
+    }
+
+
+    /**
+     * Escape a query term for use with Elasticsearch
+     *
+     * @param string $queryTerm Query term
+     * @return string Escaped query term
+     * @see https://stackoverflow.com/questions/33845230/escape-elasticsearch-special-characters-in-php
+     * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-query-string-query.html#_reserved_characters
+     */
+    public static function escapeForElasticsearch(string $queryTerm): string
+    {
+        static $keys = array();
+        static $values = array();
+
+        if (empty($keys)) {
+            $replacements = array(
+                ">" => "", // cannot be safely encoded
+                "<" => "", // cannot be safely encoded
+                "\\" => "\\\\", // must be done first to not double encode later backslashes!
+                "+" => "\\+",
+                "-" => "\\-",
+                "=" => "\\=",
+                "&" => "\\&",
+                "|" => "\\|",
+                "!" => "\\!",
+                "(" => "\\(",
+                ")" => "\\)",
+                "{" => "\\{",
+                "}" => "\\}",
+                "[" => "\\[",
+                "]" => "\\]",
+                "^" => "\\^",
+                "\"" => "\\\"",
+                "~" => "\\~",
+                "*" => "\\*",
+                "?" => "\\?",
+                ":" => "\\:",
+                "/" => "\\/",
+            );
+
+            $keys = array_keys($replacements);
+            $values = array_values($replacements);
+        }
+
+        return str_replace($keys, $values, $queryTerm);
+    }
+
+
+    /**
+     * Get a Twig template for building an Assets query
+     *
+     * Call render($templateVariables) on the returned object to get the query string.
+     *
+     * @param string $templateString
+     * @param array $allowedTags
+     * @param array $allowedFilters
+     * @return TemplateWrapper
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public static function getQueryTemplate(string $templateString, array $allowedTags = [], array $allowedFilters = []): TemplateWrapper
+    {
+        // Assuming that always recreating the Twig environment and template does not leak memory
+
+        $twig = new Environment(
+            new ArrayLoader(),
+            ['cache' => false]
+        );
+
+        // Whitelist "safe" tags and filters
+
+        $twig->addExtension(
+            new SandboxExtension(
+                new SecurityPolicy(
+                    array_merge(['if'], $allowedTags),
+                    array_merge(['escape', 'raw'], $allowedFilters)
+                ),
+                true
+            )
+        );
+
+        // Add Elasticsearch escape filter, and make it the default
+
+        $escaper = $twig->getExtension(EscaperExtension::class);
+
+        $escaper->setEscaper('query',
+            function ($twig, $string, $charset) {
+                return AssetsUtils::escapeForElasticsearch($string ?? '');
+            });
+
+        $escaper->setDefaultStrategy('query');
+
+        return $twig->createTemplate($templateString);
     }
 }
