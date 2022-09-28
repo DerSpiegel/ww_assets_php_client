@@ -135,7 +135,7 @@ class AssetsClientBase
      * @return ResponseInterface
      * @throws RuntimeException
      */
-    protected function request(
+    public function request(
         string $method,
         string $url,
         array  $data = [],
@@ -175,6 +175,7 @@ class AssetsClientBase
 
             switch ($method) {
                 case 'GET':
+                case 'HEAD':
                     // send data as query string
                     $url = sprintf("%s?%s", $url, http_build_query($data));
                     break;
