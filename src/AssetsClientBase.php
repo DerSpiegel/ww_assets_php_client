@@ -23,6 +23,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
+use SebastianBergmann\Timer\Timer;
 
 
 /**
@@ -135,7 +136,7 @@ class AssetsClientBase
      * @return ResponseInterface
      * @throws RuntimeException
      */
-    protected function request(
+    public function request(
         string $method,
         string $url,
         array  $data = [],
@@ -175,6 +176,7 @@ class AssetsClientBase
 
             switch ($method) {
                 case 'GET':
+                case 'HEAD':
                     // send data as query string
                     $url = sprintf("%s?%s", $url, http_build_query($data));
                     break;
@@ -197,7 +199,14 @@ class AssetsClientBase
 
         try {
             $httpClient = $this->httpClient;
+
+            $timer = new Timer();
+            $timer->start();
+
             $response = $httpClient->request($method, $url, $options);
+
+            $duration = $timer->stop();
+            $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url, $duration->asString()));
 
             // store cookies for further requests
             $this->cookies = $jar->toArray();
