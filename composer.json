@@ -22,6 +22,7 @@
     "ext-iconv": "*",
     "ext-json": "*",
     "guzzlehttp/guzzle": ">=6.3 <7.6",
+    "phpunit/php-timer": "^5.0",
     "twig/twig": "^3.4"
   },
   "config": {
