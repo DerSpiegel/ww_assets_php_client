@@ -1,6 +1,5 @@
 {
 	"info": {
-		"_postman_id": "f5548ad0-11ed-4126-8bfc-4ffe2c64bafa",
 		"name": "Assets REST API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24561941"
@@ -491,7 +490,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{assetsUrl}}/file/:assetId/*/:filename?_=2&forceDownload=true",
+					"raw": "{{assetsUrl}}/file/:assetId/*/:filename?_=&forceDownload=true",
 					"host": [
 						"{{assetsUrl}}"
 					],
@@ -523,6 +522,70 @@
 						}
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{assetsUrl}}/services/checkout/:assetId?download=&",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"checkout",
+						":assetId"
+					],
+					"query": [
+						{
+							"key": "download",
+							"value": ""
+						},
+						{
+							"key": "",
+							"value": null
+						}
+					],
+					"variable": [
+						{
+							"key": "assetId",
+							"value": "",
+							"description": "The Assets Server id of the asset to be checked out.\n\nRequired"
+						}
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - checkout](https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout)"
+			},
+			"response": []
+		},
+		{
+			"name": "undo checkout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{assetsUrl}}/services/undocheckout/:assetId",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"undocheckout",
+						":assetId"
+					],
+					"variable": [
+						{
+							"key": "assetId",
+							"value": "",
+							"description": "Assets id of the asset that was checked out.\n\nRequired"
+						}
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets REST API - undo checkout](https://helpcenter.woodwing.com/hc/en-us/articles/360042268951-Assets-REST-API-undo-checkout)"
 			},
 			"response": []
 		}
