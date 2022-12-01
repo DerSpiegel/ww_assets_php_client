@@ -1,0 +1,560 @@
+{
+	"info": {
+		"_postman_id": "f5548ad0-11ed-4126-8bfc-4ffe2c64bafa",
+		"name": "Assets REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24561941"
+	},
+	"item": [
+		{
+			"name": "API login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = pm.response.json();",
+							"pm.environment.set(\"assetsAuthToken\", data.authToken);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "{{assetsUsername}}",
+							"description": "The user name of the user.\nRequired.",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{assetsPassword}}",
+							"description": "The password of the user.\nRequired.",
+							"type": "text"
+						},
+						{
+							"key": "clientId",
+							"value": "{{assetsClientId}}",
+							"description": "Tracks the check-out of an asset to a specific client. Only that client will be able to check in the asset.\nTypically a client will generate a UUID once, store it locally and then pass it with every log-in action. When not specified, client check-outs will not be tracked with a client id.\nOptional, only required when your client performs check-outs and check-ins.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/apilogin",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"apilogin"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - API login](https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login)"
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "q",
+							"value": "",
+							"description": "The query to search for.\n\nRequired.",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "",
+							"description": "First hit to be returned. Starting at 0 for the first hit. Used to skip hits to return 'paged' results.\n\nNote: Search results above a total of 10,000 will not be returned due to technical limitations.\n\nOptional. Default is 0.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "num",
+							"value": "1",
+							"description": "Number of hits to return. Specify 0 to return no hits, this can be useful if you only want to fetch facets data.\n\nOptional. Default is 50.",
+							"type": "text"
+						},
+						{
+							"key": "sort",
+							"value": "",
+							"description": "The sort order of returned hits. Comma-delimited list of fields to sort on.\n\nBy default, date/time fields and number fields are sorted descending. All other fields are sorted ascending. To explicitly specify sort order, append \"-desc\" or \"-asc: to the field. Some examples:\n\n* sort=name\n* sort=rating\n* sort=fileSize-asc\n* sort=status,assetModified-asc\n\nA special sort case is relevance. This lets the search engine determine sorting based on the relevance of the asset against the search query. Relevance results are always returned descending.\n\nOptional. Default is assetCreated-desc.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "metadataToReturn",
+							"value": "",
+							"description": "Comma-delimited list of metadata fields to return in hits. It is good practice to always specify just the metadata fields that you need. This will make the searches faster because less data needs to be transferred over the network.\n\nmetadataToReturn=name,rating,assetCreated\n\nSpecify \"all\", or omit to return all available metadata.\n\nmetadataToReturn=all\n\nLeave 'empty' to return only minimal fields\n\nmetadataToReturn=\n\nOptional. Default returns all fields.",
+							"type": "text"
+						},
+						{
+							"key": "facets",
+							"value": "",
+							"description": "Comma-delimited list fields to return facet for. For example:\n\nfacets=tags,assetDomain\n\nSelected values for a facet must be specified with a \"facet.<field>.selection\" parameter. Do not add selected items to the query since that will cause incorrect facet filtering.\n\nNote: Only fields that are un_tokenized or tokenized with pureLowerCase analyzer can be used for faceted search\n\nOptional. Default returns no facets.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "facet.FIELD.selection",
+							"value": "",
+							"description": "Comma-delimited list of values that should be 'selected' for a given facet.\n\nFor example:\n\nfacet.tags.selection=beach\nfacet.assetDomain.selection=image,video\n\nOptional.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "format",
+							"value": "",
+							"description": "Deprecated. Do not use this parameter, it will be removed in a future version of Assets Server. Only the json format is supported.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "appendRequestSecret",
+							"value": "",
+							"description": "When set to true will append an encrypted code to the thumbnail, preview and original URLs. This is useful when the search is transformed to HTML by an intermediary (like a PHP or XSLT) and is then served to a web browser that is not authenticated against the server.\n\nOptional. Default is false.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "returnHighlightedText",
+							"value": "",
+							"description": "When set to true or when it is not passed, any found text is highlighted. (Applies only to assets with text as content. See Text, Office documents, presentations, PDFs below.) Set to false to turn text highlighting off.\n\nOptional. Default is true.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "returnThumbnailHits",
+							"value": "",
+							"description": "Collections returned in the results have an additional array with up to 4 thumbnailHits. These are minimal sets of metadata for 4 of the assets contained by the Collections. Because these are returned with the Collections, the client UI will be able to visually represent the Collection using up to 4 thumbnails of its contents, similar to how Collections are represented visually in Assets.\n\nWhen this option set to true or when it is not passed, Collections will be enriched with up to 4 thumbnail hits. Retrieving these thumbnails has a negative performance impact on the search request time. Set to false to not return the thumbnails.\n\nOptional.\n\nDefault value:\n* For Assets Server 6.75 and higher: false\n* For Assets Server 6.74 and lower: true\n\nRequires Assets Server 6.60 or higher.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "logSearch",
+							"value": "",
+							"description": "When set to true, an entry for this search is written to the Stats index.\n\nFor repeated searches from an API endpoint, add logSearch=false to not log these.\n\nOptional. Default value: true.\n\nRequires Assets Server 6.82 or higher.",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/search",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"search"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - search](https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search)"
+			},
+			"response": []
+		},
+		{
+			"name": "browse",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "path",
+							"value": "",
+							"description": "The path to the folder in Assets Server you want to list. Make sure the URL is properly URL-encoded, for example: spaces should often be represented as %20.\n\nRequired.",
+							"type": "text"
+						},
+						{
+							"key": "fromRoot",
+							"value": "",
+							"description": "For returning multiple levels of folders with their children. When specified, this path is listed, and all folders below it up to the 'path' will have their children returned as well.\n\nThis ability can be used to initialize an initial path in a column tree folder browser with one server call.\n\nOptional. When not specified, only the children of the specified 'path' will be returned.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "includeFolders",
+							"value": "",
+							"description": "Indicates if folders should be returned.\n\nOptional. Default is true.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "includeAsset",
+							"value": "",
+							"description": "Indicates if files should be returned.\n\nOptional. Default is true, but filtered to only include 'container' assets.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "includeExtensions",
+							"value": "",
+							"description": "A comma separated list of file extensions to be returned. Specify 'all' to return all file types.\n\nOptional. Default includes all 'container' assets: .collection, .dossier, .task",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/browse",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"browse"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - browse](https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse)"
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Filedata",
+							"description": "The file to be created in Assets Server.\n\nIf you do not specify a filename explicitly through the metadata, the filename of the uploaded file will be used.\n\nThe parameter is named \"Filedata\" because that is the standard name used by flash uploads. This makes it easy to use flash uploaders to upload batches of files to Assets Server.\n\nOptional. If omitted, a 0kb placeholder file will be created.",
+							"type": "file",
+							"src": ""
+						},
+						{
+							"key": "metadata",
+							"value": "",
+							"description": "A JSON encoded object with properties that match Assets Server metadata field names. This metadata will be set on the asset in Assets Server.\n\nOptional. You can also use parameters matching Assets Server field names.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "metadataToReturn",
+							"value": "",
+							"description": "Comma-delimited list of metadata fields to return in hits. It is good practice to always specify just the metadata fields that you need.\n\nmetadataToReturn=name,rating,assetCreated\n\nSpecify \"all\", or omit to return all available metadata.\n\nmetadataToReturn=all\n\nLeave 'empty' to return only minimal fields\n\nmetadataToReturn=\n\nOptional. Default returns all fields.",
+							"type": "text"
+						},
+						{
+							"key": "FIELD",
+							"value": "",
+							"description": "Any parameter matching an Assets Server metadata field name will be used as metadata. This metadata will be set on the asset in Assets Server.\n\nYou can use it to create a collection like this: \nassetPath=/Demo Zone/Collections/My Collection.collection\n\nOptional. You also use the 'metadata' parameter.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "nextUrl",
+							"value": "",
+							"description": "When specified, the service will send a 301 redirect to this URL when it is completed successfully. If you place '${id}' in the URL, it will be replaced with the Assets Server asset id of the created asset.\n\nOptional. If omitted, a simple 200 OK status code will be returned.\n\nNote: This must be a relative URL on the same domain as the Assets Server. If you do specify an absolute URL with a domain, only the part of the URL after the domain will be used to redirect to.",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/create",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"create"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - create](https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create)"
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "",
+							"description": "The Assets Server id of the asset to be updated.\n\nRequired.",
+							"type": "text"
+						},
+						{
+							"key": "Filedata",
+							"description": "The file to be updated in Assets Server.\n\nIf you do not specify a file name explicitly using the metadata above, the file name of the uploaded file will be used.\n\nThe parameter is named \"Filedata\" because that is the standard name used by flash uploads. This makes it easy to use flash uploaders to upload batches of files to Assets Server.\n\nOptional. If omitted, only metadata will be updated.",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						},
+						{
+							"key": "metadata",
+							"value": "",
+							"description": "A JSON encoded object with properties that match Assets Server metadata field names. This metadata will be set on the asset in Assets Server.\n\nOptional. You can also use parameters matching Assets Server field names.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "FIELD",
+							"value": "",
+							"description": "Any parameter matching an Assets Server metadata field name will be used as metadata. This metadata will be set on the asset in Assets Server.\n\nOptional. You can also use the 'metadata' parameter.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "metadataToReturn",
+							"value": "",
+							"description": "Comma-delimited list of metadata fields to return in hits. It is good practice to always specify just the metadata fields that you need.\n\nmetadataToReturn=name,rating,assetCreated\n\nSpecify \"all\", or omit to return all available metadata.\n\nmetadataToReturn=all\n\nLeave 'empty' to return only minimal fields\n\nmetadataToReturn=\n\nOptional. Default returns all fields.",
+							"type": "text"
+						},
+						{
+							"key": "nextUrl",
+							"value": "",
+							"description": "When specified, the service will send a 301 redirect to this URL when it completes successfully. If you place '${id}' in the URL, it will be replaced with the Assets Server asset id of the updated asset.\n\nOptional. If omitted, a simple 200 OK status code will be returned.\n\nNote: This must be a relative URL on the same domain as the Assets Server. If you do specify an absolute URL with a domain, only the part of the URL after the domain will be used to redirect to.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "clearCheckoutState",
+							"value": "",
+							"description": "When true, any checked-out state field is cleared when FileData is included.\n\nFields that are cleared:\n\n* checkedOut\n* checkedOutBy\n* checkedOutOnClient\n* checkedOutModifiedFields\n* lastModifiedCheckedOut\n\nOptional. Default true.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "parseMetadataModifications",
+							"value": "",
+							"description": "Prevents parsing \"+\" and \"-\" when set to false.\n\nOptional. Default true.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/update",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"update"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - update / check-in](https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in)"
+			},
+			"response": []
+		},
+		{
+			"name": "updatebulk using a query",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "q",
+							"value": "",
+							"description": "A query matching the assets that should be updated, see the query syntax guide for details.\n\nRequired.\n\nNote: Since you use a query to specify which assets to update, make sure you use the right query, or you might end updating the wrong assets or a huge amounts of them. The process runs on the server, so the amount of assets is no problem, but it may take quite some time. You can see the status of all bulk processes on the server status page.\n\nUpdating metadata that is not embedded is usually very fast, we typically see rates of several thousands per minute. If metadata needs to be embedded however, it has to alter the files on disk and speed will depend on factors like file size and disk speed. If your server gets slow because of too many concurrently running embeds, consider configuring a lower processing capacity for the main server.",
+							"type": "text"
+						},
+						{
+							"key": "metadata",
+							"value": "",
+							"description": "A JSON encoded object with properties that match Assets Server metadata field names. This metadata will be set on the asset in Assets Server.\n\nOptional. You can also use parameters matching Assets Server field names.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "FIELD",
+							"value": "",
+							"description": "Any parameter matching an Assets Server metadata field name will be used as metadata. This metadata will be set on the asset in Assets Server.\n\nOptional. You also use the 'metadata' parameter.\n\nTip: The update bulk service uses the same kind of parameters to specify metadata as the update service.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "async",
+							"value": "",
+							"description": "When true, the process will run asynchronous in the background. The call will return immediate with the processId.\n\nOptional. By default, the call waits for the process to finish and then returns the processedCount.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "parseMetadataModifications",
+							"value": "",
+							"description": "Prevents parsing \"+\" and \"-\" when set to false.\n\nOptional. Default true.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/updatebulk",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"updatebulk"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - updatebulk](https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk)"
+			},
+			"response": []
+		},
+		{
+			"name": "copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "source",
+							"value": "",
+							"description": "Either a folderPath or assetPath of the folder or asset to be copied.\n\nRequired",
+							"type": "text"
+						},
+						{
+							"key": "target",
+							"value": "",
+							"description": "The folderPath or assetPath to which the folder or asset should be copied.\n\nRequired",
+							"type": "text"
+						},
+						{
+							"key": "folderReplacePolicy",
+							"value": "",
+							"description": "Policy used when destination folder already exists.\n\n* AUTO_RENAME - add '-1' number to destination path. The counter is incremented until a free alternative is found.\n* MERGE - merge source folder into destination using fileReplacePolicy.\n* THROW_EXCEPTION - abort the operation.\n\nOptional. If omitted, AUTO_RENAME will be used.",
+							"type": "text"
+						},
+						{
+							"key": "fileReplacePolicy",
+							"value": "",
+							"description": "Policy used when destination asset already exists.\n\n* AUTO_RENAME - add '-1' number to destination path. The counter is incremented until a free alternative is found.\n* OVERWRITE - remove destination if it already exists.\n* OVERWRITE_IF_NEWER - only remove destination if source is newer. Otherwise remove source instead of moving it.\n* REMOVE_SOURCE - remove source if destination already exists.\n* THROW_EXCEPTION - abort the operation.\n* DO_NOTHING - skip copy of the file.\n\nOptional. If omitted, AUTO_RENAME will be used.",
+							"type": "text"
+						},
+						{
+							"key": "filterQuery",
+							"value": "",
+							"description": "When specified, only source assets that match this query will be copied.\n\nOptional. If omitted, all source assets will be copied.",
+							"type": "text"
+						},
+						{
+							"key": "flattenFolders",
+							"value": "",
+							"description": "When set to true will copy all files from source subfolders to directly below the target folder. This will 'flatten' any subfolder structure.\n\nOptional. If omitted, folders will not be flattened.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "async",
+							"value": "",
+							"description": "When true, the process will run asynchronous in the background. The call will return immediate with the processId.\n\nOptional. By default, the call waits for the process to finish and then returns the processedCount.",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/copy",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"copy"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - copy](https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy)"
+			},
+			"response": []
+		},
+		{
+			"name": "Download file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{assetsUrl}}/file/:assetId/*/:filename?_=2&forceDownload=true",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"file",
+						":assetId",
+						"*",
+						":filename"
+					],
+					"query": [
+						{
+							"key": "_",
+							"value": "",
+							"description": "contentETag"
+						},
+						{
+							"key": "forceDownload",
+							"value": "true"
+						}
+					],
+					"variable": [
+						{
+							"key": "assetId",
+							"value": ""
+						},
+						{
+							"key": "filename",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{assetsAuthToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
