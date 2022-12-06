@@ -256,7 +256,7 @@ class AssetsClientBase
 
             // Even usually-binary responses like "checkout and download" return JSON on error (i.e. "not logged in").
             // So when we get JSON back, run it through AssetsUtils::parseJsonResponse() which throws an exception on error.
-            if (strpos($httpResponse->getHeaderLine('content-type'), 'application/json') === 0) {
+            if (str_starts_with($httpResponse->getHeaderLine('content-type'), 'application/json')) {
                 AssetsUtils::parseJsonResponse($httpResponse->getBody());
             }
         } catch (RuntimeException $e) {
@@ -378,7 +378,7 @@ class AssetsClientBase
         try {
             $this->getToken(true);
             return true;
-        } catch (RuntimeException $e) {
+        } catch (RuntimeException) {
             return false;
         }
     }
@@ -390,21 +390,17 @@ class AssetsClientBase
      */
     public function getToken(bool $force = false): string
     {
-        switch ($this->authMethod) {
-            case self::AUTH_METHOD_BEARER_TOKEN:
-                return $this->getBearerToken($force);
-            case self::AUTH_METHOD_CSRF_TOKEN:
-                return $this->getCsrfToken($force);
-            case self::AUTH_METHOD_AUTHCRED:
-                return $this->getAuthCred();
-            default:
-                throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
-                    $this->authMethod));
-        }
+        return match ($this->authMethod) {
+            self::AUTH_METHOD_BEARER_TOKEN => $this->getBearerToken($force),
+            self::AUTH_METHOD_CSRF_TOKEN => $this->getCsrfToken($force),
+            self::AUTH_METHOD_AUTHCRED => $this->getAuthCred(),
+            default => throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
+                $this->authMethod)),
+        };
     }
 
 
-    private function preventLoginLoops()
+    private function preventLoginLoops(): void
     {
         $key = time();
         $this->loginAttempts[$key] = ($this->loginAttempts[$key] ?? 0) + 1;
