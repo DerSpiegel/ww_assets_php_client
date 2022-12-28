@@ -9,3 +9,4 @@ composer.phar
 # composer.lock
 
 /.phpunit.cache/
+/phpunit.xml
