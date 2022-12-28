@@ -42,4 +42,18 @@ final class AssetsUtilsTest extends TestCase
             'dos' => ['C:\\WINDOWS\\WIN.INI', 'C\\:\\\\WINDOWS\\\\WIN.INI']
         ];
     }
+
+
+    public function testGetQueryTemplate(): void
+    {
+        $templateStr = '{% if ID %} title:"prefix {{ ID }}" {% endif %}';
+        $templateVars = ['ID' => 'abc-123'];
+
+        $template = AssetsUtils::getQueryTemplate($templateStr);
+
+        $this->assertEquals(
+            'title:"prefix abc\-123"',
+            trim($template->render($templateVars))
+        );
+    }
 }
