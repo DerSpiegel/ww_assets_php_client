@@ -26,6 +26,20 @@ final class AssetsUtilsTest extends TestCase
     }
 
 
+    public function testParseJsonResponseException(): void
+    {
+        $jsonString = <<<EOT
+{
+  "errorcode" : 401,
+  "message" : "Not logged in"
+}
+EOT;
+
+        $this->expectExceptionMessage('Assets error: Not logged in');
+        AssetsUtils::parseJsonResponse($jsonString);
+    }
+
+
     /**
      * @dataProvider elasticsearchEscapeProvider
      */
