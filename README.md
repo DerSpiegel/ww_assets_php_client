@@ -85,12 +85,23 @@ $ docker run -it --rm --name assets-client-example \
 
 ## Development
 
-If you want to modify or contribute to this library, you can run its tests like this:
+If you want to modify or contribute to this library, you can run its unit tests like this:
 
 ```
 $ docker run -it --rm \
   --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
-  php:cli ./vendor/bin/phpunit tests
+  php:cli ./vendor/bin/phpunit tests/unit
+```
+
+To run its integration tests, you need to specify URL and credentials for an Assets test server (NOT PRODUCTION, tests will modify data)
+in a phpunit.xml file:
+
+```
+$ cp phpunit.xml.dist phpunit.xml
+$ vi phpunit.xml
+$ docker run -it --rm \
+  --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
+  php:cli ./vendor/bin/phpunit tests/integration
 ```
 
 ## Authors
