@@ -31,7 +31,7 @@ class AssetsConfig
         $this->url = trim($url);
 
         // If the Assets URL doesn't end with a slash, append it
-        if (($this->url !== '') && (substr($this->url, -1) !== '/')) {
+        if (($this->url !== '') && (!str_ends_with($this->url, '/'))) {
             $this->url .= '/';
         }
 

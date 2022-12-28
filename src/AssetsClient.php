@@ -21,6 +21,7 @@ use DerSpiegel\WoodWingAssetsClient\Request\RemoveRelationRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\SearchResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\UndoCheckoutRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateBulkRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
@@ -305,6 +306,44 @@ class AssetsClient extends AssetsClientBase
                 'method' => __METHOD__,
                 'id' => $request->getId(),
                 'download' => $request->isDownload()
+            ]
+        );
+    }
+
+
+    /**
+     * Undo checkout
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268951-Assets-REST-API-undo-checkout
+     * @param UndoCheckoutRequest $request
+     */
+    public function undoCheckout(UndoCheckoutRequest $request): void
+    {
+        if (trim($request->getId()) === '') {
+            throw new RuntimeException("%s: ID is empty in UndoCheckoutRequest", __METHOD__);
+        }
+
+        try {
+            $response = $this->serviceRequest(
+                sprintf('undocheckout/%s', urlencode($request->getId()))
+            );
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Undo checkout of asset <%s> failed',
+                    __METHOD__,
+                    $request->getId()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $request->getId()),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getId(),
+                'response' => $response
             ]
         );
     }
@@ -720,8 +759,9 @@ class AssetsClient extends AssetsClientBase
      */
     public function createCollection(
         string $assetPath,
-        array $metadata = []
-    ): AssetResponse {
+        array  $metadata = []
+    ): AssetResponse
+    {
 
         $metadata['assetPath'] = $assetPath;
 
@@ -804,7 +844,8 @@ class AssetsClient extends AssetsClientBase
         string $relatedTo,
         string $relationTarget = '',
         string $relationType = ''
-    ): string {
+    ): string
+    {
         $q = sprintf('relatedTo:%s', $relatedTo);
 
         if ($relationTarget !== '') {
