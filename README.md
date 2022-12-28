@@ -83,6 +83,16 @@ $ docker run -it --rm --name assets-client-example \
   php:cli php MyExample.php
 ```
 
+## Development
+
+If you want to modify or contribute to this library, you can run its tests like this:
+
+```
+$ docker run -it --rm \
+  --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
+  php:cli ./vendor/bin/phpunit tests
+```
+
 ## Authors
 
 * [Luís Ferreira](https://github.com/lcpaf) 
