@@ -21,5 +21,6 @@
         <const name="ASSETS_URL" value="https://assets-test.example.com"/>
         <const name="ASSETS_USERNAME" value="username"/>
         <const name="ASSETS_PASSWORD" value="password"/>
+        <const name="ASSETS_TESTS_FOLDER" value="/Danger Zone"/>
     </php>
 </phpunit>
