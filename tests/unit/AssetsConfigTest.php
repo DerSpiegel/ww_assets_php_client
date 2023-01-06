@@ -10,12 +10,12 @@ class AssetsConfigTest extends TestCase
 {
     public function testGetUrl(): void
     {
-        $expected = 'https://assets.example.com/';
+        $expected = 'https://a.com/';
 
-        $config1 = new AssetsConfig('https://assets.example.com', 'u', 'p');
+        $config1 = new AssetsConfig('https://a.com', 'u', 'p');
         $this->assertEquals($expected, $config1->getUrl());
 
-        $config2 = new AssetsConfig('https://assets.example.com/', 'u', 'p');
+        $config2 = new AssetsConfig('https://a.com/', 'u', 'p');
         $this->assertEquals($expected, $config2->getUrl());
     }
 
