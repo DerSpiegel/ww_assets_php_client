@@ -18,4 +18,28 @@ class AssetsConfigTest extends TestCase
         $config2 = new AssetsConfig('https://assets.example.com/', 'u', 'p');
         $this->assertEquals($expected, $config2->getUrl());
     }
+
+
+    public function testValidateUrlEmpty(): void
+    {
+        $config = new AssetsConfig('', 'u', 'p');
+        $this->expectExceptionMessage('URL is empty.');
+        $config->validate();
+    }
+
+
+    public function testValidateUsernameEmpty(): void
+    {
+        $config = new AssetsConfig('https://assets.example.com', '', 'p');
+        $this->expectExceptionMessage('Username is empty.');
+        $config->validate();
+    }
+
+
+    public function testValidatePasswordEmpty(): void
+    {
+        $config = new AssetsConfig('https://assets.example.com', 'u', '');
+        $this->expectExceptionMessage('Password is empty.');
+        $config->validate();
+    }
 }
