@@ -72,4 +72,77 @@ EOT;
             trim($template->render($templateVars))
         );
     }
+
+
+    /**
+     * @dataProvider cleanUpUnchangedMetadataFieldsProvider
+     */
+    public function testCleanUpUnchangedMetadataFields(array $oldMetadata, array $newMetadata, array $expected): void
+    {
+        AssetsUtils::cleanUpUnchangedMetadataFields($newMetadata, $oldMetadata);
+
+        $this->assertEquals($expected, $newMetadata);
+    }
+
+
+    public function cleanUpUnchangedMetadataFieldsProvider(): array
+    {
+        return [
+            'empty' => [
+                [],
+                [],
+                []
+            ],
+            'unchanged string' => [
+                ['credit' => 'dpa'],
+                ['credit' => 'dpa'],
+                []
+            ],
+            'changed string' => [
+                ['credit' => 'dpa'],
+                ['credit' => 'afp'],
+                ['credit' => 'afp']
+            ],
+            'unchanged but reordered array with duplicate' => [
+                ['tags' => ['a', 'b']],
+                ['tags' => ['b', 'a', 'a']],
+                []
+            ],
+            'unchanged array as scalar' => [
+                ['tags' => ['a']],
+                ['tags' => 'a'],
+                []
+            ],
+            'unchanged empty array as scalar' => [
+                ['tags' => []],
+                ['tags' => ''],
+                []
+            ],
+            'unchanged formatted value' => [
+                ['created' => ['value' => 1521956554000, 'formatted' => '2018-03-25 07:42:34 +0200']],
+                ['created' => 1521956554000],
+                []
+            ],
+            'added value' => [
+                [],
+                ['headline' => 'new'],
+                ['headline' => 'new']
+            ],
+            'added empty value' => [
+                [],
+                ['headline' => ''],
+                []
+            ],
+            'removed value' => [
+                ['headline' => 'old'],
+                ['headline' => ''],
+                ['headline' => '']
+            ],
+            'unspecified value' => [
+                ['headline' => 'old'],
+                [],
+                []
+            ],
+        ];
+    }
 }
