@@ -63,6 +63,10 @@ class CreateRequestTest extends TestCase
     }
 
 
+    /**
+     * @see https://gist.github.com/scotthaleen/32f76a413e0dfd4b4d79c2a534d49c0b#file-tiny-jpg
+     * @return string
+     */
     protected function getTestImageData(): string
     {
         $imageDate = <<<EOT
