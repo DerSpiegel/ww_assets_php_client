@@ -33,7 +33,8 @@
   },
   "autoload": {
     "psr-4": {
-      "DerSpiegel\\WoodWingAssetsClient\\": "src/"
+      "DerSpiegel\\WoodWingAssetsClient\\": "src/",
+      "DerSpiegel\\WoodWingAssetsClientTests\\": "tests/"
     }
   },
   "require-dev": {

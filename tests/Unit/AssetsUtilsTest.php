@@ -1,6 +1,6 @@
 <?php
 
-namespace unit;
+namespace DerSpiegel\WoodWingAssetsClientTests\Unit;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
 use PHPUnit\Framework\TestCase;

@@ -101,7 +101,7 @@ $ cp phpunit.xml.dist phpunit.xml
 $ vi phpunit.xml
 $ docker run -it --rm \
   --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
-  php:cli ./vendor/bin/phpunit tests/integration
+  php:cli ./vendor/bin/phpunit tests/Integration
 ```
 
 ## Authors

@@ -1,15 +1,14 @@
 <?php
 
-namespace integration;
+namespace DerSpiegel\WoodWingAssetsClientTests\Fixtures;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
-use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
 
-final class SearchRequestTest extends TestCase
+class IntegrationFixture extends TestCase
 {
     protected AssetsConfig $assetsConfig;
     protected AssetsClient $assetsClient;
@@ -24,17 +23,5 @@ final class SearchRequestTest extends TestCase
         );
 
         $this->assetsClient = new AssetsClient($this->assetsConfig, new Logger('assetsClient'));
-    }
-
-
-    public function testSearch(): void
-    {
-        $searchRequest = (new SearchRequest($this->assetsConfig))
-            ->setQ('')
-            ->setNum(0);
-
-        $searchResponse = $this->assetsClient->search($searchRequest);
-
-        $this->assertGreaterThan(0, $searchResponse->getTotalHits());
     }
 }
