@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Running tests &#8212; Assets Client 3.9.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Documentation for the Assets Client" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="running-tests">
+<h1>Running tests<a class="headerlink" href="#running-tests" title="Permalink to this heading">¶</a></h1>
+<p>If you want to participate in the development of the Assets Client, you will want to be able to run its test suite.
+This page explains how to set you up for testing, and how to run tests.</p>
+<section id="running-unit-tests">
+<h2>Running unit tests<a class="headerlink" href="#running-unit-tests" title="Permalink to this heading">¶</a></h2>
+<p>Unit tests do not interact with an Assets server. You can always run them safely, like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm <span class="se">\</span>
+  --volume <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/usr/src/myapp --workdir /usr/src/myapp <span class="se">\</span>
+  php:cli ./vendor/bin/phpunit tests/unit
+</pre></div>
+</div>
+</section>
+<section id="integration-tests">
+<h2>Integration tests<a class="headerlink" href="#integration-tests" title="Permalink to this heading">¶</a></h2>
+<p>Integration tests need an Assets server to perform real REST API requests against.
+To run them, you need to configure the Assets server first.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>The Assets Client’s unit tests will create, modify and delete data on the Assets server you specify in your configuration!
+DO NOT configure a production system here – make sure to use a test/development server for testing!</p>
+</div>
+<section id="configuring-which-assets-server-to-use-for-integration-testing">
+<h3>Configuring which Assets server to use for integration testing<a class="headerlink" href="#configuring-which-assets-server-to-use-for-integration-testing" title="Permalink to this heading">¶</a></h3>
+<p>First, create a copy of the example configuration file <code class="docutils literal notranslate"><span class="pre">phpunit.xml.dist</span></code>, name it <code class="docutils literal notranslate"><span class="pre">phpunit.xml</span></code> and open it in your editor:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ cp phpunit.xml.dist phpunit.xml
+$ vi phpunit.xml
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">phpunit.xml</span></code>, enter your Assets development server’s URL, username and password inside the “value” attributes in these lines:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;const</span> <span class="na">name=</span><span class="s">&quot;ASSETS_URL&quot;</span> <span class="na">value=</span><span class="s">&quot;https://assets-test.example.com&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;const</span> <span class="na">name=</span><span class="s">&quot;ASSETS_USERNAME&quot;</span> <span class="na">value=</span><span class="s">&quot;username&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;const</span> <span class="na">name=</span><span class="s">&quot;ASSETS_PASSWORD&quot;</span> <span class="na">value=</span><span class="s">&quot;password&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+<p>And specify an Assets folder that the Assets Client integration tests can use for creating, modifying and deleting test data:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;const</span> <span class="na">name=</span><span class="s">&quot;ASSETS_TESTS_FOLDER&quot;</span> <span class="na">value=</span><span class="s">&quot;/Danger Zone&quot;</span><span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="running-integration-tests">
+<h3>Running integration tests<a class="headerlink" href="#running-integration-tests" title="Permalink to this heading">¶</a></h3>
+<p>Once the configuration is finished, you run the integration tests like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker run -it --rm <span class="se">\</span>
+  --volume <span class="s2">&quot;</span><span class="nv">$PWD</span><span class="s2">&quot;</span>:/usr/src/myapp --workdir /usr/src/myapp <span class="se">\</span>
+  php:cli ./vendor/bin/phpunit tests/Integration
+</pre></div>
+</div>
+<span class="target" id="index-0"></span></section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Assets Client</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running tests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-unit-tests">Running unit tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-tests">Integration tests</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Documentation for the Assets Client</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, SPIEGEL-Gruppe.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/tests.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
