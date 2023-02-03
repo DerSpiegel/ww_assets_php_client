@@ -36,7 +36,7 @@ First, create a copy of the example configuration file ``phpunit.xml.dist``, nam
     $ cp phpunit.xml.dist phpunit.xml
     $ vi phpunit.xml
 
-In ``phpunit.xml``, enter your Assets development server’s URL, username and password inside the “value” attributes in these lines:
+In ``phpunit.xml``, enter your Assets development server’s URL, username and password inside the ``value`` attributes in these lines:
 
 .. code-block:: xml
 
