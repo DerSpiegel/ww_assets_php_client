@@ -104,6 +104,12 @@ $ docker run -it --rm \
   php:cli ./vendor/bin/phpunit tests/Integration
 ```
 
+To regenerate the documentation in docs/_build/html from the source files, run Sphinx:
+
+```
+$ docker run --rm --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp/docs sphinxdoc/sphinx:5.3.0 make html
+```
+
 ## Authors
 
 * [Luís Ferreira](https://github.com/lcpaf) 
