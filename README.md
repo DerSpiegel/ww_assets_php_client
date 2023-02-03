@@ -85,7 +85,7 @@ $ docker run -it --rm --name assets-client-example \
 
 ## Development
 
-See [Running tests](docs/_build/html/tests.html) for instructions on how to run unit and integration tests.
+See [Running tests](docs/tests.rst) for instructions on how to run unit and integration tests.
 
 To regenerate the documentation in docs/_build/html from the source files, run Sphinx:
 
