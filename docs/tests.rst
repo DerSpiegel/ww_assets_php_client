@@ -1,0 +1,67 @@
+Running tests
+*************
+
+If you want to participate in the development of the Assets Client, you will want to be able to run its test suite.
+This page explains how to set you up for testing, and how to run tests.
+
+Running unit tests
+==================
+
+Unit tests do not interact with an Assets server. You can always run them safely, like this:
+
+.. code-block:: bash
+
+    $ docker run -it --rm \
+      --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
+      php:cli ./vendor/bin/phpunit tests/unit
+
+Integration tests
+=================
+
+Integration tests need an Assets server to perform real REST API requests against.
+To run them, you need to configure the Assets server first.
+
+.. danger::
+
+    The Assets Client’s unit tests will create, modify and delete data on the Assets server you specify in your configuration!
+    DO NOT configure a production system here – make sure to use a test/development server for testing!
+
+Configuring which Assets server to use for integration testing
+--------------------------------------------------------------
+
+First, create a copy of the example configuration file ``phpunit.xml.dist``, name it ``phpunit.xml`` and open it in your editor:
+
+.. code-block:: bash
+
+    $ cp phpunit.xml.dist phpunit.xml
+    $ vi phpunit.xml
+
+In ``phpunit.xml``, enter your Assets development server’s URL, username and password inside the ``value`` attributes in these lines:
+
+.. code-block:: xml
+
+        <const name="ASSETS_URL" value="https://assets-test.example.com"/>
+        <const name="ASSETS_USERNAME" value="username"/>
+        <const name="ASSETS_PASSWORD" value="password"/>
+
+And specify an Assets folder that the Assets Client integration tests can use for creating, modifying and deleting test data:
+
+.. code-block:: xml
+
+        <const name="ASSETS_TESTS_FOLDER" value="/Danger Zone"/>
+
+Running integration tests
+-------------------------
+
+Once the configuration is finished, you run the integration tests like this:
+
+.. code-block:: bash
+
+    $ docker run -it --rm \
+      --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
+      php:cli ./vendor/bin/phpunit tests/Integration
+
+
+.. index::
+    single: Testing
+    single: PHPUnit

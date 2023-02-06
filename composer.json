@@ -33,7 +33,12 @@
   },
   "autoload": {
     "psr-4": {
-      "DerSpiegel\\WoodWingAssetsClient\\": "src/"
+      "DerSpiegel\\WoodWingAssetsClient\\": "src/",
+      "DerSpiegel\\WoodWingAssetsClientTests\\": "tests/"
     }
+  },
+  "require-dev": {
+    "monolog/monolog": "^3.2",
+    "phpunit/phpunit": "^9.5"
   }
 }

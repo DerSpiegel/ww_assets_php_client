@@ -1,0 +1,28 @@
+.. ww_elvis_php_client documentation master file, created by
+   sphinx-quickstart on Fri Feb  3 14:17:06 2023.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Documentation for the Assets Client
+===================================
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   tests
+
+`WoodWing Assets <https://www.woodwing.com/en/digital-asset-management-system>`_ is a **DAM (Digital Asset Management) system from WoodWing**.
+
+This PHP client library uses its `REST API <https://helpcenter.woodwing.com/hc/en-us/sections/360008455892-APIs-REST>`_.
+It is **not an official library** supplied by the vendor:
+Instead, it has been developed for and by the German `SPIEGEL Gruppe <https://gruppe.spiegel.de>`_ during its Assets implementation.
+
+The Assets Client is **open source and hosted on Github**: https://github.com/DerSpiegel/ww_elvis_php_client
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
