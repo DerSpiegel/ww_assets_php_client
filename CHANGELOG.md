@@ -1,5 +1,10 @@
 # Change Log
 
+## 3.10.0 - 2023-02-06
+
+Added first PHPUnit tests.
+Added first documentation, powered by Sphinx.  
+
 ## 3.9.0 - 2022-12-28 
 
 Required PHP 8.1. 
