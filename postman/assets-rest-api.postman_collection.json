@@ -1,5 +1,6 @@
 {
 	"info": {
+		"_postman_id": "b37758c4-5055-49d7-9eb9-f1e7224930b8",
 		"name": "Assets REST API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24561941"
@@ -481,6 +482,43 @@
 					]
 				},
 				"description": "WoodWing Helpcenter: [Assets Server REST API - copy](https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy)"
+			},
+			"response": []
+		},
+		{
+			"name": "promote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "assetId",
+							"value": "",
+							"description": "ID of the asset which needs to be reverted.\n\nRequired",
+							"type": "text"
+						},
+						{
+							"key": "version",
+							"value": "",
+							"description": "Version number of the version to which the asset needs to be reverted.\n\nRequired.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/version/promote",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"version",
+						"promote"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - promote](https://helpcenter.woodwing.com/hc/en-us/articles/4824964597009-Assets-Server-REST-API-promote)"
 			},
 			"response": []
 		},

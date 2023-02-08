@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.11.0 - 2023-02-08
+
+Added support for the "promote" API call.
+
 ## 3.10.0 - 2023-02-06
 
 Added first PHPUnit tests.

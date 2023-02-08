@@ -16,6 +16,7 @@ use DerSpiegel\WoodWingAssetsClient\Request\FolderResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\GetFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\MoveRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\PromoteRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\RemoveFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\RemoveRelationRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
@@ -340,6 +341,53 @@ class AssetsClient extends AssetsClientBase
         }
 
         $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $request->getId()),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getId(),
+                'response' => $response
+            ]
+        );
+    }
+
+
+    /**
+     * Promote version
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/4824964597009-Assets-Server-REST-API-promote
+     * @param PromoteRequest $request
+     */
+    public function promote(PromoteRequest $request): void
+    {
+        if (trim($request->getId()) === '') {
+            throw new RuntimeException("%s: ID is empty in UndoCheckoutRequest", __METHOD__);
+        }
+
+        if ($request->getVersion() < 1) {
+            throw new RuntimeException("%s: Version is empty in UndoCheckoutRequest", __METHOD__);
+        }
+
+        try {
+            $response = $this->serviceRequest(
+                'version/promote',
+                [
+                    'assetId' => $request->getId(),
+                    'version' => $request->getVersion()
+                ]
+            );
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Promote version <%d> of asset <%s> failed',
+                    __METHOD__,
+                    $request->getVersion(),
+                    $request->getId()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $request->getVersion(), $request->getId()),
             [
                 'method' => __METHOD__,
                 'id' => $request->getId(),
