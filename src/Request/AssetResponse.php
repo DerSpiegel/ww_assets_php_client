@@ -11,56 +11,14 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class AssetResponse extends Response
 {
-    protected string $id = '';
-    protected string $permissions = '';
-    protected array $metadata = [];
-    protected string $highlightedText = '';
-    protected string $originalUrl = '';
-    protected string $previewUrl = '';
-    protected string $thumbnailUrl = '';
-    protected array $relation = [];
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['id'])) {
-            $this->id = $json['id'];
-        }
-
-        if (isset($json['permissions'])) {
-            $this->permissions = $json['permissions'];
-        }
-
-        if (isset($json['metadata']) && is_array($json['metadata'])) {
-            $this->metadata = $json['metadata'];
-        }
-
-        if (isset($json['highlightedText'])) {
-            $this->highlightedText = $json['highlightedText'];
-        }
-
-        if (isset($json['originalUrl'])) {
-            $this->originalUrl = $json['originalUrl'];
-        }
-
-        if (isset($json['previewUrl'])) {
-            $this->previewUrl = $json['previewUrl'];
-        }
-
-        if (isset($json['thumbnailUrl'])) {
-            $this->thumbnailUrl = $json['thumbnailUrl'];
-        }
-
-        if (isset($json['relation']) && is_array($json['relation'])) {
-            $this->relation = $json['relation'];
-        }
-
-        return $this;
-    }
+    #[MapFromJson] protected string $id = '';
+    #[MapFromJson] protected string $permissions = '';
+    #[MapFromJson] protected array $metadata = [];
+    #[MapFromJson] protected string $highlightedText = '';
+    #[MapFromJson] protected string $originalUrl = '';
+    #[MapFromJson] protected string $previewUrl = '';
+    #[MapFromJson] protected string $thumbnailUrl = '';
+    #[MapFromJson] protected array $relation = [];
 
 
     /**

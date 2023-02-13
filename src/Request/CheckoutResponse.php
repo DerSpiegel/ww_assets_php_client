@@ -10,31 +10,9 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class CheckoutResponse extends Response
 {
-    protected int $checkedOut = 0;
-    protected string $checkedOutBy = '';
-    protected string $checkedOutOnClient = '';
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['checkedOut'])) {
-            $this->checkedOut = intval($json['checkedOut']);
-        }
-
-        if (isset($json['checkedOutBy'])) {
-            $this->checkedOutBy = trim($json['checkedOutBy']);
-        }
-
-        if (isset($json['checkedOutOnClient'])) {
-            $this->checkedOutOnClient = trim($json['checkedOutOnClient']);
-        }
-
-        return $this;
-    }
+    #[MapFromJson] protected int $checkedOut = 0;
+    #[MapFromJson] protected string $checkedOutBy = '';
+    #[MapFromJson] protected string $checkedOutOnClient = '';
 
 
     /**
