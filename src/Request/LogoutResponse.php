@@ -10,20 +10,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class LogoutResponse extends Response
 {
-    protected bool $logoutSuccess = false;
+    #[MapFromJson] protected bool $logoutSuccess = false;
 
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['logoutSuccess'])) {
-            $this->logoutSuccess = $json['logoutSuccess'];
-        }
-
-        return $this;
-    }
 
     /**
      * @return bool

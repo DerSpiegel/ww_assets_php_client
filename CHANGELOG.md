@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.11.1 - 2023-02-13
+
+Refactoring: Use PHP 8 attributes.
+
 ## 3.11.0 - 2023-02-08
 
 Added support for the "promote" API call.

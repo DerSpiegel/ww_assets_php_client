@@ -11,36 +11,10 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class ApiLoginResponse extends Response
 {
-    protected bool $loginSuccess = false;
-    protected string $loginFaultMessage = '';
-    protected string $serverVersion = '';
-    protected string $authToken = '';
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['loginSuccess'])) {
-            $this->loginSuccess = $json['loginSuccess'];
-        }
-
-        if (isset($json['loginFaultMessage'])) {
-            $this->loginFaultMessage = $json['loginFaultMessage'];
-        }
-
-        if (isset($json['serverVersion'])) {
-            $this->serverVersion = $json['serverVersion'];
-        }
-
-        if (isset($json['authToken'])) {
-            $this->authToken = $json['authToken'];
-        }
-
-        return $this;
-    }
+    #[MapFromJson] protected bool $loginSuccess = false;
+    #[MapFromJson] protected string $loginFaultMessage = '';
+    #[MapFromJson] protected string $serverVersion = '';
+    #[MapFromJson] protected string $authToken = '';
 
 
     /**

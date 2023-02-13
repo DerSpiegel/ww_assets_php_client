@@ -11,44 +11,12 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class LoginResponse extends Response
 {
-    protected bool $loginSuccess = false;
-    protected string $loginFaultMessage = '';
-    protected string $serverVersion = '';
+    #[MapFromJson] protected bool $loginSuccess = false;
+    #[MapFromJson] protected string $loginFaultMessage = '';
+    #[MapFromJson] protected string $serverVersion = '';
+    #[MapFromJson] protected array $userProfile = [];
+    #[MapFromJson] protected string $csrfToken = '';
 
-    // TODO: implement the userProfile model??
-    protected array $userProfile = [];
-
-    protected string $csrfToken = '';
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['loginSuccess'])) {
-            $this->loginSuccess = $json['loginSuccess'];
-        }
-
-        if (isset($json['loginFaultMessage'])) {
-            $this->loginFaultMessage = $json['loginFaultMessage'];
-        }
-
-        if (isset($json['serverVersion'])) {
-            $this->serverVersion = $json['serverVersion'];
-        }
-
-        if (isset($json['userProfile'])) {
-            $this->csrfToken = $json['userProfile'];
-        }
-
-        if (isset($json['csrfToken'])) {
-            $this->csrfToken = $json['csrfToken'];
-        }
-
-        return $this;
-    }
 
     /**
      * @return bool

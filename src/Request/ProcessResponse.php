@@ -9,26 +9,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class ProcessResponse extends Response
 {
-    protected int $processedCount = 0;
-    protected int $errorCount = 0;
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['processedCount'])) {
-            $this->processedCount = intval($json['processedCount']);
-        }
-
-        if (isset($json['errorCount'])) {
-            $this->errorCount = intval($json['errorCount']);
-        }
-
-        return $this;
-    }
+    #[MapFromJson] protected int $processedCount = 0;
+    #[MapFromJson] protected int $errorCount = 0;
 
 
     /**

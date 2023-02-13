@@ -12,41 +12,11 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class FolderResponse extends Response
 {
-    protected string $id = '';
-    protected array $metadata = [];
-    protected string $name = '';
-    protected string $path = '';
-    protected string $permissions = '';
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
-    {
-        if (isset($json['id'])) {
-            $this->id = $json['id'];
-        }
-
-        if (isset($json['name'])) {
-            $this->name = $json['name'];
-        }
-
-        if (isset($json['path'])) {
-            $this->path = $json['path'];
-        }
-
-        if (isset($json['permissions'])) {
-            $this->permissions = $json['permissions'];
-        }
-
-        if (isset($json['metadata']) && is_array($json['metadata'])) {
-            $this->metadata = $json['metadata'];
-        }
-
-        return $this;
-    }
+    #[MapFromJson] protected string $id = '';
+    #[MapFromJson] protected array $metadata = [];
+    #[MapFromJson] protected string $name = '';
+    #[MapFromJson] protected string $path = '';
+    #[MapFromJson] protected string $permissions = '';
 
 
     /**

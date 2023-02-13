@@ -11,14 +11,13 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class SearchResponse extends Response
 {
-    protected int $firstResult = 0;
-    protected int $maxResultHits = 0;
-    protected int $totalHits = 0;
+    #[MapFromJson] protected array $facets = [];
+    #[MapFromJson] protected int $firstResult = 0;
+    #[MapFromJson] protected int $maxResultHits = 0;
+    #[MapFromJson] protected int $totalHits = 0;
 
     /** @var AssetResponse[] */
     protected array $hits = [];
-
-    protected array $facets = [];
 
 
     /**
@@ -27,17 +26,7 @@ class SearchResponse extends Response
      */
     public function fromJson(array $json): self
     {
-        if (isset($json['firstResult'])) {
-            $this->firstResult = $json['firstResult'];
-        }
-
-        if (isset($json['maxResultHits'])) {
-            $this->maxResultHits = $json['maxResultHits'];
-        }
-
-        if (isset($json['totalHits'])) {
-            $this->totalHits = $json['totalHits'];
-        }
+        parent::fromJson($json);
 
         if (isset($json['hits']) && is_array($json['hits'])) {
             $this->hits = [];
@@ -45,10 +34,6 @@ class SearchResponse extends Response
             foreach ($json['hits'] as $hitJson) {
                 $this->hits[] = (new AssetResponse())->fromJson($hitJson);
             }
-        }
-
-        if (isset($json['facets']) && is_array($json['facets'])) {
-            $this->facets = $json['facets'];
         }
 
         return $this;
