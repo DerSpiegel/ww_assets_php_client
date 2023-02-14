@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Assets Client'
-copyright = '2023, SPIEGEL-Gruppe'
+copyright = '2020-2023 SPIEGEL-Gruppe'
 author = 'Tim Strehle'
 release = '3.9.0'
 
