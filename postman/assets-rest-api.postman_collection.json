@@ -569,7 +569,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{assetsUrl}}/services/checkout/:assetId?download=&",
+					"raw": "{{assetsUrl}}/services/checkout/:assetId?download=",
 					"host": [
 						"{{assetsUrl}}"
 					],
@@ -581,11 +581,8 @@
 					"query": [
 						{
 							"key": "download",
-							"value": ""
-						},
-						{
-							"key": "",
-							"value": null
+							"value": "",
+							"description": "When set to true, the asset will be checked out and downloaded from the system. If download is false it will only be checked out.\n\nOptional. Default is false."
 						}
 					],
 					"variable": [
@@ -624,6 +621,61 @@
 					]
 				},
 				"description": "WoodWing Helpcenter: [Assets REST API - undo checkout](https://helpcenter.woodwing.com/hc/en-us/articles/360042268951-Assets-REST-API-undo-checkout)"
+			},
+			"response": []
+		},
+		{
+			"name": "history",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "",
+							"description": "Asset id to retrieve the history for.",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "",
+							"description": "First hit to be returned. Starting at 0 for the first hit. Used to skip hits to return 'paged' results.\n\nOptional. Default is 0.",
+							"type": "text"
+						},
+						{
+							"key": "num",
+							"value": "",
+							"description": "Number of hits to return.",
+							"type": "text"
+						},
+						{
+							"key": "detailLevel",
+							"value": "",
+							"description": "Level of detail to return. See table below for more information.\n\nOptional. Default is 0. Can be customized with actions parameter.",
+							"type": "text"
+						},
+						{
+							"key": "actions",
+							"value": "",
+							"description": "Only applies when detailLevel is set to 0. Can be used to return a customized set of actions. See available actions section below.\n\nOptional. Default is empty. Returns all actions.",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{assetsUrl}}/services/asset/history",
+					"host": [
+						"{{assetsUrl}}"
+					],
+					"path": [
+						"services",
+						"asset",
+						"history"
+					]
+				},
+				"description": "WoodWing Helpcenter: [Assets Server REST API - Versioning and history](https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history)"
 			},
 			"response": []
 		}
