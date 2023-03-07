@@ -1,5 +1,13 @@
 # Change Log
 
+## 4.0.0 - 2023-03-07
+
+Backwards incompatible change: SearchResponse::getHits() now returns AssetResponseList instead of array.
+Backwards incompatible change: CheckoutResponse::getCheckedOut() now returns ?DateTimeImmutable instead of int.
+Added support for PHP 8.2.
+Added support for the "history" API call with AssetsClient::history().
+Added AssetsWebhookType enum.
+
 ## 3.11.1 - 2023-02-13
 
 Refactoring: Use PHP 8 attributes.
