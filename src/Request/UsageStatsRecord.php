@@ -2,8 +2,9 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-
 use DateTimeImmutable;
+use DerSpiegel\WoodWingAssetsClient\AssetsAction;
+
 
 /**
  * Class UsageStatsRecord
@@ -13,8 +14,7 @@ use DateTimeImmutable;
  */
 class UsageStatsRecord extends Response
 {
-    // TODO Use AssetsAction enum
-    #[MapFromJson] protected string $action = '';
+    #[MapFromJson(conversion: 'stringToAction')] protected AssetsAction $action = AssetsAction::Other;
     #[MapFromJson] protected string $assetDomain = '';
     #[MapFromJson] protected string $assetId = '';
     #[MapFromJson] protected string $assetPath = '';
@@ -32,10 +32,11 @@ class UsageStatsRecord extends Response
     #[MapFromJson] protected string $userName = '';
     #[MapFromJson] protected bool $versionCreatingAction = false;
 
+
     /**
      * @return string
      */
-    public function getAction(): string
+    public function getAction(): AssetsAction
     {
         return $this->action;
     }

@@ -3,6 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 use DateTimeImmutable;
+use DerSpiegel\WoodWingAssetsClient\AssetsAction;
 use ReflectionClass;
 
 
@@ -34,6 +35,8 @@ abstract class Response
                     // Assets represents DateTime as Unix timestamp in milliseconds: 1675181108436
                     // Convert to 1675181108.436 and then to a DateTimeImmutable
                     $value = DateTimeImmutable::createFromFormat('U.v', (string)($value / 1000));
+                } elseif ($mapFromJson->conversion === MapFromJson::STRING_TO_ACTION) {
+                    $value = AssetsAction::tryFrom($value) ?? AssetsAction::Other;
                 }
             }
 
