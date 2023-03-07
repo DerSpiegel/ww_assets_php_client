@@ -3,6 +3,8 @@
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
+use DateTimeImmutable;
+
 /**
  * Class CheckoutResponse
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
@@ -10,7 +12,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class CheckoutResponse extends Response
 {
-    #[MapFromJson] protected int $checkedOut = 0;
+    #[MapFromJson(conversion: 'intToDateTime')] protected ?DateTimeImmutable $checkedOut = null;
     #[MapFromJson] protected string $checkedOutBy = '';
     #[MapFromJson] protected string $checkedOutOnClient = '';
 
@@ -18,7 +20,7 @@ class CheckoutResponse extends Response
     /**
      * @return int
      */
-    public function getCheckedOut(): int
+    public function getCheckedOut(): ?DateTimeImmutable
     {
         return $this->checkedOut;
     }

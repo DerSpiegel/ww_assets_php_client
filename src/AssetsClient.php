@@ -14,6 +14,9 @@ use DerSpiegel\WoodWingAssetsClient\Request\CreateRelationRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\FolderResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\GetFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\HistoryDetailLevel;
+use DerSpiegel\WoodWingAssetsClient\Request\HistoryRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\HistoryResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\MoveRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\PromoteRequest;
@@ -815,6 +818,62 @@ class AssetsClient extends AssetsClientBase
 
         return $this->create((new CreateRequest($this->getConfig()))
             ->setMetadata($metadata));
+    }
+
+    /**
+     * Get asset history
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history
+     * @param HistoryRequest $request
+     * @return HistoryResponse
+     */
+    public function history(HistoryRequest $request): HistoryResponse
+    {
+        $data = [
+            'id' => $request->getId(),
+            'start' => $request->getStart(),
+            'detailLevel' => $request->getDetailLevel()->value
+        ];
+
+        if ($request->getNum() !== null) {
+            $data['num'] = $request->getNum();
+        }
+
+        if (($request->getDetailLevel() === HistoryDetailLevel::CustomActions) && (!empty($request->getActions()))) {
+            $data['actions'] = implode(',', array_map(
+                function ($value) {
+                    return $value->value;
+                },
+                $request->getActions()->getArrayCopy()
+            ));
+        }
+
+        try {
+            $response = $this->serviceRequest(
+                'asset/history',
+                $data
+            );
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Get history of asset <%s> failed: %s',
+                    __METHOD__,
+                    $request->getId(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Got history of asset <%s>', $request->getId()),
+            [
+                'method' => __METHOD__,
+                'id' => $request->getId()
+            ]
+        );
+
+        return (new HistoryResponse())->fromJson($response);
     }
 
 

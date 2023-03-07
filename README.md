@@ -85,7 +85,7 @@ $ docker run -it --rm --name assets-client-example \
 
 ## Development
 
-See [Running tests](docs/tests.rst) for instructions on how to run unit and integration tests.
+See [Running tests](https://ww-elvis-php-client.readthedocs.io/en/latest/tests.html) for instructions on how to run unit and integration tests.
 
 To regenerate the documentation in docs/_build/html from the source files, run Sphinx:
 
@@ -95,8 +95,8 @@ $ docker run --rm --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp/docs s
 
 ## Authors
 
-* [Luís Ferreira](https://github.com/lcpaf) 
 * [Tim Strehle](https://github.com/tistre) - https://twitter.com/tistre
+* [Luís Ferreira](https://github.com/lcpaf)
 
 ## License
 

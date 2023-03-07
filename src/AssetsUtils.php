@@ -4,6 +4,8 @@ namespace DerSpiegel\WoodWingAssetsClient;
 
 use RuntimeException;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\SyntaxError;
 use Twig\Extension\EscaperExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
@@ -153,8 +155,8 @@ class AssetsUtils
      * @param array $allowedTags
      * @param array $allowedFilters
      * @return TemplateWrapper
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws SyntaxError
      */
     public static function getQueryTemplate(string $templateString, array $allowedTags = [], array $allowedFilters = []): TemplateWrapper
     {
