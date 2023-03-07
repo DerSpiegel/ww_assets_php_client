@@ -2,8 +2,9 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-
+use DateTimeImmutable;
 use ReflectionClass;
+
 
 /**
  * Class Response
@@ -27,6 +28,14 @@ abstract class Response
             }
 
             $value = $json[$nameInJson];
+
+            if (!empty($mapFromJson->conversion)) {
+                if ($mapFromJson->conversion === MapFromJson::INT_TO_DATETIME) {
+                    // Assets represents DateTime as Unix timestamp in milliseconds: 1675181108436
+                    // Convert to 1675181108.436 and then to a DateTimeImmutable
+                    $value = DateTimeImmutable::createFromFormat('U.v', (string)($value / 1000));
+                }
+            }
 
             if ($propertyType === 'array') {
                 if (!is_array($value)) {
@@ -52,6 +61,7 @@ abstract class Response
      *
      * A simple MapFromJson attribute uses the property name as JSON key.
      * If the JSON key differs, specify MapFromJson(name: 'JSON key').
+     * If a conversion routine is to be applied, specify it like this: MapFromJson(conversion: 'intToDateTime').
      *
      * @return MapFromJson[]
      */
@@ -64,7 +74,8 @@ abstract class Response
         foreach ($reflection->getProperties() as $property) {
             foreach ($property->getAttributes(MapFromJson::class) as $attribute) {
                 $name = $attribute->getArguments()['name'] ?? $property->getName();
-                $mapping[] = new MapFromJson($name, $property);
+                $conversion = $attribute->getArguments()['conversion'] ?? null;
+                $mapping[] = new MapFromJson($name, $property, $conversion);
                 break;
             }
         }
