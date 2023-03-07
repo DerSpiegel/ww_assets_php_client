@@ -16,8 +16,7 @@ class SearchResponse extends Response
     #[MapFromJson] protected int $maxResultHits = 0;
     #[MapFromJson] protected int $totalHits = 0;
 
-    /** @var AssetResponse[] */
-    protected array $hits = [];
+    protected AssetResponseList $hits;
 
 
     /**
@@ -29,10 +28,10 @@ class SearchResponse extends Response
         parent::fromJson($json);
 
         if (isset($json['hits']) && is_array($json['hits'])) {
-            $this->hits = [];
+            $this->hits = new AssetResponseList();
 
             foreach ($json['hits'] as $hitJson) {
-                $this->hits[] = (new AssetResponse())->fromJson($hitJson);
+                $this->hits->addValue((new AssetResponse())->fromJson($hitJson));
             }
         }
 
@@ -68,9 +67,9 @@ class SearchResponse extends Response
 
 
     /**
-     * @return AssetResponse[]
+     * @return AssetResponseList
      */
-    public function getHits(): array
+    public function getHits(): AssetResponseList
     {
         return $this->hits;
     }
