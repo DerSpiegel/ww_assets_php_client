@@ -11,7 +11,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class HistoryResponseItem extends Response
 {
-    protected ?AssetResponse $hit;
+    protected ?AssetResponse $hit = null;
     protected UsageStatsRecord $usageStatsRecord;
 
 
