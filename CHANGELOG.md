@@ -1,5 +1,10 @@
 # Change Log
 
+## 4.0.1 - 2023-03-10
+
+Fixed UsageStatsRecord::details response parsing.
+Fixed "intToDateTime" response conversion for timestamps divisible by 1,000.
+
 ## 4.0.0 - 2023-03-07
 
 Backwards incompatible change: SearchResponse::getHits() now returns AssetResponseList instead of array.

@@ -34,7 +34,10 @@ abstract class Response
                 if ($mapFromJson->conversion === MapFromJson::INT_TO_DATETIME) {
                     // Assets represents DateTime as Unix timestamp in milliseconds: 1675181108436
                     // Convert to 1675181108.436 and then to a DateTimeImmutable
-                    $value = DateTimeImmutable::createFromFormat('U.v', (string)($value / 1000));
+                    $value = DateTimeImmutable::createFromFormat(
+                        'U.v',
+                        sprintf('%d.%03d', $value / 1000, $value % 1000)
+                    );
                 } elseif ($mapFromJson->conversion === MapFromJson::STRING_TO_ACTION) {
                     $value = AssetsAction::tryFrom($value) ?? AssetsAction::Other;
                 }
@@ -42,7 +45,11 @@ abstract class Response
 
             if ($propertyType === 'array') {
                 if (!is_array($value)) {
-                    continue;
+                    if (!empty($value)) {
+                        $value = [$value];
+                    } else {
+                        continue;
+                    }
                 }
             } elseif ($propertyType === 'bool') {
                 $value = boolval($value);
