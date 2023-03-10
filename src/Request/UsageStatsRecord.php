@@ -21,7 +21,7 @@ class UsageStatsRecord extends Response
     #[MapFromJson] protected string $assetType = '';
     #[MapFromJson] protected array $changedMetadata = [];
     #[MapFromJson] protected string $clientType = '';
-    #[MapFromJson] protected string $details = '';
+    #[MapFromJson] protected array $details = [];
     #[MapFromJson] protected string $id = '';
     #[MapFromJson(conversion: 'intToDateTime')] protected ?DateTimeImmutable $logDate = null;
     #[MapFromJson] protected string $remoteAddr = '';
@@ -90,9 +90,9 @@ class UsageStatsRecord extends Response
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getDetails(): string
+    public function getDetails(): array
     {
         return $this->details;
     }
