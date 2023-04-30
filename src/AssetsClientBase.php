@@ -48,8 +48,6 @@ class AssetsClientBase
     const RELATION_TYPE_RELATED = 'related';
     const RELATION_TYPE_VARIATION = 'variation';
 
-    protected AssetsConfig $config;
-    protected LoggerInterface $logger;
     protected Client $httpClient;
 
     private bool $allowReLogin = true;
@@ -68,11 +66,11 @@ class AssetsClientBase
      * @param AssetsConfig $config
      * @param LoggerInterface $logger
      */
-    public function __construct(AssetsConfig $config, LoggerInterface $logger)
+    public function __construct(
+        protected AssetsConfig $config,
+        protected LoggerInterface $logger
+    )
     {
-        $this->config = $config;
-        $this->logger = $logger;
-
         $this->httpClient = $this->newHttpClient();
         $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
     }

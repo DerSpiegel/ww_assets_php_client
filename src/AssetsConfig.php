@@ -5,28 +5,15 @@ namespace DerSpiegel\WoodWingAssetsClient;
 use RuntimeException;
 
 
-/**
- * Class AssetsConfig
- * @package DerSpiegel\WoodWingAssetsClient
- */
 class AssetsConfig
 {
-    protected string $username = '';
-    protected string $password = '';
-    protected string $url = '';
-    protected string $elasticsearchUrl = '';
-    protected bool $verifySslCertificate = true;
-
-
-    /**
-     * AssetsConfig constructor.
-     * @param string $url
-     * @param string $username
-     * @param string $password
-     * @param string $elasticsearchUrl
-     * @param bool $verifySslCertificate
-     */
-    public function __construct(string $url, string $username, string $password, string $elasticsearchUrl = '', bool $verifySslCertificate = true)
+    public function __construct(
+        protected string $url,
+        protected string $username,
+        protected string $password,
+        protected string $elasticsearchUrl = '',
+        protected bool   $verifySslCertificate = true
+    )
     {
         $this->url = trim($url);
 
@@ -38,7 +25,6 @@ class AssetsConfig
         $this->username = trim($username);
         $this->password = trim($password);
         $this->elasticsearchUrl = trim($elasticsearchUrl);
-        $this->verifySslCertificate = $verifySslCertificate;
     }
 
 
