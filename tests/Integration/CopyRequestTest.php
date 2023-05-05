@@ -11,9 +11,6 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class CopyRequestTest extends IntegrationFixture
 {
-    protected string $testAssetId;
-
-
     public function testCopy(): void
     {
         $sourceFilename = sprintf('CopyRequestTest%s.jpg', uniqid());
@@ -24,8 +21,8 @@ class CopyRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $this->testAssetId = $assetResponse->getId();
-        $this->assertNotEmpty($this->testAssetId);
+        $assetId = $assetResponse->getId();
+        $this->assertNotEmpty($assetId);
 
         $source = sprintf('%s/%s', IntegrationUtils::getAssetsTestsFolder(), $sourceFilename);
         $target = sprintf('%s/CopyOf%s', IntegrationUtils::getAssetsTestsFolder(), $sourceFilename);
@@ -40,7 +37,7 @@ class CopyRequestTest extends IntegrationFixture
 
         $targetId = (new SearchAssetIdRequest($this->assetsClient))->execute(sprintf('assetPath:"%s"', $target), true);
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
+        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
         (new RemoveByIdRequest($this->assetsClient))->execute($targetId);
     }
 }

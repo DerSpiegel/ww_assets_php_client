@@ -11,13 +11,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class UpdateBulkRequestTest extends IntegrationFixture
 {
-    protected string $testAssetId;
-
-
     public function testUpdate(): void
     {
-        $basename = sprintf('UpdateBulkRequestTest%s', uniqid());
-        $filename = sprintf('%s.jpg', $basename);
+        $filename = sprintf('UpdateBulkRequestTest%s.jpg', uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,
@@ -25,22 +21,22 @@ class UpdateBulkRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $this->testAssetId = $assetResponse->getId();
-        $this->assertNotEmpty($this->testAssetId);
+        $assetId = $assetResponse->getId();
+        $this->assertNotEmpty($assetId);
 
         $this->assertEmpty($assetResponse->getMetadata()['headline'] ?? null);
 
         $request = (new UpdateBulkRequest($this->assetsClient))
-            ->setQ(sprintf('id:%s', $this->testAssetId))
+            ->setQ(sprintf('id:%s', $assetId))
             ->setMetadata(['headline' => $filename]);
 
         $request->execute();
 
         $updatedAssetResponse = (new SearchAssetRequest($this->assetsClient))
-            ->execute($this->testAssetId, ['headline']);
+            ->execute($assetId, ['headline']);
 
         $this->assertEquals($filename, $updatedAssetResponse->getMetadata()['headline']);
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
+        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
     }
 }

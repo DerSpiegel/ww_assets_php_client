@@ -9,13 +9,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class RemoveByIdRequestTest extends IntegrationFixture
 {
-    protected string $testAssetId;
-
-
     public function testRemoveById(): void
     {
-        $basename = sprintf('RemoveByIdRequestTest%s', uniqid());
-        $filename = sprintf('%s.jpg', $basename);
+        $filename = sprintf('RemoveByIdRequestTest%s.jpg', uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,
@@ -23,10 +19,10 @@ class RemoveByIdRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $this->testAssetId = $assetResponse->getId();
-        $this->assertNotEmpty($this->testAssetId);
+        $assetId = $assetResponse->getId();
+        $this->assertNotEmpty($assetId);
 
-        $response = (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
+        $response = (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
 
         $this->assertEquals(1, $response->getProcessedCount());
     }

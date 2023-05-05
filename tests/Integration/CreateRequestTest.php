@@ -9,9 +9,6 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class CreateRequestTest extends IntegrationFixture
 {
-    protected string $testAssetId;
-
-
     public function testCreate(): void
     {
         $basename = sprintf('CreateRequestTest%s', uniqid());
@@ -23,8 +20,8 @@ class CreateRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $this->testAssetId = $assetResponse->getId();
-        $this->assertNotEmpty($this->testAssetId);
+        $assetId = $assetResponse->getId();
+        $this->assertNotEmpty($assetId);
 
         $assetMetadata = $assetResponse->getMetadata();
 
@@ -32,6 +29,6 @@ class CreateRequestTest extends IntegrationFixture
         $this->assertEquals($basename, $assetMetadata['baseName']);
         $this->assertEquals('image', $assetMetadata['assetDomain']);
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
+        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
     }
 }

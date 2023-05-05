@@ -11,13 +11,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class CheckoutRequestTest extends IntegrationFixture
 {
-    protected string $testAssetId;
-
-
     public function testCheckout(): void
     {
-        $basename = sprintf('CheckoutRequestTest%s', uniqid());
-        $filename = sprintf('%s.jpg', $basename);
+        $filename = sprintf('CheckoutRequestTest%s.jpg', uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,
@@ -25,17 +21,17 @@ class CheckoutRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $this->testAssetId = $assetResponse->getId();
-        $this->assertNotEmpty($this->testAssetId);
+        $assetId = $assetResponse->getId();
+        $this->assertNotEmpty($assetId);
 
         $response = (new CheckoutRequest($this->assetsClient))
-            ->setId($this->testAssetId)
+            ->setId($assetId)
             ->execute();
 
         $this->assertEquals(IntegrationUtils::getAssetsUsername(), $response->getCheckedOutBy());
 
-        (new UndoCheckoutRequest($this->assetsClient))->setId($this->testAssetId)->execute();
+        (new UndoCheckoutRequest($this->assetsClient))->setId($assetId)->execute();
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
+        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
     }
 }
