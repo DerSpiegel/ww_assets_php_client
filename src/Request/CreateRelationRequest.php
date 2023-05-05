@@ -2,6 +2,8 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\RelationType;
+
 
 /**
  * Class CreateRelationRequest
@@ -11,34 +13,25 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
  */
 class CreateRelationRequest extends Request
 {
-    const RELATION_TYPE_RELATED = 'related';
-    const RELATION_TYPE_REFERENCES = 'references';
-    const RELATION_TYPE_REFERENCED_BY = 'referenced-by';
-    const RELATION_TYPE_CONTAINS = 'contains';
-    const RELATION_TYPE_CONTAINED_BY = 'contained-by';
-    const RELATION_TYPE_DUPLICATE = 'duplicate';
-    const RELATION_TYPE_VARIATION = 'variation';
-    const RELATION_TYPE_VARIATION_OF = 'variation-of';
-
-    protected string $relationType = '';
+    protected ?RelationType $relationType = null;
     protected string $target1Id = '';
     protected string $target2Id = '';
 
 
     /**
-     * @return string
+     * @return RelationType|null
      */
-    public function getRelationType(): string
+    public function getRelationType(): ?RelationType
     {
         return $this->relationType;
     }
 
 
     /**
-     * @param string $relationType
+     * @param RelationType $relationType
      * @return self
      */
-    public function setRelationType(string $relationType): self
+    public function setRelationType(RelationType $relationType): self
     {
         $this->relationType = $relationType;
         return $this;

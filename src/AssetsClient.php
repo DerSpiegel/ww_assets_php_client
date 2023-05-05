@@ -536,7 +536,7 @@ class AssetsClient extends AssetsClientBase
         try {
             $this->serviceRequest('createRelation',
                 [
-                    'relationType' => $request->getRelationType(),
+                    'relationType' => $request->getRelationType()->value,
                     'target1Id' => $request->getTarget1Id(),
                     'target2Id' => $request->getTarget2Id()
                 ]
@@ -548,13 +548,13 @@ class AssetsClient extends AssetsClientBase
         $this->logger->info(
             sprintf(
                 'Relation (%s) created between <%s> and <%s>',
-                $request->getRelationType(),
+                $request->getRelationType()->value,
                 $request->getTarget1Id(),
                 $request->getTarget2Id()
             ),
             [
                 'method' => __METHOD__,
-                'relationType' => $request->getRelationType(),
+                'relationType' => $request->getRelationType()->value,
                 'target1Id' => $request->getTarget1Id(),
                 'target2Id' => $request->getTarget2Id()
             ]
@@ -744,7 +744,7 @@ class AssetsClient extends AssetsClientBase
     public function addToContainer(string $assetId, string $containerId): void
     {
         $request = (new CreateRelationRequest($this->getConfig()))
-            ->setRelationType('contains')
+            ->setRelationType(RelationType::Contains)
             ->setTarget1Id($containerId)
             ->setTarget2Id($assetId);
 
@@ -762,7 +762,7 @@ class AssetsClient extends AssetsClientBase
         $q = $this->getRelationSearchQ(
                 $containerId,
                 self::RELATION_TARGET_CHILD,
-                self::RELATION_TYPE_CONTAINS)
+                RelationType::Contains)
             . sprintf(' id:%s', $assetId);
 
         $searchRequest = (new SearchRequest($this->getConfig()))
@@ -944,13 +944,13 @@ class AssetsClient extends AssetsClientBase
      *
      * @param string $relatedTo
      * @param string $relationTarget
-     * @param string $relationType
+     * @param RelationType|null $relationType
      * @return string
      */
     public function getRelationSearchQ(
         string $relatedTo,
         string $relationTarget = '',
-        string $relationType = ''
+        ?RelationType $relationType = null
     ): string
     {
         $q = sprintf('relatedTo:%s', $relatedTo);
@@ -959,8 +959,8 @@ class AssetsClient extends AssetsClientBase
             $q .= sprintf(' relationTarget:%s', $relationTarget);
         }
 
-        if ($relationType !== '') {
-            $q .= sprintf(' relationType:%s', $relationType);
+        if ($relationType !== null) {
+            $q .= sprintf(' relationType:%s', $relationType->value);
         }
 
         return $q;

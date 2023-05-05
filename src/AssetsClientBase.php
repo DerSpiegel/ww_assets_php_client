@@ -42,12 +42,6 @@ class AssetsClientBase
     const RELATION_TARGET_CHILD = 'child';
     const RELATION_TARGET_PARENT = 'parent';
 
-    const RELATION_TYPE_CONTAINS = 'contains';
-    const RELATION_TYPE_DUPLICATE = 'duplicate';
-    const RELATION_TYPE_REFERENCES = 'references';
-    const RELATION_TYPE_RELATED = 'related';
-    const RELATION_TYPE_VARIATION = 'variation';
-
     protected Client $httpClient;
 
     private bool $allowReLogin = true;
