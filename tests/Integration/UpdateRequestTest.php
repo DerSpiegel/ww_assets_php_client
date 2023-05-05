@@ -2,8 +2,8 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
+use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
 use DerSpiegel\WoodWingAssetsClient\Helper\SearchAssetRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
@@ -41,9 +41,6 @@ class UpdateRequestTest extends IntegrationFixture
 
         $this->assertEquals($filename, $updatedAssetResponse->getMetadata()['headline']);
 
-        $request = (new RemoveRequest($this->assetsClient))
-            ->setIds([$this->testAssetId]);
-
-        $request->execute();
+        (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
     }
 }

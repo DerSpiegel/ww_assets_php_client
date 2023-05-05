@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
-use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
@@ -32,9 +32,6 @@ class CreateRequestTest extends IntegrationFixture
         $this->assertEquals($basename, $assetMetadata['baseName']);
         $this->assertEquals('image', $assetMetadata['assetDomain']);
 
-        $request = (new RemoveRequest($this->assetsClient))
-            ->setIds([$this->testAssetId]);
-
-        $request->execute();
+        (new RemoveByIdRequest($this->assetsClient))->execute($this->testAssetId);
     }
 }
