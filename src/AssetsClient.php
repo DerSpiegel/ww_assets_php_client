@@ -182,7 +182,7 @@ class AssetsClient
                     $data['authcred'] = $this->getToken();
                     break;
                 default:
-                    throw new RuntimeException("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod);
+                    throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod));
             }
         }
 
@@ -644,53 +644,6 @@ class AssetsClient
 
 
     /**
-     * Promote version
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/4824964597009-Assets-Server-REST-API-promote
-     * @param PromoteRequest $request
-     */
-    public function promote(PromoteRequest $request): void
-    {
-        if (trim($request->getId()) === '') {
-            throw new RuntimeException("%s: ID is empty in UndoCheckoutRequest", __METHOD__);
-        }
-
-        if ($request->getVersion() < 1) {
-            throw new RuntimeException("%s: Version is empty in UndoCheckoutRequest", __METHOD__);
-        }
-
-        try {
-            $response = $this->serviceRequest(
-                'version/promote',
-                [
-                    'assetId' => $request->getId(),
-                    'version' => $request->getVersion()
-                ]
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Promote version <%d> of asset <%s> failed',
-                    __METHOD__,
-                    $request->getVersion(),
-                    $request->getId()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $request->getVersion(), $request->getId()),
-            [
-                'method' => __METHOD__,
-                'id' => $request->getId(),
-                'response' => $response
-            ]
-        );
-    }
-
-
-    /**
      * Copy asset
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
@@ -920,7 +873,7 @@ class AssetsClient
     public function updateFolder(UpdateFolderRequest $request): FolderResponse
     {
         if (trim($request->getId()) === '') {
-            throw new RuntimeException("%s: ID is empty in UpdateFolderRequest", __METHOD__);
+            throw new RuntimeException(sprintf("%s: ID is empty in UpdateFolderRequest", __METHOD__));
         }
 
         try {
@@ -954,7 +907,7 @@ class AssetsClient
     public function removeFolder(RemoveFolderRequest $request): void
     {
         if (trim($request->getId()) === '') {
-            throw new RuntimeException("%s: ID is empty in RemoveFolderRequest", __METHOD__);
+            throw new RuntimeException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
         }
 
         try {

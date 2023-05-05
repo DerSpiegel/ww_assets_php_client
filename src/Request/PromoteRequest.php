@@ -2,17 +2,61 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+use RuntimeException;
+
 
 /**
- * Class UndoCheckoutRequest
+ * Promote version
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/4824964597009-Assets-Server-REST-API-promote
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class PromoteRequest extends Request
 {
     protected string $id = '';
     protected int $version = 0;
+
+
+    public function execute(): void
+    {
+        if (trim($this->getId()) === '') {
+            throw new RuntimeException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
+        }
+
+        if ($this->getVersion() < 1) {
+            throw new RuntimeException(sprintf("%s: Version is empty in UndoCheckoutRequest", __METHOD__));
+        }
+
+        try {
+            $response = $this->assetsClient->serviceRequest(
+                'version/promote',
+                [
+                    'assetId' => $this->getId(),
+                    'version' => $this->getVersion()
+                ]
+            );
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Promote version <%d> of asset <%s> failed',
+                    __METHOD__,
+                    $this->getVersion(),
+                    $this->getId()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $this->getVersion(), $this->getId()),
+            [
+                'method' => __METHOD__,
+                'id' => $this->getId(),
+                'response' => $response
+            ]
+        );
+    }
 
 
     /**
