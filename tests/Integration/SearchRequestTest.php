@@ -10,12 +10,12 @@ final class SearchRequestTest extends IntegrationFixture
 {
     public function testSearch(): void
     {
-        $searchRequest = (new SearchRequest($this->assetsConfig))
+        $request = (new SearchRequest($this->assetsClient))
             ->setQ('')
             ->setNum(0);
 
-        $searchResponse = $this->assetsClient->search($searchRequest);
+        $response = $request->execute();
 
-        $this->assertGreaterThan(0, $searchResponse->getTotalHits());
+        $this->assertGreaterThan(0, $response->getTotalHits());
     }
 }

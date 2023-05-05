@@ -2,13 +2,13 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
+use RuntimeException;
+
 
 /**
- * Class ApiLoginRequest
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class ApiLoginRequest extends Request
 {
@@ -17,15 +17,37 @@ class ApiLoginRequest extends Request
     protected string $clientId = '';
 
 
-    /**
-     * ApiLoginRequest constructor.
-     * @param AssetsConfig $config
-     */
-    public function __construct(AssetsConfig $config)
+    public function __construct(
+        protected AssetsClient $assetsClient
+    )
     {
-        parent::__construct($config);
+        parent::__construct($assetsClient);
 
-        $this->setFromConfig($this->config);
+        $this->setFromConfig($this->assetsClient->getConfig());
+    }
+
+
+    /**
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login
+     */
+    public function execute(): ApiLoginResponse
+    {
+        $data = [
+            'username' => $this->getUsername(),
+            'password' => $this->getPassword()
+        ];
+
+        if (strlen($this->getClientId()) > 0) {
+            $data['clientId'] = $this->getClientId();
+        }
+
+        try {
+            $response = $this->assetsClient->serviceRequest('apilogin', $data);
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
+        }
+
+        return (new ApiLoginResponse())->fromJson($response);
     }
 
 

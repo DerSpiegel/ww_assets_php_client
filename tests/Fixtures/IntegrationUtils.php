@@ -9,6 +9,18 @@ use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
 
 class IntegrationUtils
 {
+    public static function getAssetsUsername(): string
+    {
+        return ASSETS_USERNAME;
+    }
+
+
+    public static function getAssetsTestsFolder(): string
+    {
+        return ASSETS_TESTS_FOLDER;
+    }
+
+
     public static function createJpegAsset(AssetsClient $assetsClient, string $filename, array $metadata): AssetResponse
     {
         $tmpFilename = sprintf('/tmp/%s', $filename);
@@ -17,11 +29,11 @@ class IntegrationUtils
 
         $fp = fopen($tmpFilename, 'r');
 
-        $request = (new CreateRequest($assetsClient->getConfig()))
+        $request = (new CreateRequest($assetsClient))
             ->setFiledata($fp)
             ->setMetadata($metadata);
 
-        return $assetsClient->create($request);
+        return $request->execute();
     }
 
 

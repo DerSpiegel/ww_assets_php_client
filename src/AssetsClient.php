@@ -3,9 +3,9 @@
 namespace DerSpiegel\WoodWingAssetsClient;
 
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use DerSpiegel\WoodWingAssetsClient\Exception\NotAuthorizedAssetsException;
+use DerSpiegel\WoodWingAssetsClient\Request\ApiLoginRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
-use DerSpiegel\WoodWingAssetsClient\Request\BrowseRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\BrowseResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CopyAssetRequest;
@@ -17,6 +17,8 @@ use DerSpiegel\WoodWingAssetsClient\Request\GetFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\HistoryDetailLevel;
 use DerSpiegel\WoodWingAssetsClient\Request\HistoryRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\HistoryResponse;
+use DerSpiegel\WoodWingAssetsClient\Request\LoginRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\LogoutResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\MoveRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\PromoteRequest;
@@ -30,163 +32,615 @@ use DerSpiegel\WoodWingAssetsClient\Request\UpdateBulkRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\MessageFormatter;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\RequestOptions;
+use JsonException;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use RuntimeException;
+use SebastianBergmann\Timer\Timer;
 
 
 /**
  * Class AssetsClient
  * @package DerSpiegel\WoodWingAssetsClient
  */
-class AssetsClient extends AssetsClientBase
+class AssetsClient
 {
-    /** Assets REST API methods */
+    const AUTH_METHOD_BEARER_TOKEN = 1;
+    const AUTH_METHOD_CSRF_TOKEN = 2;
+    const AUTH_METHOD_AUTHCRED = 3;
+
+    const MAX_LOGIN_ATTEMPTS_PER_SECOND = 10;
+
+    const RELATION_TARGET_ANY = 'any';
+    const RELATION_TARGET_CHILD = 'child';
+    const RELATION_TARGET_PARENT = 'parent';
+
+    protected Client $httpClient;
+
+    private bool $allowReLogin = true;
+    protected string $authCred = '';
+    protected int $authMethod = self::AUTH_METHOD_BEARER_TOKEN;
+    protected string $bearerToken = '';
+    protected array $cookies = [];
+    protected string $csrfToken = '';
+    protected string $httpUserAgent = '';
+    private array $loginAttempts = [];
+    protected int $requestTimeout = 60;
 
 
     /**
-     * Search for assets
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search
-     * @param SearchRequest $request
-     * @return SearchResponse
+     * AssetsClientBase constructor.
+     * @param AssetsConfig $config
+     * @param LoggerInterface $logger
      */
-    public function search(SearchRequest $request): SearchResponse
+    public function __construct(
+        protected AssetsConfig $config,
+        protected LoggerInterface $logger
+    )
     {
-        try {
-            $response = $this->serviceRequest('search', $request->toArray());
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
-                $e);
-        }
-
-        $this->logger->debug('Search performed',
-            [
-                'method' => __METHOD__,
-                'query' => $request->getQ()
-            ]
-        );
-
-        return (new SearchResponse())->fromJson($response);
+        $this->httpClient = $this->newHttpClient();
+        $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
     }
 
 
     /**
-     * Browse folders and collections
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse
-     * @param BrowseRequest $request
-     * @return BrowseResponse
+     * @param bool $allowReLogin
+     * @return self
      */
-    public function browse(BrowseRequest $request): BrowseResponse
+    public function setAllowReLogin(bool $allowReLogin): self
     {
-        try {
-            $response = $this->serviceRequest('browse', $request->toArray());
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Browse failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
-                $e);
-        }
-
-        $this->logger->debug('Browse performed',
-            [
-                'method' => __METHOD__,
-                'path' => $request->getPath()
-            ]
-        );
-
-        return (new BrowseResponse())->fromJson($response);
+        $this->allowReLogin = $allowReLogin;
+        return $this;
     }
 
 
     /**
-     * Create (upload) an asset
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create
-     * @param CreateRequest $request
-     * @return AssetResponse
+     * @param int $authMethod
      */
-    public function create(CreateRequest $request): AssetResponse
+    public function setAuthMethod(int $authMethod): void
     {
-        $data = $request->getMetadata();
-
-        $fp = $request->getFiledata();
-
-        if (is_resource($fp)) {
-            $data['Filedata'] = $fp;
-        }
-
-        try {
-            $response = $this->serviceRequest('create', $data);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
-        }
-
-        $assetResponse = (new AssetResponse())->fromJson($response);
-
-        $this->logger->info('Asset created',
-            [
-                'method' => __METHOD__,
-                'metadata' => $request->getMetadata()
-            ]
-        );
-
-        return $assetResponse;
+        $this->authMethod = $authMethod;
     }
 
 
     /**
-     * Update an asset's metadata
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in
-     * @param UpdateRequest $request
+     * @return AssetsConfig
      */
-    public function update(UpdateRequest $request): void
+    public function getConfig(): AssetsConfig
     {
-        $requestData = [
-            'id' => $request->getId(),
-            'parseMetadataModifications' => $request->isParseMetadataModification() ? 'true' : 'false'
+        return $this->config;
+    }
+
+
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getRequestTimeout(): int
+    {
+        return $this->requestTimeout;
+    }
+
+
+    /**
+     * @param int $seconds
+     * @return self
+     */
+    public function setRequestTimeout(int $seconds): self
+    {
+        $this->requestTimeout = max($seconds, 1);
+        return $this;
+    }
+
+
+    /**
+     * @param string $method
+     * @param string $url
+     * @param array $data
+     * @param bool $multipart - weather to send the data as multipart or application/json
+     * @param bool $sendToken
+     * @return ResponseInterface
+     * @throws RuntimeException
+     */
+    public function request(
+        string $method,
+        string $url,
+        array  $data = [],
+        bool   $multipart = true,
+        bool   $sendToken = true
+    ): ResponseInterface
+    {
+        $options = [
+            RequestOptions::HEADERS => ['User-Agent' => $this->getHttpUserAgent()],
+            RequestOptions::TIMEOUT => $this->getRequestTimeout(),
+            RequestOptions::VERIFY => $this->getConfig()->isVerifySslCertificate()
         ];
 
-        $metadata = $request->getMetadata();
-
-        if (count($metadata) > 0) {
-            $requestData['metadata'] = json_encode($metadata);
+        if ($sendToken) {
+            switch ($this->authMethod) {
+                case self::AUTH_METHOD_BEARER_TOKEN:
+                    $options[RequestOptions::HEADERS]['Authorization'] = $this->getToken();
+                    break;
+                case self::AUTH_METHOD_CSRF_TOKEN:
+                    $options[RequestOptions::HEADERS]['X-CSRF-TOKEN'] = $this->getToken();
+                    break;
+                case self::AUTH_METHOD_AUTHCRED:
+                    $data['authcred'] = $this->getToken();
+                    break;
+                default:
+                    throw new RuntimeException("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod);
+            }
         }
 
-        $fp = $request->getFiledata();
+        if ($multipart) {
+            // send data as multipart (e.g. for `services/*`)
+            $options[RequestOptions::MULTIPART] = $this->dataToMultipart($data);
+        } else {
 
-        if (is_resource($fp)) {
-            $requestData['Filedata'] = $fp;
-            $requestData['clearCheckoutState'] = $request->isClearCheckoutState() ? 'true' : 'false';
+            // send data according to the request method
+            //send data as application/json (e.g. for `api/*`)
+
+            switch ($method) {
+                case 'GET':
+                case 'HEAD':
+                    // send data as query string
+                    $url = sprintf("%s?%s", $url, http_build_query($data));
+                    break;
+                case 'POST':
+                case 'PUT':
+                default:
+                    // send data as application/json
+                    $options[RequestOptions::BODY] = json_encode($data);
+                    $options[RequestOptions::HEADERS]['Content-Type'] = 'application/json';
+                    break;
+            }
+        }
+
+        // cookies
+        $jar = new CookieJar();
+        foreach ($this->cookies as $cookie) {
+            $jar->setCookie(new SetCookie($cookie));
+        }
+        $options[RequestOptions::COOKIES] = $jar;
+
+        try {
+            $httpClient = $this->httpClient;
+
+            $timer = new Timer();
+            $timer->start();
+
+            $response = $httpClient->request($method, $url, $options);
+
+            $duration = $timer->stop();
+            $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url, $duration->asString()));
+
+            // store cookies for further requests
+            $this->cookies = $jar->toArray();
+
+            return $response;
+        } catch (GuzzleException $e) {
+            // throw RuntimeException instead, to match the exception thrown by `AssetsServerBase::parseJsonResponse`
+            throw new RuntimeException($e->getMessage(), $e->getCode());
+        }
+    }
+
+
+    /**
+     * @param string $service
+     * @param array $data
+     * @return array
+     * @throws JsonException
+     */
+    public function serviceRequest(string $service, array $data = []): array
+    {
+        $httpResponse = $this->rawServiceRequest($service, $data);
+        return AssetsUtils::parseJsonResponse($httpResponse->getBody());
+    }
+
+
+    /**
+     * @param string $service
+     * @param array $data
+     * @return ResponseInterface
+     */
+    protected function rawServiceRequest(string $service, array $data = []): ResponseInterface
+    {
+        $url = sprintf(
+            '%sservices/%s',
+            $this->config->getUrl(),
+            $service
+        );
+
+        $loginRequest = in_array($service, ['login', 'apilogin']);
+
+        if ($loginRequest) {
+            $this->preventLoginLoops();
         }
 
         try {
-            $this->serviceRequest('update', $requestData);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Update failed for asset <%s> - <%s> - <%s>',
-                    __METHOD__,
-                    $request->getId(),
-                    $e->getMessage(),
-                    json_encode($requestData)
-                ),
-                $e->getCode(),
-                $e
-            );
+            $httpResponse = $this->request('POST', $url, $data, true, !$loginRequest);
+
+            // Even usually-binary responses like "checkout and download" return JSON on error (i.e. "not logged in").
+            // So when we get JSON back, run it through AssetsUtils::parseJsonResponse() which throws an exception on error.
+            if (str_starts_with($httpResponse->getHeaderLine('content-type'), 'application/json')) {
+                AssetsUtils::parseJsonResponse($httpResponse->getBody());
+            }
+        } catch (RuntimeException $e) {
+            switch ($e->getCode()) {
+                case 401: // Unauthorized
+                    // TODO: prevent a possible loop here?
+
+                    // re-login
+                    if (!$this->reLogin()) {
+                        throw $e;
+                    }
+
+                    // try again
+                    return $this->rawServiceRequest($service, $data);
+                default:
+                    // something went wrong
+                    throw $e;
+            }
         }
 
-        $this->logger->info(
-            sprintf(
-                'Updated %s for asset <%s>',
-                implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
-                $request->getId()
-            ),
-            [
-                'method' => __METHOD__,
-                'assetId' => $request->getId(),
-                'metadata' => $request->getMetadata()
-            ]
+        return $httpResponse;
+    }
+
+
+    /**
+     * @param string $method
+     * @param string $service
+     * @param array $data
+     * @return array
+     * @throws JsonException
+     */
+    protected function apiRequest(string $method, string $service, array $data = []): array
+    {
+        $url = sprintf(
+            '%sapi/%s',
+            $this->config->getUrl(),
+            $service
+        );
+
+        try {
+            $httpResponse = $this->request($method, $url, $data, false);
+            return AssetsUtils::parseJsonResponse($httpResponse->getBody());
+        } catch (RuntimeException $e) {
+            switch ($e->getCode()) {
+                case 401: // Unauthorized
+                    // TODO: prevent a possible loop here?
+
+                    // re-login
+                    if (!$this->reLogin()) {
+                        throw $e;
+                    }
+
+                    // try again
+                    return $this->apiRequest($method, $service, $data);
+                default:
+                    // something went wrong
+                    throw $e;
+            }
+        }
+    }
+
+
+    /**
+     * @return Client
+     */
+    protected function newHttpClient(): Client
+    {
+        $stack = HandlerStack::create();
+
+        $stack->push(
+            Middleware::log(
+                $this->logger,
+                new MessageFormatter('AssetsClient {method} request to {uri}. Assets response headers: {res_headers}'),
+                LogLevel::DEBUG
+            )
+        );
+
+        return new Client(['handler' => $stack]);
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getDefaultHttpUserAgent(): string
+    {
+        return sprintf(
+            'der-spiegel/ww-elvis-client (https://github.com/DerSpiegel/ww_elvis_php_client) PHP/%s',
+            PHP_VERSION
         );
     }
+
+
+    /**
+     * @return string
+     */
+    public function getHttpUserAgent(): string
+    {
+        return $this->httpUserAgent;
+    }
+
+
+    /**
+     * @param string $httpUserAgent
+     * @return self
+     */
+    public function setHttpUserAgent(string $httpUserAgent): self
+    {
+        $this->httpUserAgent = $httpUserAgent;
+        return $this;
+    }
+
+
+    /**
+     * @return bool
+     */
+    private function reLogin(): bool
+    {
+        try {
+            $this->getToken(true);
+            return true;
+        } catch (RuntimeException) {
+            return false;
+        }
+    }
+
+
+    /**
+     * @param bool $force
+     * @return string
+     */
+    public function getToken(bool $force = false): string
+    {
+        return match ($this->authMethod) {
+            self::AUTH_METHOD_BEARER_TOKEN => $this->getBearerToken($force),
+            self::AUTH_METHOD_CSRF_TOKEN => $this->getCsrfToken($force),
+            self::AUTH_METHOD_AUTHCRED => $this->getAuthCred(),
+            default => throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
+                $this->authMethod)),
+        };
+    }
+
+
+    private function preventLoginLoops(): void
+    {
+        $key = time();
+        $this->loginAttempts[$key] = ($this->loginAttempts[$key] ?? 0) + 1;
+        if ($this->loginAttempts[$key] > self::MAX_LOGIN_ATTEMPTS_PER_SECOND) {
+            throw new RuntimeException(sprintf("%s: MAX_LOGIN_ATTEMPTS_PER_SECOND exceeded", __METHOD__));
+        }
+    }
+
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    private function dataToMultipart(array $data): array
+    {
+        $multipart = [];
+        foreach ($data as $name => $value) {
+            $multipart[] = [
+                'name' => $name,
+                'contents' => $value
+            ];
+        }
+        return $multipart;
+    }
+
+
+    /**
+     * @param string $bearerToken
+     */
+    public function setBearerToken(string $bearerToken): void
+    {
+        $this->bearerToken = $bearerToken;
+        $this->setAuthMethod(self::AUTH_METHOD_BEARER_TOKEN);
+    }
+
+
+    /**
+     * Perform API login and return Authorization token
+     * @param bool $force
+     * @return string
+     */
+    public function getBearerToken(bool $force = false): string
+    {
+        if ((strlen($this->bearerToken) > 0) && (!$force)) {
+            return $this->bearerToken;
+        }
+
+        if (!$this->allowReLogin) {
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
+        }
+
+        $response = (new ApiLoginRequest($this))->execute();
+
+        if (!$response->isLoginSuccess()) {
+            throw new RuntimeException(sprintf('%s: Assets API login failed: %s', __METHOD__,
+                $response->getLoginFaultMessage()));
+        }
+
+        if (strlen($response->getAuthToken()) === 0) {
+            throw new RuntimeException(sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__));
+        }
+
+        $this->bearerToken = 'Bearer ' . $response->getAuthToken();
+
+        return $this->bearerToken;
+    }
+
+
+    /**
+     * @param string $csrfToken
+     * @param array $cookies
+     */
+    public function setCsrfToken(string $csrfToken, array $cookies = []): void
+    {
+        $this->csrfToken = $csrfToken;
+        $this->cookies = $cookies;
+        $this->setAuthMethod(self::AUTH_METHOD_CSRF_TOKEN);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getAuthCred(): string
+    {
+        return $this->authCred;
+    }
+
+
+    /**
+     * @param string $authCred
+     */
+    public function setAuthCred(string $authCred): void
+    {
+        $this->authCred = $authCred;
+        $this->setAuthMethod(self::AUTH_METHOD_AUTHCRED);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getCookies(): array
+    {
+        return $this->cookies;
+    }
+
+
+    /**
+     * @param bool $force
+     * @return string
+     */
+    public function getCsrfToken(bool $force = false): string
+    {
+        if ((strlen($this->csrfToken) > 0) && (!$force)) {
+            return $this->csrfToken;
+        }
+
+        if (!$this->allowReLogin) {
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
+        }
+
+        $response = (new LoginRequest($this))->execute();
+
+        if (!$response->isLoginSuccess()) {
+            throw new RuntimeException(sprintf('%s: Assets login failed: %s', __METHOD__,
+                $response->getLoginFaultMessage()));
+        }
+
+        if (strlen($response->getCsrfToken()) === 0) {
+            throw new RuntimeException(sprintf('%s: Assets login succeeded, but csrfToken is empty', __METHOD__));
+        }
+
+        $this->csrfToken = $response->getCsrfToken();
+
+        return $this->csrfToken;
+    }
+
+
+    /**
+     * @param bool $cleanUpToken
+     * @return LogoutResponse
+     */
+    public function logout(bool $cleanUpToken = true): LogoutResponse
+    {
+        try {
+            $httpResponse = $this->serviceRequest('logout');
+            $logout = (new LogoutResponse())->fromJson($httpResponse);
+
+            if ($cleanUpToken) {
+                $this->bearerToken = '';
+            }
+
+            return $logout;
+
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf('%s: Logout POST request failed', __METHOD__), $e->getCode(), $e);
+        }
+    }
+
+
+    /**
+     * @param string $url
+     * @param string $targetPath
+     */
+    protected function downloadFileToPath(string $url, string $targetPath): void
+    {
+        try {
+            $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
+            $this->writeResponseBodyToPath($httpResponse, $targetPath);
+        } catch (Exception $e) {
+            throw new AssetsException(sprintf('%s: Failed to download <%s>: %s', __METHOD__, $url, $e->getMessage()),
+                $e->getCode(), $e);
+        }
+    }
+
+
+    /**
+     * @param ResponseInterface $httpResponse
+     * @param string $targetPath
+     */
+    protected function writeResponseBodyToPath(ResponseInterface $httpResponse, string $targetPath): void
+    {
+        $fp = fopen($targetPath, 'wb');
+
+        if ($fp === false) {
+            throw new AssetsException(sprintf('%s: Failed to open <%s> for writing', __METHOD__,
+                $targetPath));
+        }
+
+        $ok = true;
+
+        while ($data = $httpResponse->getBody()->read(1024)) {
+            $ok = fwrite($fp, $data);
+
+            if ($ok === false) {
+                break;
+            }
+        }
+
+        fclose($fp);
+
+        if (!$ok) {
+            throw new AssetsException(sprintf('%s: Failed to write HTTP response to <%s>', __METHOD__,
+                $targetPath));
+        }
+    }
+
+
+    /**
+     * @param string $assetId
+     * @return string
+     */
+    public function buildOriginalFileUrl(string $assetId): string
+    {
+        return "{$this->config->getUrl()}file/$assetId/*/$assetId";
+    }
+
+
+    /** Assets REST API methods */
 
 
     /**
@@ -490,42 +944,6 @@ class AssetsClient extends AssetsClientBase
 
 
     /**
-     * Remove Assets or Collections
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove
-     * @param RemoveRequest $request
-     * @return ProcessResponse
-     */
-    public function removeAsset(RemoveRequest $request): ProcessResponse
-    {
-        try {
-            // filter the array, so the actual folder gets remove, not only its contents ?!
-            $response = $this->serviceRequest('remove', array_filter(
-                [
-                    'q' => $request->getQ(),
-                    'ids' => implode(',', $request->getIds()),
-                    'folderPath' => $request->getFolderPath(),
-                ]
-            ));
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
-        }
-
-        $this->logger->info('Assets/Folders removed',
-            [
-                'method' => __METHOD__,
-                'q' => $request->getQ(),
-                'ids' => $request->getIds(),
-                'folderPath' => $request->getFolderPath(),
-                'response' => $response
-            ]
-        );
-
-        return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
      * Create a relation between two assets
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation
@@ -731,7 +1149,7 @@ class AssetsClient extends AssetsClientBase
      */
     public function removeById(string $assetId): ProcessResponse
     {
-        return $this->removeAsset((new RemoveRequest($this->config))->setIds([$assetId]));
+        return $this->removeAsset((new RemoveRequest($this))->setIds([$assetId]));
     }
 
 
@@ -743,7 +1161,7 @@ class AssetsClient extends AssetsClientBase
      */
     public function addToContainer(string $assetId, string $containerId): void
     {
-        $request = (new CreateRelationRequest($this->getConfig()))
+        $request = (new CreateRelationRequest($this))
             ->setRelationType(RelationType::Contains)
             ->setTarget1Id($containerId)
             ->setTarget2Id($assetId);
@@ -765,7 +1183,7 @@ class AssetsClient extends AssetsClientBase
                 RelationType::Contains)
             . sprintf(' id:%s', $assetId);
 
-        $searchRequest = (new SearchRequest($this->getConfig()))
+        $searchRequest = (new SearchRequest($this))
             ->setQ($q)
             ->setMetadataToReturn(['id'])
             ->setNum(2);
@@ -783,7 +1201,7 @@ class AssetsClient extends AssetsClientBase
             throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));
         }
 
-        $request = (new RemoveRelationRequest($this->getConfig()))
+        $request = (new RemoveRelationRequest($this))
             ->setRelationIds([$relationId]);
 
         $response = $this->removeRelation($request);
@@ -816,7 +1234,7 @@ class AssetsClient extends AssetsClientBase
 
         $metadata['assetPath'] = $assetPath;
 
-        return $this->create((new CreateRequest($this->getConfig()))
+        return $this->create((new CreateRequest($this))
             ->setMetadata($metadata));
     }
 
@@ -878,37 +1296,6 @@ class AssetsClient extends AssetsClientBase
 
 
     /**
-     * Search for an asset by ID and return all or selected metadata
-     *
-     * @param string $assetId
-     * @param array $metadataToReturn
-     * @return AssetResponse
-     */
-    public function searchAsset(string $assetId, array $metadataToReturn = []): AssetResponse
-    {
-        $request = (new SearchRequest($this->getConfig()))
-            ->setQ('id:' . $assetId);
-
-        if (!empty($metadataToReturn)) {
-            $request->setMetadataToReturn($metadataToReturn);
-        }
-
-        $response = $this->search($request);
-
-        if ($response->getTotalHits() === 0) {
-            throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $assetId), 404);
-        }
-
-        if ($response->getTotalHits() > 1) {
-            // god help us if this happens
-            throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $assetId), 404);
-        }
-
-        return $response->getHits()[0];
-    }
-
-
-    /**
      * Search for an asset and return its ID
      *
      * @param string $q
@@ -917,7 +1304,7 @@ class AssetsClient extends AssetsClientBase
      */
     public function searchAssetId(string $q, bool $failIfMultipleHits): string
     {
-        $request = (new SearchRequest($this->getConfig()))
+        $request = (new SearchRequest($this))
             ->setQ($q)
             ->setNum(2)
             ->setMetadataToReturn(['']);
@@ -993,7 +1380,7 @@ class AssetsClient extends AssetsClientBase
      * @param AssetResponse $assetResponse
      * @param string $targetPath
      */
-    public function downloadOriginalFileById(AssetResponse $assetResponse, string $targetPath)
+    public function downloadOriginalFileById(AssetResponse $assetResponse, string $targetPath): void
     {
         // TODO: Deprecate or fix; should be "byId" and expect a string $assetId
 

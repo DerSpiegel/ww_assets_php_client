@@ -2,15 +2,13 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
+use RuntimeException;
 
 
 /**
- *
- * Class LoginRequest
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LoginRequest extends Request
 {
@@ -20,15 +18,38 @@ class LoginRequest extends Request
     protected bool $returnProfile = false;
 
 
-    /**
-     * LoginRequest constructor.
-     * @param AssetsConfig $config
-     */
-    public function __construct(AssetsConfig $config)
+    public function __construct(
+        protected AssetsClient $assetsClient
+    )
     {
-        parent::__construct($config);
+        parent::__construct($assetsClient);
 
-        $this->setFromConfig($this->config);
+        $this->setFromConfig($this->assetsConfig);
+    }
+
+
+    /**
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
+     */
+    public function execute(): LoginResponse
+    {
+        $data = [
+            'username' => $this->getUsername(),
+            'password' => $this->getPassword(),
+            'returnProfile' => $this->getReturnProfile() ? 'true' : 'false'
+        ];
+
+        if (strlen($this->getClientType()) > 0) {
+            $data['clientType'] = $this->getClientType();
+        }
+
+        try {
+            $response = $this->assetsClient->serviceRequest('login', $data);
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
+        }
+
+        return (new LoginResponse())->fromJson($response);
     }
 
 

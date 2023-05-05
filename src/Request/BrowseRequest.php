@@ -2,12 +2,13 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 
 /**
- * Class SearchRequest
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class BrowseRequest extends Request
 {
@@ -18,10 +19,27 @@ class BrowseRequest extends Request
     protected string $path = '';
 
 
-    /**
-     * @return array
-     */
-    public function toArray(): array
+    public function execute(): BrowseResponse
+    {
+        try {
+            $response = $this->assetsClient->serviceRequest('browse', $this->toArray());
+        } catch (Exception $e) {
+            throw new AssetsException(sprintf('%s: Browse failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
+                $e);
+        }
+
+        $this->logger->debug('Browse performed',
+            [
+                'method' => __METHOD__,
+                'path' => $this->getPath()
+            ]
+        );
+
+        return (new BrowseResponse())->fromJson($response);
+    }
+
+
+    protected function toArray(): array
     {
         $params = [
             'path' => $this->getPath()

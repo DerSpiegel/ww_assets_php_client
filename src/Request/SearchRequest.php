@@ -3,11 +3,13 @@
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 /**
- * Class SearchRequest
+ * Search for assets
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class SearchRequest extends Request
 {
@@ -35,10 +37,30 @@ class SearchRequest extends Request
     protected bool $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT;
 
 
+    public function execute(): SearchResponse
+    {
+        try {
+            $response = $this->assetsClient->serviceRequest('search', $this->toArray());
+        } catch (Exception $e) {
+            throw new AssetsException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
+                $e);
+        }
+
+        $this->logger->debug('Search performed',
+            [
+                'method' => __METHOD__,
+                'query' => $this->getQ()
+            ]
+        );
+
+        return (new SearchResponse())->fromJson($response);
+    }
+
+
     /**
      * @return array
      */
-    public function toArray(): array
+    protected function toArray(): array
     {
         $params = [
             'q' => $this->getQ()

@@ -2,19 +2,21 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
+use DerSpiegel\WoodWingAssetsClient\Helper\SearchAssetRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\UpdateRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 
-class CreateRequestTest extends IntegrationFixture
+class UpdateRequestTest extends IntegrationFixture
 {
     protected string $testAssetId;
 
 
-    public function testCreate(): void
+    public function testUpdate(): void
     {
-        $basename = sprintf('CreateRequestTest%s', uniqid());
+        $basename = sprintf('UpdateRequestTest%s', uniqid());
         $filename = sprintf('%s.jpg', $basename);
 
         $assetResponse = IntegrationUtils::createJpegAsset(
@@ -26,11 +28,18 @@ class CreateRequestTest extends IntegrationFixture
         $this->testAssetId = $assetResponse->getId();
         $this->assertNotEmpty($this->testAssetId);
 
-        $assetMetadata = $assetResponse->getMetadata();
+        $this->assertEmpty($assetResponse->getMetadata()['headline'] ?? null);
 
-        $this->assertEquals(IntegrationUtils::getAssetsUsername(), $assetMetadata['assetCreator']);
-        $this->assertEquals($basename, $assetMetadata['baseName']);
-        $this->assertEquals('image', $assetMetadata['assetDomain']);
+        $request = (new UpdateRequest($this->assetsClient))
+            ->setId($this->testAssetId)
+            ->setMetadata(['headline' => $filename]);
+
+        $request->execute();
+
+        $updatedAssetResponse = (new SearchAssetRequest($this->assetsClient))
+            ->execute($this->testAssetId, ['headline']);
+
+        $this->assertEquals($filename, $updatedAssetResponse->getMetadata()['headline']);
 
         $request = (new RemoveRequest($this->assetsClient))
             ->setIds([$this->testAssetId]);

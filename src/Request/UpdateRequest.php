@@ -2,39 +2,69 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 
 /**
- * Class UpdateRequest
+ * Update an asset's metadata
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
-class UpdateRequest extends CreateRequest
+class UpdateRequest extends CreateRequestBase
 {
-    /** @var resource */
-    protected $filedata;
-
     protected string $id = '';
     protected bool $clearCheckoutState = true;
 
 
-    /**
-     * @return resource
-     */
-    public function getFiledata()
+    public function execute(): void
     {
-        return $this->filedata;
-    }
+        $requestData = [
+            'id' => $this->getId(),
+            'parseMetadataModifications' => $this->isParseMetadataModification() ? 'true' : 'false'
+        ];
 
+        $metadata = $this->getMetadata();
 
-    /**
-     * @param resource $fp
-     * @return self
-     */
-    public function setFiledata($fp): self
-    {
-        $this->filedata = $fp;
-        return $this;
+        if (count($metadata) > 0) {
+            $requestData['metadata'] = json_encode($metadata);
+        }
+
+        $fp = $this->getFiledata();
+
+        if (is_resource($fp)) {
+            $requestData['Filedata'] = $fp;
+            $requestData['clearCheckoutState'] = $this->isClearCheckoutState() ? 'true' : 'false';
+        }
+
+        try {
+            $this->assetsClient->serviceRequest('update', $requestData);
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Update failed for asset <%s> - <%s> - <%s>',
+                    __METHOD__,
+                    $request->getId(),
+                    $e->getMessage(),
+                    json_encode($requestData)
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(
+            sprintf(
+                'Updated %s for asset <%s>',
+                implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
+                $this->getId()
+            ),
+            [
+                'method' => __METHOD__,
+                'assetId' => $this->getId(),
+                'metadata' => $this->getMetadata()
+            ]
+        );
     }
 
 

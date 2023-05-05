@@ -7,6 +7,7 @@ use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
 use JsonException;
 
 
+// TODO Switch to AssetsClient / executable Request
 class AssetsPrivateApiClient extends AssetsClientBase
 {
     /**

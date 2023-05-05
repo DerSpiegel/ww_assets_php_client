@@ -2,25 +2,22 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
+use Psr\Log\LoggerInterface;
 
 
-/**
- * Class Request
- *
- * @package DerSpiegel\WoodWingAssetsClient\Request
- */
 abstract class Request
 {
-    protected AssetsConfig $config;
+    protected AssetsConfig $assetsConfig;
+    protected LoggerInterface $logger;
 
 
-    /**
-     * UpdateFolderRequest constructor.
-     * @param AssetsConfig $config
-     */
-    public function __construct(AssetsConfig $config)
+    public function __construct(
+        protected AssetsClient $assetsClient
+    )
     {
-        $this->config = $config;
+        $this->assetsConfig = $this->assetsClient->getConfig();
+        $this->logger = $this->assetsClient->getLogger();
     }
 }
