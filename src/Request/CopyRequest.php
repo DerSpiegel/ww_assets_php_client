@@ -2,14 +2,16 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 
 /**
- * Class CopyAssetRequest
+ * Copy asset
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
-class CopyAssetRequest extends Request
+class CopyRequest extends Request
 {
     const FILE_REPLACE_POLICY_AUTO_RENAME = 'AUTO_RENAME';
     const FILE_REPLACE_POLICY_OVERWRITE = 'OVERWRITE';
@@ -21,6 +23,41 @@ class CopyAssetRequest extends Request
     protected string $source = '';
     protected string $target = '';
     protected string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME;
+
+
+    public function execute(): ProcessResponse
+    {
+        try {
+            $response = $this->assetsClient->serviceRequest('copy', [
+                'source' => $this->getSource(),
+                'target' => $this->getTarget(),
+                'fileReplacePolicy' => $this->getFileReplacePolicy()
+            ]);
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Copy from <%s> to <%s> failed: %s',
+                    __METHOD__,
+                    $this->getSource(),
+                    $this->getTarget(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Asset copied to <%s>', $this->getTarget()),
+            [
+                'method' => __METHOD__,
+                'source' => $this->getSource(),
+                'target' => $this->getTarget(),
+                'fileReplacePolicy' => $this->getFileReplacePolicy()
+            ]
+        );
+
+        return (new ProcessResponse())->fromJson($response);
+    }
 
 
     /**

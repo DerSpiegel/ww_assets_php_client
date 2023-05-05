@@ -8,7 +8,7 @@ use DerSpiegel\WoodWingAssetsClient\Request\ApiLoginRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CheckoutResponse;
-use DerSpiegel\WoodWingAssetsClient\Request\CopyAssetRequest;
+use DerSpiegel\WoodWingAssetsClient\Request\CopyRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CreateFolderRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CreateRelationRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
@@ -644,48 +644,6 @@ class AssetsClient
 
 
     /**
-     * Copy asset
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
-     * @param CopyAssetRequest $request
-     * @return ProcessResponse
-     */
-    public function copyAsset(CopyAssetRequest $request): ProcessResponse
-    {
-        try {
-            $response = $this->serviceRequest('copy', [
-                'source' => $request->getSource(),
-                'target' => $request->getTarget(),
-                'fileReplacePolicy' => $request->getFileReplacePolicy()
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Copy from <%s> to <%s> failed: %s',
-                    __METHOD__,
-                    $request->getSource(),
-                    $request->getTarget(),
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        $this->logger->info(sprintf('Asset copied to <%s>', $request->getTarget()),
-            [
-                'method' => __METHOD__,
-                'source' => $request->getSource(),
-                'target' => $request->getTarget(),
-                'fileReplacePolicy' => $request->getFileReplacePolicy()
-            ]
-        );
-
-        return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
      * Move/Rename Asset or Folder
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename
@@ -1069,35 +1027,6 @@ class AssetsClient
         );
 
         return (new HistoryResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Search for an asset and return its ID
-     *
-     * @param string $q
-     * @param bool $failIfMultipleHits When more than asset is found: If true, raise exception. If false, return first match.
-     * @return string
-     */
-    public function searchAssetId(string $q, bool $failIfMultipleHits): string
-    {
-        $request = (new SearchRequest($this))
-            ->setQ($q)
-            ->setNum(2)
-            ->setMetadataToReturn(['']);
-
-        $response = $this->search($request);
-
-        if ($response->getTotalHits() === 0) {
-            throw new AssetsException(sprintf('%s: No asset found for query <%s>', __METHOD__, $q), 404);
-        }
-
-        if (($response->getTotalHits() > 1) && $failIfMultipleHits) {
-            throw new AssetsException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
-                $response->getTotalHits(), $q), 404);
-        }
-
-        return $response->getHits()[0]->getId();
     }
 
 
