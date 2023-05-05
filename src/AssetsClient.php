@@ -1142,18 +1142,6 @@ class AssetsClient
 
 
     /**
-     * Remove asset by assetId
-     *
-     * @param string $assetId
-     * @return ProcessResponse
-     */
-    public function removeById(string $assetId): ProcessResponse
-    {
-        return $this->removeAsset((new RemoveRequest($this))->setIds([$assetId]));
-    }
-
-
-    /**
      * Adds an asset to collection
      *
      * @param string $assetId
