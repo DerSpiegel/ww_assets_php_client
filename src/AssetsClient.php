@@ -257,7 +257,7 @@ class AssetsClient
      * @param array $data
      * @return ResponseInterface
      */
-    protected function rawServiceRequest(string $service, array $data = []): ResponseInterface
+    public function rawServiceRequest(string $service, array $data = []): ResponseInterface
     {
         $url = sprintf(
             '%sservices/%s',
@@ -602,7 +602,7 @@ class AssetsClient
      * @param ResponseInterface $httpResponse
      * @param string $targetPath
      */
-    protected function writeResponseBodyToPath(ResponseInterface $httpResponse, string $targetPath): void
+    public function writeResponseBodyToPath(ResponseInterface $httpResponse, string $targetPath): void
     {
         $fp = fopen($targetPath, 'wb');
 
@@ -641,128 +641,6 @@ class AssetsClient
 
 
     /** Assets REST API methods */
-
-
-    /**
-     * Check out asset
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
-     * @param CheckoutRequest $request
-     * @return CheckoutResponse
-     */
-    public function checkout(CheckoutRequest $request): CheckoutResponse
-    {
-        // This method is designed to do a checkout without download
-        $request->setDownload(false);
-
-        try {
-            $response = $this->serviceRequest(
-                sprintf('checkout/%s', urlencode($request->getId())),
-                ['download' => $request->isDownload() ? 'true' : 'false']
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Checkout of asset <%s> failed: %s',
-                    __METHOD__,
-                    $request->getId(),
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        $this->logger->info(sprintf('Asset <%s> checked out', $request->getId()),
-            [
-                'method' => __METHOD__,
-                'id' => $request->getId(),
-                'download' => $request->isDownload()
-            ]
-        );
-
-        return (new CheckoutResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Check out and download asset
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
-     * @param CheckoutRequest $request
-     * @param string $targetPath
-     */
-    public function checkoutAndDownload(CheckoutRequest $request, string $targetPath): void
-    {
-        // This method is designed to do a checkout with download
-        $request->setDownload(true);
-
-        try {
-            $response = $this->rawServiceRequest(
-                sprintf('checkout/%s', urlencode($request->getId())),
-                ['download' => $request->isDownload() ? 'true' : 'false']
-            );
-
-            $this->writeResponseBodyToPath($response, $targetPath);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Checkout of asset <%s> failed: %s',
-                    __METHOD__,
-                    $request->getId(),
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $request->getId(), $targetPath),
-            [
-                'method' => __METHOD__,
-                'id' => $request->getId(),
-                'download' => $request->isDownload()
-            ]
-        );
-    }
-
-
-    /**
-     * Undo checkout
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268951-Assets-REST-API-undo-checkout
-     * @param UndoCheckoutRequest $request
-     */
-    public function undoCheckout(UndoCheckoutRequest $request): void
-    {
-        if (trim($request->getId()) === '') {
-            throw new RuntimeException("%s: ID is empty in UndoCheckoutRequest", __METHOD__);
-        }
-
-        try {
-            $response = $this->serviceRequest(
-                sprintf('undocheckout/%s', urlencode($request->getId()))
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Undo checkout of asset <%s> failed',
-                    __METHOD__,
-                    $request->getId()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $request->getId()),
-            [
-                'method' => __METHOD__,
-                'id' => $request->getId(),
-                'response' => $response
-            ]
-        );
-    }
 
 
     /**
