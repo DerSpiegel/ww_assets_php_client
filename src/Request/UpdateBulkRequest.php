@@ -2,37 +2,53 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 
 /**
- * Class UpdateBulkRequest
+ * Update metadata from a bunch of assets
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
-class UpdateBulkRequest extends CreateRequest
+class UpdateBulkRequest extends CreateRequestBase
 {
-    protected string $id = '';
     protected string $q = '';
     protected bool $async = false;
 
 
-    /**
-     * @return string
-     */
-    public function getId(): string
+    public function execute(): ProcessResponse
     {
-        return $this->id;
-    }
+        $requestData = [
+            'q' => $this->getQ(),
+            'metadata' => json_encode($this->getMetadata()),
+            'parseMetadataModifications' => $this->isParseMetadataModification() ? 'true' : 'false'
+        ];
 
+        try {
+            $response = $this->assetsClient->serviceRequest('updatebulk', $requestData);
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Update Bulk failed for query <%s> - <%s> - <%s>',
+                    __METHOD__,
+                    $this->getQ(),
+                    $e->getMessage(),
+                    json_encode($requestData)
+                ),
+                $e->getCode(),
+                $e);
+        }
 
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
+        $this->logger->info(sprintf('Updated bulk for query <%s>', $this->getQ()),
+            [
+                'method' => __METHOD__,
+                'query' => $this->getQ(),
+                'metadata' => $this->getMetadata()
+            ]
+        );
+
+        return (new ProcessResponse())->fromJson($response);
     }
 
 

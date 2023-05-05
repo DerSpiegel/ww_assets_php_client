@@ -644,48 +644,6 @@ class AssetsClient
 
 
     /**
-     * Update metadata from a bunch of assets
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk
-     * @param UpdateBulkRequest $request
-     * @return ProcessResponse
-     */
-    public function updateBulk(UpdateBulkRequest $request): ProcessResponse
-    {
-        $requestData = [
-            'q' => $request->getQ(),
-            'metadata' => json_encode($request->getMetadata()),
-            'parseMetadataModifications' => $request->isParseMetadataModification() ? 'true' : 'false'
-        ];
-
-        try {
-            $response = $this->serviceRequest('updatebulk', $requestData);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Update Bulk failed for query <%s> - <%s> - <%s>',
-                    __METHOD__,
-                    $request->getQ(),
-                    $e->getMessage(),
-                    json_encode($requestData)
-                ),
-                $e->getCode(),
-                $e);
-        }
-
-        $this->logger->info(sprintf('Updated bulk for query <%s>', $request->getQ()),
-            [
-                'method' => __METHOD__,
-                'query' => $request->getQ(),
-                'metadata' => $request->getMetadata()
-            ]
-        );
-
-        return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
      * Check out asset
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
