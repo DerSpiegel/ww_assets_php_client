@@ -35,7 +35,4 @@ class SearchAssetRequest extends Request
 
         return $response->getHits()[0];
     }
-
-
-
 }
