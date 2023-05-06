@@ -4,6 +4,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use DerSpiegel\WoodWingAssetsClient\RelationType;
 use Exception;
 
 /**
@@ -264,5 +265,35 @@ class SearchRequest extends Request
     {
         $this->returnHighlightedText = $returnHighlightedText;
         return $this;
+    }
+
+
+    /**
+     * Get query for relation search
+     *
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041854172#additional-queries
+     *
+     * @param string $relatedTo
+     * @param string $relationTarget
+     * @param RelationType|null $relationType
+     * @return string
+     */
+    public static function getRelationSearchQ(
+        string $relatedTo,
+        string $relationTarget = '',
+        ?RelationType $relationType = null
+    ): string
+    {
+        $q = sprintf('relatedTo:%s', $relatedTo);
+
+        if ($relationTarget !== '') {
+            $q .= sprintf(' relationTarget:%s', $relationTarget);
+        }
+
+        if ($relationType !== null) {
+            $q .= sprintf(' relationType:%s', $relationType->value);
+        }
+
+        return $q;
     }
 }

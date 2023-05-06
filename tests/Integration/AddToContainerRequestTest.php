@@ -5,6 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 use DerSpiegel\WoodWingAssetsClient\Helper\AddToContainerRequest;
 use DerSpiegel\WoodWingAssetsClient\Helper\CreateCollectionRequest;
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
+use DerSpiegel\WoodWingAssetsClient\Helper\RemoveFromContainerRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
@@ -33,6 +34,11 @@ class AddToContainerRequestTest extends IntegrationFixture
 
         (new AddToContainerRequest($this->assetsClient))
             ->execute($assetId, $collectionId);
+
+        $processResponse = (new RemoveFromContainerRequest($this->assetsClient))
+            ->execute($assetId, $collectionId);
+
+        $this->assertEquals(1, $processResponse->getProcessedCount());
 
         (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
         (new RemoveByIdRequest($this->assetsClient))->execute($collectionId);

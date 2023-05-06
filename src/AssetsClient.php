@@ -691,37 +691,6 @@ class AssetsClient
 
 
     /**
-     * * Remove Assets or Collections
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851332-Assets-Server-REST-API-remove-relation
-     * @param RemoveRelationRequest $request
-     * @return ProcessResponse
-     */
-    public function removeRelation(RemoveRelationRequest $request): ProcessResponse
-    {
-        try {
-            $response = $this->serviceRequest('removeRelation',
-                [
-                    'relationIds' => implode(',', $request->getRelationIds())
-                ]
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
-        }
-
-        $this->logger->info('Relations removed',
-            [
-                'method' => __METHOD__,
-                'ids' => $request->getRelationIds(),
-                'response' => $response
-            ]
-        );
-
-        return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
      * Get folder metadata
      *
      * From the new Assets API (GET /api/folder/get)
@@ -852,55 +821,6 @@ class AssetsClient
 
 
     /**
-     * @param string $assetId
-     * @param string $containerId
-     * @return ProcessResponse
-     */
-    public function removeFromContainer(string $assetId, string $containerId): ProcessResponse
-    {
-        $q = $this->getRelationSearchQ(
-                $containerId,
-                self::RELATION_TARGET_CHILD,
-                RelationType::Contains)
-            . sprintf(' id:%s', $assetId);
-
-        $searchRequest = (new SearchRequest($this))
-            ->setQ($q)
-            ->setMetadataToReturn(['id'])
-            ->setNum(2);
-
-        $searchResponse = $this->search($searchRequest);
-
-        if ($searchResponse->getTotalHits() === 0) {
-            return (new ProcessResponse())
-                ->fromJson(['processedCount' => 0, 'errorCount' => 0]);
-        }
-
-        $relationId = $searchResponse->getHits()[0]->getRelation()['relationId'] ?? '';
-
-        if ($relationId === '') {
-            throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));
-        }
-
-        $request = (new RemoveRelationRequest($this))
-            ->setRelationIds([$relationId]);
-
-        $response = $this->removeRelation($request);
-
-        $this->logger->info('Relation removed',
-            [
-                'method' => __METHOD__,
-                'assetId' => $assetId,
-                'containerId' => $containerId,
-                'relationId' => $relationId
-            ]
-        );
-
-        return $response;
-    }
-
-
-    /**
      * Get asset history
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history
@@ -954,36 +874,6 @@ class AssetsClient
         );
 
         return (new HistoryResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Get query for relation search
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041854172#additional-queries
-     *
-     * @param string $relatedTo
-     * @param string $relationTarget
-     * @param RelationType|null $relationType
-     * @return string
-     */
-    public function getRelationSearchQ(
-        string $relatedTo,
-        string $relationTarget = '',
-        ?RelationType $relationType = null
-    ): string
-    {
-        $q = sprintf('relatedTo:%s', $relatedTo);
-
-        if ($relationTarget !== '') {
-            $q .= sprintf(' relationTarget:%s', $relationTarget);
-        }
-
-        if ($relationType !== null) {
-            $q .= sprintf(' relationType:%s', $relationType->value);
-        }
-
-        return $q;
     }
 
 
