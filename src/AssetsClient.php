@@ -691,43 +691,6 @@ class AssetsClient
 
 
     /**
-     * Create a relation between two assets
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation
-     * @param CreateRelationRequest $request
-     */
-    public function createRelation(CreateRelationRequest $request): void
-    {
-        try {
-            $this->serviceRequest('createRelation',
-                [
-                    'relationType' => $request->getRelationType()->value,
-                    'target1Id' => $request->getTarget1Id(),
-                    'target2Id' => $request->getTarget2Id()
-                ]
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Create relation failed', __METHOD__), $e->getCode(), $e);
-        }
-
-        $this->logger->info(
-            sprintf(
-                'Relation (%s) created between <%s> and <%s>',
-                $request->getRelationType()->value,
-                $request->getTarget1Id(),
-                $request->getTarget2Id()
-            ),
-            [
-                'method' => __METHOD__,
-                'relationType' => $request->getRelationType()->value,
-                'target1Id' => $request->getTarget1Id(),
-                'target2Id' => $request->getTarget2Id()
-            ]
-        );
-    }
-
-
-    /**
      * * Remove Assets or Collections
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851332-Assets-Server-REST-API-remove-relation
@@ -889,23 +852,6 @@ class AssetsClient
 
 
     /**
-     * Adds an asset to collection
-     *
-     * @param string $assetId
-     * @param string $containerId
-     */
-    public function addToContainer(string $assetId, string $containerId): void
-    {
-        $request = (new CreateRelationRequest($this))
-            ->setRelationType(RelationType::Contains)
-            ->setTarget1Id($containerId)
-            ->setTarget2Id($assetId);
-
-        $this->createRelation($request);
-    }
-
-
-    /**
      * @param string $assetId
      * @param string $containerId
      * @return ProcessResponse
@@ -953,25 +899,6 @@ class AssetsClient
         return $response;
     }
 
-
-    /**
-     * Creates a collection from assetPath
-     *
-     * @param string $assetPath Full path to collection, including .collection extension
-     * @param array $metadata
-     * @return AssetResponse
-     */
-    public function createCollection(
-        string $assetPath,
-        array  $metadata = []
-    ): AssetResponse
-    {
-
-        $metadata['assetPath'] = $assetPath;
-
-        return $this->create((new CreateRequest($this))
-            ->setMetadata($metadata));
-    }
 
     /**
      * Get asset history
