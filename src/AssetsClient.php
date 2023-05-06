@@ -644,53 +644,6 @@ class AssetsClient
 
 
     /**
-     * Move/Rename Asset or Folder
-     *
-     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename
-     * @param MoveRequest $request
-     * @return ProcessResponse
-     */
-    public function move(MoveRequest $request): ProcessResponse
-    {
-        try {
-            $response = $this->serviceRequest('move', [
-                'source' => $request->getSource(),
-                'target' => $request->getTarget(),
-                'folderReplacePolicy' => $request->getFolderReplacePolicy(),
-                'fileReplacePolicy' => $request->getFileReplacePolicy(),
-                'filterQuery' => $request->getFilterQuery(),
-                'flattenFolders' => $request->isFlattenFolders() ? 'true' : 'false'
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Move/Rename from <%s> to <%s> failed: %s',
-                    __METHOD__,
-                    $request->getSource(),
-                    $request->getTarget(),
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
-
-        $this->logger->info(sprintf('Asset/Folder moved to <%s>', $request->getTarget()),
-            [
-                'method' => __METHOD__,
-                'source' => $request->getSource(),
-                'target' => $request->getTarget(),
-                'fileReplacePolicy' => $request->getFileReplacePolicy(),
-                'folderReplacePolicy' => $request->getFolderReplacePolicy(),
-                'filterQuery' => $request->getFilterQuery()
-            ]
-        );
-
-        return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
      * Get folder metadata
      *
      * From the new Assets API (GET /api/folder/get)

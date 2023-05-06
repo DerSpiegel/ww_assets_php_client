@@ -2,12 +2,14 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 
 /**
- * Class MoveRequest
+ * Move/rename asset or folder
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class MoveRequest extends Request
 {
@@ -28,6 +30,46 @@ class MoveRequest extends Request
     protected string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME;
     protected string $filterQuery = '';
     protected bool $flattenFolders = false;
+
+
+    public function execute(): ProcessResponse
+    {
+        try {
+            $response = $this->assetsClient->serviceRequest('move', [
+                'source' => $this->getSource(),
+                'target' => $this->getTarget(),
+                'folderReplacePolicy' => $this->getFolderReplacePolicy(),
+                'fileReplacePolicy' => $this->getFileReplacePolicy(),
+                'filterQuery' => $this->getFilterQuery(),
+                'flattenFolders' => $this->isFlattenFolders() ? 'true' : 'false'
+            ]);
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Move/rename from <%s> to <%s> failed: %s',
+                    __METHOD__,
+                    $this->getSource(),
+                    $this->getTarget(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Asset/folder moved to <%s>', $this->getTarget()),
+            [
+                'method' => __METHOD__,
+                'source' => $this->getSource(),
+                'target' => $this->getTarget(),
+                'fileReplacePolicy' => $this->getFileReplacePolicy(),
+                'folderReplacePolicy' => $this->getFolderReplacePolicy(),
+                'filterQuery' => $this->getFilterQuery()
+            ]
+        );
+
+        return (new ProcessResponse())->fromJson($response);
+    }
 
 
     /**
