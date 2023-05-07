@@ -3,6 +3,8 @@
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsActionList;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
 
 
 enum HistoryDetailLevel: int
@@ -17,10 +19,9 @@ enum HistoryDetailLevel: int
 
 
 /**
- * Class HistoryRequest
+ * Get asset history
  *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class HistoryRequest extends Request
 {
@@ -29,6 +30,56 @@ class HistoryRequest extends Request
     protected string $id = '';
     protected int $start = 0;
     protected ?int $num = null;
+
+
+    public function execute(): HistoryResponse
+    {
+        $data = [
+            'id' => $this->getId(),
+            'start' => $this->getStart(),
+            'detailLevel' => $this->getDetailLevel()->value
+        ];
+
+        if ($this->getNum() !== null) {
+            $data['num'] = $this->getNum();
+        }
+
+        if (($this->getDetailLevel() === HistoryDetailLevel::CustomActions) && (!empty($this->getActions()))) {
+            $data['actions'] = implode(',', array_map(
+                function ($value) {
+                    return $value->value;
+                },
+                $this->getActions()->getArrayCopy()
+            ));
+        }
+
+        try {
+            $response = $this->assetsClient->serviceRequest(
+                'asset/history',
+                $data
+            );
+        } catch (Exception $e) {
+            throw new AssetsException(
+                sprintf(
+                    '%s: Get history of asset <%s> failed: %s',
+                    __METHOD__,
+                    $this->getId(),
+                    $e->getMessage()
+                ),
+                $e->getCode(),
+                $e
+            );
+        }
+
+        $this->logger->info(sprintf('Got history of asset <%s>', $this->getId()),
+            [
+                'method' => __METHOD__,
+                'id' => $this->getId()
+            ]
+        );
+
+        return (new HistoryResponse())->fromJson($response);
+    }
 
 
     /**
