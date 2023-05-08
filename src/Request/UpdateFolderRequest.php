@@ -19,6 +19,14 @@ class UpdateFolderRequest extends Request
     protected array $metadata = [];
 
 
+    public function validate(): void
+    {
+        if (trim($this->getId()) === '') {
+            throw new RuntimeException(sprintf("%s: ID is empty in UpdateFolderRequest", __METHOD__));
+        }
+    }
+
+
     public function execute(): FolderResponse
     {
         $this->validate();
@@ -41,14 +49,6 @@ class UpdateFolderRequest extends Request
         );
 
         return (new FolderResponse())->fromJson($response);
-    }
-
-
-    public function validate(): void
-    {
-        if (trim($this->getId()) === '') {
-            throw new RuntimeException(sprintf("%s: ID is empty in UpdateFolderRequest", __METHOD__));
-        }
     }
 
 

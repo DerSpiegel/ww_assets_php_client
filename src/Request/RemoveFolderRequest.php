@@ -18,6 +18,14 @@ class RemoveFolderRequest extends Request
     protected string $path = '';
 
 
+    public function validate(): void
+    {
+        if (trim($this->getId()) === '') {
+            throw new RuntimeException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
+        }
+    }
+
+
     public function execute(): void
     {
         $this->validate();
@@ -36,14 +44,6 @@ class RemoveFolderRequest extends Request
                 'response' => $response
             ]
         );
-    }
-
-
-    public function validate(): void
-    {
-        if (trim($this->getId()) === '') {
-            throw new RuntimeException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
-        }
     }
 
 

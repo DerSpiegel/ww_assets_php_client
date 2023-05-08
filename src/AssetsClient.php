@@ -593,7 +593,7 @@ class AssetsClient
      * @param string $url
      * @param string $targetPath
      */
-    protected function downloadFileToPath(string $url, string $targetPath): void
+    public function downloadFileToPath(string $url, string $targetPath): void
     {
         try {
             $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
@@ -644,51 +644,5 @@ class AssetsClient
     public function buildOriginalFileUrl(string $assetId): string
     {
         return "{$this->config->getUrl()}file/$assetId/*/$assetId";
-    }
-
-
-    /** Helper methods not part of the Assets REST API */
-
-
-    /**
-     * @param AssetResponse $assetResponse
-     * @param string $targetPath
-     * @return void
-     */
-    public function downloadOriginalFile(AssetResponse $assetResponse, string $targetPath): void
-    {
-        if (strlen($assetResponse->getOriginalUrl()) === 0) {
-            throw new AssetsException(sprintf('%s: Original URL is empty', __METHOD__), 404);
-        }
-
-        $this->downloadFileToPath($assetResponse->getOriginalUrl(), $targetPath);
-
-        $this->logger->debug(sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->getId(), $targetPath),
-            [
-                'method' => __METHOD__,
-                'assetId' => $assetResponse->getId()
-            ]
-        );
-    }
-
-
-    /**
-     * @param AssetResponse $assetResponse
-     * @param string $targetPath
-     */
-    public function downloadOriginalFileById(AssetResponse $assetResponse, string $targetPath): void
-    {
-        // TODO: Deprecate or fix; should be "byId" and expect a string $assetId
-
-        $originalUrl = $assetResponse->getOriginalUrl();
-
-        $this->downloadFileToPath($originalUrl, $targetPath);
-
-        $this->logger->debug(sprintf('Original File Downloaded <%s>', $originalUrl),
-            [
-                'method' => __METHOD__,
-                'assetId' => $assetResponse->getId()
-            ]
-        );
     }
 }
