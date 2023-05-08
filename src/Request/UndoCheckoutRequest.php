@@ -17,11 +17,17 @@ class UndoCheckoutRequest extends Request
     protected string $id = '';
 
 
-    public function execute(): void
+    public function validate(): void
     {
         if (trim($this->getId()) === '') {
             throw new RuntimeException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
         }
+    }
+
+
+    public function execute(): void
+    {
+        $this->validate();
 
         try {
             $response = $this->assetsClient->serviceRequest(

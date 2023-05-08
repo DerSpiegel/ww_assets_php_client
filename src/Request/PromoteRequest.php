@@ -18,7 +18,7 @@ class PromoteRequest extends Request
     protected int $version = 0;
 
 
-    public function execute(): void
+    public function validate(): void
     {
         if (trim($this->getId()) === '') {
             throw new RuntimeException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
@@ -27,6 +27,12 @@ class PromoteRequest extends Request
         if ($this->getVersion() < 1) {
             throw new RuntimeException(sprintf("%s: Version is empty in UndoCheckoutRequest", __METHOD__));
         }
+    }
+
+
+    public function execute(): void
+    {
+        $this->validate();
 
         try {
             $response = $this->assetsClient->serviceRequest(
