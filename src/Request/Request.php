@@ -20,4 +20,9 @@ abstract class Request
         $this->assetsConfig = $this->assetsClient->getConfig();
         $this->logger = $this->assetsClient->getLogger();
     }
+
+
+    public function validate(): void
+    {
+    }
 }

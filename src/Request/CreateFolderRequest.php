@@ -2,18 +2,43 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
+use Exception;
+
 
 /**
- * Class CreateFolderRequest
+ * Create folder with metadata
  *
  * From the new Assets API (POST /api/folder)
- *
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CreateFolderRequest extends Request
 {
     protected string $path = '';
     protected array $metadata = [];
+
+
+    public function execute(): FolderResponse
+    {
+        try {
+            $response = $this->assetsClient->apiRequest('POST', 'folder', [
+                'path' => $this->getPath(),
+                'metadata' => (object)$this->getMetadata()
+            ]);
+        } catch (Exception $e) {
+            throw new AssetsException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
+                $e->getCode(), $e);
+        }
+
+        $this->logger->info(sprintf('Folder <%s> created', $this->getPath()),
+            [
+                'method' => __METHOD__,
+                'folderPath' => $this->getPath(),
+                'metadata' => $this->getMetadata()
+            ]
+        );
+
+        return (new FolderResponse())->fromJson($response);
+    }
 
 
     /**

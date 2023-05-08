@@ -308,7 +308,7 @@ class AssetsClient
      * @return array
      * @throws JsonException
      */
-    protected function apiRequest(string $method, string $service, array $data = []): array
+    public function apiRequest(string $method, string $service, array $data = []): array
     {
         $url = sprintf(
             '%sapi/%s',
@@ -318,7 +318,14 @@ class AssetsClient
 
         try {
             $httpResponse = $this->request($method, $url, $data, false);
-            return AssetsUtils::parseJsonResponse($httpResponse->getBody());
+
+            $responseBbody = (string)$httpResponse->getBody();
+
+            if (empty($responseBbody)) {
+                return [];
+            }
+
+            return AssetsUtils::parseJsonResponse($responseBbody);
         } catch (RuntimeException $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
@@ -637,136 +644,6 @@ class AssetsClient
     public function buildOriginalFileUrl(string $assetId): string
     {
         return "{$this->config->getUrl()}file/$assetId/*/$assetId";
-    }
-
-
-    /** Assets REST API methods */
-
-
-    /**
-     * Get folder metadata
-     *
-     * From the new Assets API (GET /api/folder/get)
-     *
-     * @param GetFolderRequest $request
-     * @return FolderResponse
-     */
-    public function getFolder(GetFolderRequest $request): FolderResponse
-    {
-        try {
-            $response = $this->apiRequest('GET', 'folder/get', [
-                'path' => $request->getPath()
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
-                $e->getCode(), $e);
-        }
-
-        $this->logger->debug(sprintf('Folder <%s> retrieved', $request->getPath()),
-            [
-                'method' => __METHOD__,
-                'folderPath' => $request->getPath()
-            ]
-        );
-
-        return (new FolderResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Create folder with metadata
-     *
-     * From the new Assets API (POST /api/folder)
-     *
-     * @param CreateFolderRequest $request
-     * @return FolderResponse
-     */
-    public function createFolder(CreateFolderRequest $request): FolderResponse
-    {
-        try {
-            $response = $this->apiRequest('POST', 'folder', [
-                'path' => $request->getPath(),
-                'metadata' => (object)$request->getMetadata()
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
-                $e->getCode(), $e);
-        }
-
-        $this->logger->info(sprintf('Folder <%s> created', $request->getPath()),
-            [
-                'method' => __METHOD__,
-                'folderPath' => $request->getPath(),
-                'metadata' => $request->getMetadata()
-            ]
-        );
-
-        return (new FolderResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Update folder metadata
-     *
-     * From the new Assets API (PUT /api/folder/{id})
-     *
-     * @param UpdateFolderRequest $request
-     * @return FolderResponse
-     */
-    public function updateFolder(UpdateFolderRequest $request): FolderResponse
-    {
-        if (trim($request->getId()) === '') {
-            throw new RuntimeException(sprintf("%s: ID is empty in UpdateFolderRequest", __METHOD__));
-        }
-
-        try {
-            $response = $this->apiRequest('PUT', "folder/{$request->getId()}", [
-                'metadata' => (object)$request->getMetadata()
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
-                $e->getCode(), $e);
-        }
-
-        $this->logger->info(sprintf('Updated metadata for folder <%s> (%s)', $request->getPath(), $request->getId()),
-            [
-                'method' => __METHOD__,
-                'folderPath' => $request->getPath(),
-                'folderId' => $request->getId()
-            ]
-        );
-
-        return (new FolderResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Remove a folder
-     *
-     * From the new Assets API (DELETE /api/folder/{id})
-     *
-     * @param RemoveFolderRequest $request
-     */
-    public function removeFolder(RemoveFolderRequest $request): void
-    {
-        if (trim($request->getId()) === '') {
-            throw new RuntimeException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
-        }
-
-        try {
-            $response = $this->apiRequest('DELETE', sprintf('folder/%s', $request->getId()));
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
-        }
-
-        $this->logger->info('Folder removed',
-            [
-                'method' => __METHOD__,
-                'id' => $request->getId(),
-                'folderPath' => $request->getPath(),
-                'response' => $response
-            ]
-        );
     }
 
 
