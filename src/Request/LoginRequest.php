@@ -19,7 +19,7 @@ class LoginRequest extends Request
 
 
     public function __construct(
-        protected AssetsClient $assetsClient
+        AssetsClient $assetsClient
     )
     {
         parent::__construct($assetsClient);
