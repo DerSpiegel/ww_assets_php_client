@@ -9,9 +9,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class CreateRequestTest extends IntegrationFixture
 {
-    public function testCreate(): void
+    public function test(): void
     {
-        $basename = sprintf('CreateRequestTest%s', uniqid());
+        $basename = sprintf('%s%s', __CLASS__, uniqid());
         $filename = sprintf('%s.jpg', $basename);
 
         $assetResponse = IntegrationUtils::createJpegAsset(

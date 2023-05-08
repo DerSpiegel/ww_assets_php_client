@@ -11,9 +11,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class CopyRequestTest extends IntegrationFixture
 {
-    public function testCopy(): void
+    public function test(): void
     {
-        $sourceFilename = sprintf('CopyRequestTest%s.jpg', uniqid());
+        $sourceFilename = sprintf('%s%s.jpg', __CLASS__, uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,

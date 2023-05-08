@@ -11,7 +11,7 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 final class CreateFolderRequestTest extends IntegrationFixture
 {
-    public function testCreateFolder(): void
+    public function test(): void
     {
         $folderPath = sprintf('%s/Subfolder to delete %s', IntegrationUtils::getAssetsTestsFolder(), uniqid());
 

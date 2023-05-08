@@ -8,7 +8,7 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 
 final class SearchRequestTest extends IntegrationFixture
 {
-    public function testSearch(): void
+    public function test(): void
     {
         $request = (new SearchRequest($this->assetsClient))
             ->setQ('')

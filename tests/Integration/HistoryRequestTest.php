@@ -10,10 +10,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class HistoryRequestTest extends IntegrationFixture
 {
-    public function testHistory(): void
+    public function test(): void
     {
-        $basename = sprintf('HistoryRequestTest%s', uniqid());
-        $filename = sprintf('%s.jpg', $basename);
+        $filename = sprintf('%s%s.jpg', __CLASS__, uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,

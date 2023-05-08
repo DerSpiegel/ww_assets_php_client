@@ -11,9 +11,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class CheckoutRequestTest extends IntegrationFixture
 {
-    public function testCheckout(): void
+    public function test(): void
     {
-        $filename = sprintf('CheckoutRequestTest%s.jpg', uniqid());
+        $filename = sprintf('%s%s.jpg', __CLASS__, uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,

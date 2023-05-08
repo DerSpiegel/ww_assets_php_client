@@ -8,7 +8,7 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 
 final class BrowseRequestTest extends IntegrationFixture
 {
-    public function testBrowse(): void
+    public function test(): void
     {
         $request = (new BrowseRequest($this->assetsClient))
             ->setPath('/');

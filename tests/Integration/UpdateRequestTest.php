@@ -11,9 +11,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class UpdateRequestTest extends IntegrationFixture
 {
-    public function testUpdate(): void
+    public function test(): void
     {
-        $filename = sprintf('UpdateRequestTest%s.jpg', uniqid());
+        $filename = sprintf('%s%s.jpg', __CLASS__, uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,

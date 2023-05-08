@@ -9,7 +9,7 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 final class GetFolderRequestTest extends IntegrationFixture
 {
-    public function testGetFolder(): void
+    public function test(): void
     {
         $folderPath = IntegrationUtils::getAssetsTestsFolder();
 

@@ -12,9 +12,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class AddToContainerRequestTest extends IntegrationFixture
 {
-    public function testAddToContainer(): void
+    public function test(): void
     {
-        $basename = sprintf('AddToContainerRequestTest%s', uniqid());
+        $basename = sprintf('%s%s', __CLASS__, uniqid());
         $filename = sprintf('%s.jpg', $basename);
 
         $assetResponse = IntegrationUtils::createJpegAsset(

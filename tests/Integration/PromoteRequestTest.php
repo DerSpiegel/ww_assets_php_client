@@ -11,9 +11,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class PromoteRequestTest extends IntegrationFixture
 {
-    public function testPromote(): void
+    public function test(): void
     {
-        $basename = sprintf('PromoteRequestTest%s', uniqid());
+        $basename = sprintf('%s%s', __CLASS__, uniqid());
         $filename = sprintf('%s.jpg', $basename);
 
         $assetResponse = IntegrationUtils::createJpegAsset(

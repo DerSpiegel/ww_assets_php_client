@@ -10,10 +10,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class DownloadOriginalFileRequestTest extends IntegrationFixture
 {
-    public function testDownloadOriginalFile(): void
+    public function test(): void
     {
-        $basename = sprintf('CreateRequestTest%s', uniqid());
-        $filename = sprintf('%s.jpg', $basename);
+        $filename = sprintf('%s%s.jpg', __CLASS__, uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,

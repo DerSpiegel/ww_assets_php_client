@@ -9,9 +9,9 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 class RemoveByIdRequestTest extends IntegrationFixture
 {
-    public function testRemoveById(): void
+    public function test(): void
     {
-        $filename = sprintf('RemoveByIdRequestTest%s.jpg', uniqid());
+        $filename = sprintf('%s%s.jpg', __CLASS__, uniqid());
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,
