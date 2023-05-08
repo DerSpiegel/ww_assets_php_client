@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
 use DerSpiegel\WoodWingAssetsClient\Request\Request;
@@ -12,9 +13,20 @@ use DerSpiegel\WoodWingAssetsClient\Request\Request;
  */
 class CreateCollectionRequest extends Request
 {
-    public function execute(string $assetPath, array $metadata = []): AssetResponse
+    public function __construct(
+        AssetsClient $assetsClient,
+        public readonly string $assetPath,
+        public readonly array $metadata = []
+    )
     {
-        $metadata['assetPath'] = $assetPath;
+        parent::__construct($assetsClient);
+    }
+
+
+    public function execute(): AssetResponse
+    {
+        $metadata = $this->metadata;
+        $metadata['assetPath'] = $this->assetPath;
 
         return (new CreateRequest($this->assetsClient))
             ->setMetadata($metadata)

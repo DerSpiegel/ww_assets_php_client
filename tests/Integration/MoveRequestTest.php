@@ -35,6 +35,6 @@ class MoveRequestTest extends IntegrationFixture
 
         $this->assertEquals(1, $response->getProcessedCount());
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
     }
 }

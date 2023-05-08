@@ -35,9 +35,13 @@ class CopyRequestTest extends IntegrationFixture
 
         $this->assertEquals(1, $response->getProcessedCount());
 
-        $targetId = (new SearchAssetIdRequest($this->assetsClient))->execute(sprintf('assetPath:"%s"', $target), true);
+        $targetId = (new SearchAssetIdRequest(
+            $this->assetsClient,
+            q: sprintf('assetPath:"%s"', $target),
+            failIfMultipleHits: true
+        ))->execute();
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
-        (new RemoveByIdRequest($this->assetsClient))->execute($targetId);
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $targetId))->execute();
     }
 }

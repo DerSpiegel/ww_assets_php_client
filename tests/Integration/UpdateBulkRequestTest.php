@@ -32,11 +32,14 @@ class UpdateBulkRequestTest extends IntegrationFixture
 
         $request->execute();
 
-        $updatedAssetResponse = (new SearchAssetRequest($this->assetsClient))
-            ->execute($assetId, ['headline']);
+        $updatedAssetResponse = (new SearchAssetRequest(
+            $this->assetsClient,
+            assetId: $assetId,
+            metadataToReturn: ['headline']
+        ))->execute();
 
         $this->assertEquals($filename, $updatedAssetResponse->getMetadata()['headline']);
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
     }
 }

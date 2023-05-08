@@ -13,13 +13,23 @@ use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
 
 class RemoveFromContainerRequest extends Request
 {
-    public function execute(string $assetId, string $containerId): ProcessResponse
+    public function __construct(
+        AssetsClient $assetsClient,
+        public readonly string $assetId,
+        public readonly string $containerId
+    )
+    {
+        parent::__construct($assetsClient);
+    }
+
+
+    public function execute(): ProcessResponse
     {
         $q = SearchRequest::getRelationSearchQ(
-                $containerId,
+                $this->containerId,
                 AssetsClient::RELATION_TARGET_CHILD,
                 RelationType::Contains)
-            . sprintf(' id:%s', $assetId);
+            . sprintf(' id:%s', $this->assetId);
 
         $searchResponse = (new SearchRequest($this->assetsClient))
             ->setQ($q)
@@ -45,8 +55,8 @@ class RemoveFromContainerRequest extends Request
         $this->logger->info('Relation removed',
             [
                 'method' => __METHOD__,
-                'assetId' => $assetId,
-                'containerId' => $containerId,
+                'assetId' => $this->assetId,
+                'containerId' => $this->containerId,
                 'relationId' => $relationId
             ]
         );

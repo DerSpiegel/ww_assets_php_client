@@ -26,21 +26,25 @@ class AddToContainerRequestTest extends IntegrationFixture
         $assetId = $assetResponse->getId();
         $this->assertNotEmpty($assetId);
 
-        $collectionResponse = (new CreateCollectionRequest($this->assetsClient))->execute(
-            sprintf('%s/%s.collection', IntegrationUtils::getAssetsTestsFolder(), $basename)
-        );
+        $collectionResponse = (new CreateCollectionRequest(
+            $this->assetsClient,
+            assetPath: sprintf('%s/%s.collection', IntegrationUtils::getAssetsTestsFolder(), $basename)
+        ))->execute();
 
         $collectionId = $collectionResponse->getId();
 
-        (new AddToContainerRequest($this->assetsClient))
-            ->execute($assetId, $collectionId);
+        (new AddToContainerRequest($this->assetsClient, assetId: $assetId, containerId: $collectionId))
+            ->execute();
 
-        $processResponse = (new RemoveFromContainerRequest($this->assetsClient))
-            ->execute($assetId, $collectionId);
+        $processResponse = (new RemoveFromContainerRequest(
+            $this->assetsClient,
+            assetId: $assetId,
+            containerId: $collectionId
+        ))->execute();
 
         $this->assertEquals(1, $processResponse->getProcessedCount());
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
-        (new RemoveByIdRequest($this->assetsClient))->execute($collectionId);
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $collectionId))->execute();
     }
 }

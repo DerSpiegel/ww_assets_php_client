@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
 use DerSpiegel\WoodWingAssetsClient\Request\Request;
@@ -13,10 +14,20 @@ use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
  */
 class SearchAssetRequest extends Request
 {
-    public function execute(string $assetId, array $metadataToReturn = []): AssetResponse
+    public function __construct(
+        AssetsClient $assetsClient,
+        public readonly string $assetId,
+        public readonly array $metadataToReturn = []
+    )
+    {
+        parent::__construct($assetsClient);
+    }
+
+
+    public function execute(): AssetResponse
     {
         $request = (new SearchRequest($this->assetsClient))
-            ->setQ('id:' . $assetId);
+            ->setQ('id:' . $this->assetId);
 
         if (!empty($metadataToReturn)) {
             $request->setMetadataToReturn($metadataToReturn);
@@ -25,12 +36,12 @@ class SearchAssetRequest extends Request
         $response = $request->execute();
 
         if ($response->getTotalHits() === 0) {
-            throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $assetId), 404);
+            throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $this->assetId), 404);
         }
 
         if ($response->getTotalHits() > 1) {
             // god help us if this happens
-            throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $assetId), 404);
+            throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $this->assetId), 404);
         }
 
         return $response->getHits()[0];

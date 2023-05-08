@@ -40,6 +40,6 @@ class PromoteRequestTest extends IntegrationFixture
             ->setVersion(1)
             ->execute();
 
-        (new RemoveByIdRequest($this->assetsClient))->execute($assetId);
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
     }
 }
