@@ -23,11 +23,12 @@ $assetsClient->setHttpUserAgent(                     // Optional: Customize HTTP
     'ExampleOrg/UsageExample ' . $assetsClient->getHttpUserAgent()
 );
 
-$request = (new SearchRequest($assetsConfig))        // Create search request
-    ->setQ('')                                    // Assets query
-    ->setMetadataToReturn(['']);                     // Metadata fields to return
+$request = new SearchRequest($assetsClient,          // Create search request
+        q: '',                                       // Assets query
+        metadataToReturn: ['']                       // Metadata fields to return
+);
 
-$response = $assetsClient->search($request);         // Perform search
+$response = $request();                              // Perform search
 
 foreach ($response->getHits() as $assetResponse) {   // Loop through results
     echo $assetResponse->getId() . "\n";             // Access asset metadata

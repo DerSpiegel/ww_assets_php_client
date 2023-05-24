@@ -31,11 +31,11 @@ class RemoveFromContainerRequest extends Request
                 RelationType::Contains)
             . sprintf(' id:%s', $this->assetId);
 
-        $searchResponse = (new SearchRequest($this->assetsClient))
-            ->setQ($q)
-            ->setMetadataToReturn(['id'])
-            ->setNum(2)
-            ->execute();
+        $searchResponse = (new SearchRequest($this->assetsClient,
+            q: $q,
+            num: 2,
+            metadataToReturn: ['id']
+        ))();
 
         if ($searchResponse->getTotalHits() === 0) {
             return (new ProcessResponse())

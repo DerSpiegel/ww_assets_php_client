@@ -25,11 +25,11 @@ class SearchAssetIdRequest extends Request
 
     public function execute(): string
     {
-        $response = (new SearchRequest($this->assetsClient))
-            ->setQ($this->q)
-            ->setNum(2)
-            ->setMetadataToReturn([''])
-            ->execute();
+        $response = (new SearchRequest($this->assetsClient,
+            q: $this->q,
+            num: 2,
+            metadataToReturn: ['']
+        ))();
 
         if ($response->getTotalHits() === 0) {
             throw new AssetsException(sprintf('%s: No asset found for query <%s>', __METHOD__, $this->q), 404);

@@ -26,14 +26,10 @@ class SearchAssetRequest extends Request
 
     public function execute(): AssetResponse
     {
-        $request = (new SearchRequest($this->assetsClient))
-            ->setQ('id:' . $this->assetId);
-
-        if (!empty($metadataToReturn)) {
-            $request->setMetadataToReturn($metadataToReturn);
-        }
-
-        $response = $request->execute();
+        $response = (new SearchRequest($this->assetsClient,
+            q: 'id:' . $this->assetId,
+            metadataToReturn: empty($metadataToReturn) ? [SearchRequest::METADATA_TO_RETURN_DEFAULT] : $metadataToReturn
+        ))();
 
         if ($response->getTotalHits() === 0) {
             throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $this->assetId), 404);
