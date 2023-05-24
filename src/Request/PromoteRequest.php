@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 use RuntimeException;
@@ -14,23 +15,29 @@ use RuntimeException;
  */
 class PromoteRequest extends Request
 {
-    protected string $id = '';
-    protected int $version = 0;
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $id = '',
+        readonly int    $version = 0
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
     public function validate(): void
     {
-        if (trim($this->getId()) === '') {
+        if (trim($this->id) === '') {
             throw new RuntimeException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
         }
 
-        if ($this->getVersion() < 1) {
+        if ($this->version < 1) {
             throw new RuntimeException(sprintf("%s: Version is empty in UndoCheckoutRequest", __METHOD__));
         }
     }
 
 
-    public function execute(): void
+    public function __invoke(): void
     {
         $this->validate();
 
@@ -38,8 +45,8 @@ class PromoteRequest extends Request
             $response = $this->assetsClient->serviceRequest(
                 'version/promote',
                 [
-                    'assetId' => $this->getId(),
-                    'version' => $this->getVersion()
+                    'assetId' => $this->id,
+                    'version' => $this->version
                 ]
             );
         } catch (Exception $e) {
@@ -47,60 +54,20 @@ class PromoteRequest extends Request
                 sprintf(
                     '%s: Promote version <%d> of asset <%s> failed',
                     __METHOD__,
-                    $this->getVersion(),
-                    $this->getId()
+                    $this->version,
+                    $this->id
                 ),
                 $e->getCode(),
                 $e
             );
         }
 
-        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $this->getVersion(), $this->getId()),
+        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $this->version, $this->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->getId(),
+                'id' => $this->id,
                 'response' => $response
             ]
         );
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getVersion(): int
-    {
-        return $this->version;
-    }
-
-
-    /**
-     * @param int $version
-     * @return PromoteRequest
-     */
-    public function setVersion(int $version): self
-    {
-        $this->version = $version;
-        return $this;
     }
 }

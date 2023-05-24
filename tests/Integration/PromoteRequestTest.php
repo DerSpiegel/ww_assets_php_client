@@ -34,10 +34,10 @@ class PromoteRequestTest extends IntegrationFixture
             filedata: $fp
         ))();
 
-        (new PromoteRequest($this->assetsClient))
-            ->setId($assetId)
-            ->setVersion(1)
-            ->execute();
+        (new PromoteRequest($this->assetsClient,
+            id: $assetId,
+            version: 1
+        ))();
 
         (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
     }
