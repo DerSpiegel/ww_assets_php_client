@@ -21,6 +21,12 @@ class IntegrationUtils
     }
 
 
+    public static function getUniqueBasename(string $className): string
+    {
+        return sprintf('%s%s', strtr($className, '\\', '-'), uniqid());
+    }
+
+
     public static function createJpegAsset(AssetsClient $assetsClient, string $filename, array $metadata): AssetResponse
     {
         $tmpFilename = sprintf('/tmp/%s', $filename);

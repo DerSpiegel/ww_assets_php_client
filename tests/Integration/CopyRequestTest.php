@@ -13,7 +13,7 @@ class CopyRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
-        $sourceFilename = sprintf('%s%s.jpg', __CLASS__, uniqid());
+        $sourceFilename = IntegrationUtils::getUniqueBasename(__CLASS__) . '.jpg';
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,

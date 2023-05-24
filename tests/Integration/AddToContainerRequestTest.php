@@ -14,7 +14,7 @@ class AddToContainerRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
-        $basename = sprintf('%s%s', __CLASS__, uniqid());
+        $basename = IntegrationUtils::getUniqueBasename(__CLASS__);
         $filename = sprintf('%s.jpg', $basename);
 
         $assetResponse = IntegrationUtils::createJpegAsset(

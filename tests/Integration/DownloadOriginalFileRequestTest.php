@@ -12,7 +12,7 @@ class DownloadOriginalFileRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
-        $filename = sprintf('%s%s.jpg', __CLASS__, uniqid());
+        $filename = IntegrationUtils::getUniqueBasename(__CLASS__) . '.jpg';
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,
