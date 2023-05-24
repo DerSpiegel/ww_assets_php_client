@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -20,26 +21,34 @@ class CopyRequest extends Request
     const FILE_REPLACE_POLICY_THROW_EXCEPTION = 'THROW_EXCEPTION';
     const FILE_REPLACE_POLICY_DO_NOTHING = 'DO_NOTHING';
 
-    protected string $source = '';
-    protected string $target = '';
-    protected string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME;
+
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $source = '',
+        readonly string $target = '',
+        readonly string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME
+
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
-    public function execute(): ProcessResponse
+    public function __invoke(): ProcessResponse
     {
         try {
             $response = $this->assetsClient->serviceRequest('copy', [
-                'source' => $this->getSource(),
-                'target' => $this->getTarget(),
-                'fileReplacePolicy' => $this->getFileReplacePolicy()
+                'source' => $this->source,
+                'target' => $this->target,
+                'fileReplacePolicy' => $this->fileReplacePolicy
             ]);
         } catch (Exception $e) {
             throw new AssetsException(
                 sprintf(
                     '%s: Copy from <%s> to <%s> failed: %s',
                     __METHOD__,
-                    $this->getSource(),
-                    $this->getTarget(),
+                    $this->source,
+                    $this->target,
                     $e->getMessage()
                 ),
                 $e->getCode(),
@@ -47,79 +56,15 @@ class CopyRequest extends Request
             );
         }
 
-        $this->logger->info(sprintf('Asset copied to <%s>', $this->getTarget()),
+        $this->logger->info(sprintf('Asset copied to <%s>', $this->target),
             [
                 'method' => __METHOD__,
-                'source' => $this->getSource(),
-                'target' => $this->getTarget(),
-                'fileReplacePolicy' => $this->getFileReplacePolicy()
+                'source' => $this->source,
+                'target' => $this->target,
+                'fileReplacePolicy' => $this->fileReplacePolicy
             ]
         );
 
         return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
-     * Get source asset path
-     * @return string
-     */
-    public function getSource(): string
-    {
-        return $this->source;
-    }
-
-
-    /**
-     * Set source asset path
-     * @param string $source
-     * @return self
-     */
-    public function setSource(string $source): self
-    {
-        $this->source = $source;
-        return $this;
-    }
-
-
-    /**
-     * Get source target path
-     * @return string
-     */
-    public function getTarget(): string
-    {
-        return $this->target;
-    }
-
-
-    /**
-     * Set source target path
-     * @param string $target
-     * @return self
-     */
-    public function setTarget(string $target): self
-    {
-        $this->target = $target;
-        return $this;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFileReplacePolicy(): string
-    {
-        return $this->fileReplacePolicy;
-    }
-
-
-    /**
-     * @param string $fileReplacePolicy
-     * @return self
-     */
-    public function setFileReplacePolicy(string $fileReplacePolicy): self
-    {
-        $this->fileReplacePolicy = $fileReplacePolicy;
-        return $this;
     }
 }
