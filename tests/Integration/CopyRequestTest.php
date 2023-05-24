@@ -40,7 +40,7 @@ class CopyRequestTest extends IntegrationFixture
             $this->assetsClient,
             q: sprintf('assetPath:"%s"', $target),
             failIfMultipleHits: true
-        ))->execute();
+        ))();
 
         (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
         (new RemoveByIdRequest($this->assetsClient, assetId: $targetId))();

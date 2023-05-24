@@ -24,7 +24,7 @@ class SearchAssetRequest extends Request
     }
 
 
-    public function execute(): AssetResponse
+    public function __invoke(): AssetResponse
     {
         $response = (new SearchRequest($this->assetsClient,
             q: 'id:' . $this->assetId,

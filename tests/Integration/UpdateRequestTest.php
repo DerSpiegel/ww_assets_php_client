@@ -35,7 +35,7 @@ class UpdateRequestTest extends IntegrationFixture
             $this->assetsClient,
             assetId: $assetId,
             metadataToReturn: ['headline']
-        ))->execute();
+        ))();
 
         $this->assertEquals($filename, $updatedAssetResponse->getMetadata()['headline']);
 

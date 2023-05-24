@@ -34,12 +34,12 @@ class DownloadOriginalFileRequest extends Request
     }
 
 
-    public function execute(): void
+    public function __invoke(): void
     {
         if ($this->assetResponse !== null) {
             $assetResponse = $this->assetResponse;
         } else {
-            $assetResponse = (new SearchAssetRequest($this->assetsClient, assetId: $this->assetId))->execute();
+            $assetResponse = (new SearchAssetRequest($this->assetsClient, assetId: $this->assetId))();
         }
 
         if (strlen($assetResponse->getOriginalUrl()) === 0) {

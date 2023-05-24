@@ -23,7 +23,7 @@ class SearchAssetIdRequest extends Request
     }
 
 
-    public function execute(): string
+    public function __invoke(): string
     {
         $response = (new SearchRequest($this->assetsClient,
             q: $this->q,

@@ -26,7 +26,7 @@ class DownloadOriginalFileRequestTest extends IntegrationFixture
             $this->assetsClient,
             targetPath: $targetPath,
             assetResponse: $assetResponse
-        ))->execute();
+        ))();
 
         $this->assertTrue(file_exists($targetPath));
         $this->assertGreaterThan(0, filesize($targetPath));
