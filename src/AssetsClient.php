@@ -479,7 +479,7 @@ class AssetsClient
             throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
         }
 
-        $response = (new ApiLoginRequest($this))->execute();
+        $response = ApiLoginRequest::createFromConfig($this)();
 
         if (!$response->isLoginSuccess()) {
             throw new RuntimeException(sprintf('%s: Assets API login failed: %s', __METHOD__,
@@ -550,7 +550,7 @@ class AssetsClient
             throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
         }
 
-        $response = (new LoginRequest($this))->execute();
+        $response = LoginRequest::createFromConfig($this)();
 
         if (!$response->isLoginSuccess()) {
             throw new RuntimeException(sprintf('%s: Assets login failed: %s', __METHOD__,
