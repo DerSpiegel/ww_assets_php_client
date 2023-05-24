@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 use RuntimeException;
@@ -14,63 +15,49 @@ use RuntimeException;
  */
 class UndoCheckoutRequest extends Request
 {
-    protected string $id = '';
+    public function __construct(
+        AssetsClient $assetsClient,
+        readonly string $id = ''
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
     public function validate(): void
     {
-        if (trim($this->getId()) === '') {
+        if (trim($this->id) === '') {
             throw new RuntimeException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
         }
     }
 
 
-    public function execute(): void
+    public function __invoke(): void
     {
         $this->validate();
 
         try {
             $response = $this->assetsClient->serviceRequest(
-                sprintf('undocheckout/%s', urlencode($this->getId()))
+                sprintf('undocheckout/%s', urlencode($this->id))
             );
         } catch (Exception $e) {
             throw new AssetsException(
                 sprintf(
                     '%s: Undo checkout of asset <%s> failed',
                     __METHOD__,
-                    $this->getId()
+                    $this->id
                 ),
                 $e->getCode(),
                 $e
             );
         }
 
-        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $this->getId()),
+        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $this->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->getId(),
+                'id' => $this->id,
                 'response' => $response
             ]
         );
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
     }
 }
