@@ -22,7 +22,7 @@ class RemoveByIdRequestTest extends IntegrationFixture
         $assetId = $assetResponse->getId();
         $this->assertNotEmpty($assetId);
 
-        $response = (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
+        $response = (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
 
         $this->assertEquals(1, $response->getProcessedCount());
     }

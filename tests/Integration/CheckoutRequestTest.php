@@ -30,6 +30,6 @@ class CheckoutRequestTest extends IntegrationFixture
 
         (new UndoCheckoutRequest($this->assetsClient))->setId($assetId)->execute();
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
     }
 }

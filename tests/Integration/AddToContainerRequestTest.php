@@ -46,7 +46,7 @@ class AddToContainerRequestTest extends IntegrationFixture
 
         $this->assertEquals(1, $processResponse->getProcessedCount());
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
-        (new RemoveByIdRequest($this->assetsClient, assetId: $collectionId))->execute();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $collectionId))();
     }
 }

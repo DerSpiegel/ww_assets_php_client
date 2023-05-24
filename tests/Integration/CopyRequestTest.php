@@ -42,7 +42,7 @@ class CopyRequestTest extends IntegrationFixture
             failIfMultipleHits: true
         ))->execute();
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))->execute();
-        (new RemoveByIdRequest($this->assetsClient, assetId: $targetId))->execute();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $targetId))();
     }
 }
