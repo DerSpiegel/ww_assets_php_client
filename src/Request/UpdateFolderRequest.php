@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 use RuntimeException;
@@ -14,102 +15,46 @@ use RuntimeException;
  */
 class UpdateFolderRequest extends Request
 {
-    protected string $id = '';
-    protected string $path = '';
-    protected array $metadata = [];
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $id = '',
+        readonly string $path = '',
+        readonly array  $metadata = []
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
     public function validate(): void
     {
-        if (trim($this->getId()) === '') {
+        if (trim($this->id) === '') {
             throw new RuntimeException(sprintf("%s: ID is empty in UpdateFolderRequest", __METHOD__));
         }
     }
 
 
-    public function execute(): FolderResponse
+    public function __invoke(): FolderResponse
     {
         $this->validate();
 
         try {
-            $response = $this->assetsClient->apiRequest('PUT', "folder/{$this->getId()}", [
-                'metadata' => (object)$this->getMetadata()
+            $response = $this->assetsClient->apiRequest('PUT', "folder/{$this->id}", [
+                'metadata' => (object)$this->metadata
             ]);
         } catch (Exception $e) {
             throw new AssetsException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
-        $this->logger->info(sprintf('Updated metadata for folder <%s> (%s)', $this->getPath(), $this->getId()),
+        $this->logger->info(sprintf('Updated metadata for folder <%s> (%s)', $this->path, $this->id),
             [
                 'method' => __METHOD__,
-                'folderPath' => $this->getPath(),
-                'folderId' => $this->getId()
+                'folderPath' => $this->path,
+                'folderId' => $this->id
             ]
         );
 
         return (new FolderResponse())->fromJson($response);
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-
-    /**
-     * The path is not used by the request so it's optional, but it helps with logging if available
-     *
-     * @param string $path
-     * @return self
-     */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getMetadata(): array
-    {
-        return $this->metadata;
-    }
-
-
-    /**
-     * @param array $metadata
-     * @return self
-     */
-    public function setMetadata(array $metadata): self
-    {
-        $this->metadata = $metadata;
-        return $this;
     }
 }

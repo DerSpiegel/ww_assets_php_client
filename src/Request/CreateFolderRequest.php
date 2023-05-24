@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -13,70 +14,36 @@ use Exception;
  */
 class CreateFolderRequest extends Request
 {
-    protected string $path = '';
-    protected array $metadata = [];
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $path = '',
+        readonly array  $metadata = []
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
-    public function execute(): FolderResponse
+    public function __invoke(): FolderResponse
     {
         try {
             $response = $this->assetsClient->apiRequest('POST', 'folder', [
-                'path' => $this->getPath(),
-                'metadata' => (object)$this->getMetadata()
+                'path' => $this->path,
+                'metadata' => (object)$this->metadata
             ]);
         } catch (Exception $e) {
             throw new AssetsException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
-        $this->logger->info(sprintf('Folder <%s> created', $this->getPath()),
+        $this->logger->info(sprintf('Folder <%s> created', $this->path),
             [
                 'method' => __METHOD__,
-                'folderPath' => $this->getPath(),
-                'metadata' => $this->getMetadata()
+                'folderPath' => $this->path,
+                'metadata' => $this->metadata
             ]
         );
 
         return (new FolderResponse())->fromJson($response);
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-
-    /**
-     * @param string $path
-     * @return self
-     */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getMetadata(): array
-    {
-        return $this->metadata;
-    }
-
-
-    /**
-     * @param array $metadata
-     * @return self
-     */
-    public function setMetadata(array $metadata): self
-    {
-        $this->metadata = $metadata;
-        return $this;
     }
 }

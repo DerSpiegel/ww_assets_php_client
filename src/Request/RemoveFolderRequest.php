@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 use RuntimeException;
@@ -14,24 +15,30 @@ use RuntimeException;
  */
 class RemoveFolderRequest extends Request
 {
-    protected string $id = '';
-    protected string $path = '';
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $id = '',
+        readonly string $path = ''
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
     public function validate(): void
     {
-        if (trim($this->getId()) === '') {
+        if (trim($this->id) === '') {
             throw new RuntimeException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
         }
     }
 
 
-    public function execute(): void
+    public function __invoke(): void
     {
         $this->validate();
 
         try {
-            $response = $this->assetsClient->apiRequest('DELETE', sprintf('folder/%s', $this->getId()));
+            $response = $this->assetsClient->apiRequest('DELETE', sprintf('folder/%s', $this->id));
         } catch (Exception $e) {
             throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
         }
@@ -39,52 +46,10 @@ class RemoveFolderRequest extends Request
         $this->logger->info('Folder removed',
             [
                 'method' => __METHOD__,
-                'id' => $this->getId(),
-                'folderPath' => $this->getPath(),
+                'id' => $this->id,
+                'folderPath' => $this->path,
                 'response' => $response
             ]
         );
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-
-    /**
-     * The path is not used by the request so it's optional, but it helps with logging if available
-     *
-     * @param string $path
-     * @return self
-     */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-        return $this;
     }
 }
