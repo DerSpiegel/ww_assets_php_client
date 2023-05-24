@@ -14,12 +14,19 @@ class BrowseRequest extends Request
 {
     const INCLUDE_FOLDERS_DEFAULT = true;
 
-    protected string $fromRoot = '';
-    protected bool $includeFolders = self::INCLUDE_FOLDERS_DEFAULT;
-    protected string $path = '';
+
+    public function __construct(
+        AssetsClient $assetsClient,
+        readonly string $path = '',
+        readonly string $fromRoot = '',
+        readonly bool $includeFolders = self::INCLUDE_FOLDERS_DEFAULT,
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
-    public function execute(): BrowseResponse
+    public function __invoke(): BrowseResponse
     {
         try {
             $response = $this->assetsClient->serviceRequest('browse', $this->toArray());
@@ -31,7 +38,7 @@ class BrowseRequest extends Request
         $this->logger->debug('Browse performed',
             [
                 'method' => __METHOD__,
-                'path' => $this->getPath()
+                'path' => $this->path
             ]
         );
 
@@ -42,86 +49,17 @@ class BrowseRequest extends Request
     protected function toArray(): array
     {
         $params = [
-            'path' => $this->getPath()
+            'path' => $this->path
         ];
 
-        if (!empty($this->getFromRoot())) {
-            $params['fromRoot'] = $this->getFromRoot();
+        if (!empty($this->fromRoot)) {
+            $params['fromRoot'] = $this->fromRoot;
         }
 
-        if ($this->isIncludeFolders() !== self::INCLUDE_FOLDERS_DEFAULT) {
-            $params['includeFolders'] = ($this->isIncludeFolders() ? 'true' : 'false');
+        if ($this->includeFolders !== self::INCLUDE_FOLDERS_DEFAULT) {
+            $params['includeFolders'] = ($this->includeFolders ? 'true' : 'false');
         }
 
         return $params;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function toQueryString(): string
-    {
-        return http_build_query($this->toArray());
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-
-    /**
-     * @param string $path
-     * @return self
-     */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFromRoot(): string
-    {
-        return $this->fromRoot;
-    }
-
-
-    /**
-     * @param string $fromRoot
-     * @return self
-     */
-    public function setFromRoot(string $fromRoot): self
-    {
-        $this->fromRoot = $fromRoot;
-        return $this;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isIncludeFolders(): bool
-    {
-        return $this->includeFolders;
-    }
-
-
-    /**
-     * @param bool $includeFolders
-     * @return self
-     */
-    public function setIncludeFolders(bool $includeFolders): self
-    {
-        $this->includeFolders = $includeFolders;
-        return $this;
     }
 }

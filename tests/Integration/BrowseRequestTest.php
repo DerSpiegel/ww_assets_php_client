@@ -10,10 +10,7 @@ final class BrowseRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
-        $request = (new BrowseRequest($this->assetsClient))
-            ->setPath('/');
-
-        $response = $request->execute();
+        $response = (new BrowseRequest($this->assetsClient, path: '/'))();
 
         $this->assertGreaterThan(0, $response->getItems());
     }
