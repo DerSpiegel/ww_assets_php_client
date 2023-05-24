@@ -33,8 +33,10 @@ class AddToContainerRequestTest extends IntegrationFixture
 
         $collectionId = $collectionResponse->getId();
 
-        (new AddToContainerRequest($this->assetsClient, assetId: $assetId, containerId: $collectionId))
-            ->execute();
+        (new AddToContainerRequest($this->assetsClient,
+            assetId: $assetId,
+            containerId: $collectionId
+        ))();
 
         $processResponse = (new RemoveFromContainerRequest(
             $this->assetsClient,

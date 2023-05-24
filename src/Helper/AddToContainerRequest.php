@@ -23,12 +23,12 @@ class AddToContainerRequest extends Request
     }
 
 
-    public function execute(): void
+    public function __invoke(): void
     {
-        (new CreateRelationRequest($this->assetsClient))
-            ->setRelationType(RelationType::Contains)
-            ->setTarget1Id($this->containerId)
-            ->setTarget2Id($this->assetId)
-            ->execute();
+        (new CreateRelationRequest($this->assetsClient,
+            relationType: RelationType::Contains,
+            target1Id: $this->containerId,
+            target2Id: $this->assetId
+        ))();
     }
 }
