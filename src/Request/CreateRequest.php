@@ -13,14 +13,12 @@ use Exception;
  */
 class CreateRequest extends CreateRequestBase
 {
-    public function execute(): AssetResponse
+    public function __invoke(): AssetResponse
     {
-        $data = $this->getMetadata();
+        $data = self::cleanMetadata($this->metadata);
 
-        $fp = $this->getFiledata();
-
-        if (is_resource($fp)) {
-            $data['Filedata'] = $fp;
+        if (is_resource($this->filedata)) {
+            $data['Filedata'] = $this->filedata;
         }
 
         try {
@@ -34,7 +32,7 @@ class CreateRequest extends CreateRequestBase
         $this->logger->info('Asset created',
             [
                 'method' => __METHOD__,
-                'metadata' => $this->getMetadata()
+                'metadata' => $this->metadata
             ]
         );
 

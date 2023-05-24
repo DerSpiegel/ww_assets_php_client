@@ -26,11 +26,10 @@ class UpdateBulkRequestTest extends IntegrationFixture
 
         $this->assertEmpty($assetResponse->getMetadata()['headline'] ?? null);
 
-        $request = (new UpdateBulkRequest($this->assetsClient))
-            ->setQ(sprintf('id:%s', $assetId))
-            ->setMetadata(['headline' => $filename]);
-
-        $request->execute();
+        (new UpdateBulkRequest($this->assetsClient,
+            q: sprintf('id:%s', $assetId),
+            metadata: ['headline' => $filename]
+        ))();
 
         $updatedAssetResponse = (new SearchAssetRequest(
             $this->assetsClient,

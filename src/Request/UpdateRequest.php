@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -13,28 +14,36 @@ use Exception;
  */
 class UpdateRequest extends CreateRequestBase
 {
-    protected string $id = '';
-    protected bool $clearCheckoutState = true;
+    public function __construct(
+        AssetsClient $assetsClient,
+        readonly string $id = '',
+        mixed $filedata = null,
+        array $metadata = [],
+        array $metadataToReturn = ['all'],
+        bool $parseMetadataModification = false,
+        readonly bool $clearCheckoutState = true
+)
+    {
+        parent::__construct($assetsClient, $filedata, $metadata, $metadataToReturn, $parseMetadataModification);
+    }
 
 
-    public function execute(): void
+    public function __invoke(): void
     {
         $requestData = [
-            'id' => $this->getId(),
-            'parseMetadataModifications' => $this->isParseMetadataModification() ? 'true' : 'false'
+            'id' => $this->id,
+            'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false'
         ];
 
-        $metadata = $this->getMetadata();
+        $metadata = self::cleanMetadata($this->metadata);
 
         if (count($metadata) > 0) {
             $requestData['metadata'] = json_encode($metadata);
         }
 
-        $fp = $this->getFiledata();
-
-        if (is_resource($fp)) {
-            $requestData['Filedata'] = $fp;
-            $requestData['clearCheckoutState'] = $this->isClearCheckoutState() ? 'true' : 'false';
+        if (is_resource($this->filedata)) {
+            $requestData['Filedata'] = $this->filedata;
+            $requestData['clearCheckoutState'] = $this->clearCheckoutState ? 'true' : 'false';
         }
 
         try {
@@ -44,7 +53,7 @@ class UpdateRequest extends CreateRequestBase
                 sprintf(
                     '%s: Update failed for asset <%s> - <%s> - <%s>',
                     __METHOD__,
-                    $request->getId(),
+                    $this->id,
                     $e->getMessage(),
                     json_encode($requestData)
                 ),
@@ -57,53 +66,13 @@ class UpdateRequest extends CreateRequestBase
             sprintf(
                 'Updated %s for asset <%s>',
                 implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
-                $this->getId()
+                $this->id
             ),
             [
                 'method' => __METHOD__,
-                'assetId' => $this->getId(),
-                'metadata' => $this->getMetadata()
+                'assetId' => $this->id,
+                'metadata' => $this->metadata
             ]
         );
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isClearCheckoutState(): bool
-    {
-        return $this->clearCheckoutState;
-    }
-
-
-    /**
-     * @param bool $clearCheckoutState
-     * @return self
-     */
-    public function setClearCheckoutState(bool $clearCheckoutState): self
-    {
-        $this->clearCheckoutState = $clearCheckoutState;
-        return $this;
     }
 }

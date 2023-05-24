@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -13,16 +14,24 @@ use Exception;
  */
 class UpdateBulkRequest extends CreateRequestBase
 {
-    protected string $q = '';
-    protected bool $async = false;
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $q = '',
+        array           $metadata = [],
+        readonly bool   $async = false,
+        bool            $parseMetadataModification = false
+    )
+    {
+        parent::__construct($assetsClient, null, $metadata, [], $parseMetadataModification);
+    }
 
 
-    public function execute(): ProcessResponse
+    public function __invoke(): ProcessResponse
     {
         $requestData = [
-            'q' => $this->getQ(),
-            'metadata' => json_encode($this->getMetadata()),
-            'parseMetadataModifications' => $this->isParseMetadataModification() ? 'true' : 'false'
+            'q' => $this->q,
+            'metadata' => json_encode(self::cleanMetadata($this->metadata)),
+            'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false'
         ];
 
         try {
@@ -32,7 +41,7 @@ class UpdateBulkRequest extends CreateRequestBase
                 sprintf(
                     '%s: Update Bulk failed for query <%s> - <%s> - <%s>',
                     __METHOD__,
-                    $this->getQ(),
+                    $this->q,
                     $e->getMessage(),
                     json_encode($requestData)
                 ),
@@ -40,54 +49,14 @@ class UpdateBulkRequest extends CreateRequestBase
                 $e);
         }
 
-        $this->logger->info(sprintf('Updated bulk for query <%s>', $this->getQ()),
+        $this->logger->info(sprintf('Updated bulk for query <%s>', $this->q),
             [
                 'method' => __METHOD__,
-                'query' => $this->getQ(),
-                'metadata' => $this->getMetadata()
+                'query' => $this->q,
+                'metadata' => $this->metadata
             ]
         );
 
         return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getQ(): string
-    {
-        return $this->q;
-    }
-
-
-    /**
-     * @param string $q
-     * @return self
-     */
-    public function setQ(string $q): self
-    {
-        $this->q = $q;
-        return $this;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isAsync(): bool
-    {
-        return $this->async;
-    }
-
-
-    /**
-     * @param bool $async
-     * @return self
-     */
-    public function setAsync(bool $async): self
-    {
-        $this->async = $async;
-        return $this;
     }
 }

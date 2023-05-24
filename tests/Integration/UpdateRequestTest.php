@@ -26,11 +26,10 @@ class UpdateRequestTest extends IntegrationFixture
 
         $this->assertEmpty($assetResponse->getMetadata()['headline'] ?? null);
 
-        $request = (new UpdateRequest($this->assetsClient))
-            ->setId($assetId)
-            ->setMetadata(['headline' => $filename]);
-
-        $request->execute();
+        (new UpdateRequest($this->assetsClient,
+            id: $assetId,
+            metadata: ['headline' => $filename]
+        ))();
 
         $updatedAssetResponse = (new SearchAssetRequest(
             $this->assetsClient,

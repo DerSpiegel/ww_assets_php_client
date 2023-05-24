@@ -35,11 +35,10 @@ class IntegrationUtils
 
         $fp = fopen($tmpFilename, 'r');
 
-        $request = (new CreateRequest($assetsClient))
-            ->setFiledata($fp)
-            ->setMetadata($metadata);
-
-        return $request->execute();
+        return (new CreateRequest($assetsClient,
+            filedata: $fp,
+            metadata: $metadata
+        ))();
     }
 
 

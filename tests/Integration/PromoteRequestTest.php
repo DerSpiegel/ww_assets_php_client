@@ -29,11 +29,10 @@ class PromoteRequestTest extends IntegrationFixture
         file_put_contents($tmpFilename, base64_decode(IntegrationUtils::getTinyJpegData()));
         $fp = fopen($tmpFilename, 'r');
 
-        $request = (new UpdateRequest($this->assetsClient))
-            ->setId($assetId)
-            ->setFiledata($fp);
-
-        $request->execute();
+        (new UpdateRequest($this->assetsClient,
+            id: $assetId,
+            filedata: $fp
+        ))();
 
         (new PromoteRequest($this->assetsClient))
             ->setId($assetId)
