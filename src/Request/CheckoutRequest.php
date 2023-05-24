@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -13,29 +14,32 @@ use Exception;
  */
 class CheckoutRequest extends Request
 {
-    protected string $id = '';
-    protected bool $download = false;
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $id = '',
+        readonly bool   $download = false
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
     /**
-     * Check out
+     * Check out (without download)
      */
-    public function execute(): CheckoutResponse
+    public function __invoke(): CheckoutResponse
     {
-        // This method is designed to do a checkout without download
-        $this->setDownload(false);
-
         try {
             $response = $this->assetsClient->serviceRequest(
-                sprintf('checkout/%s', urlencode($this->getId())),
-                ['download' => $this->isDownload() ? 'true' : 'false']
+                sprintf('checkout/%s', urlencode($this->id)),
+                ['download' => 'false']
             );
         } catch (Exception $e) {
             throw new AssetsException(
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
-                    $this->getId(),
+                    $this->id,
                     $e->getMessage()
                 ),
                 $e->getCode(),
@@ -43,11 +47,11 @@ class CheckoutRequest extends Request
             );
         }
 
-        $this->logger->info(sprintf('Asset <%s> checked out', $this->getId()),
+        $this->logger->info(sprintf('Asset <%s> checked out', $this->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->getId(),
-                'download' => $this->isDownload()
+                'id' => $this->id,
+                'download' => false
             ]
         );
 
@@ -58,15 +62,12 @@ class CheckoutRequest extends Request
     /**
      * Check out and download
      */
-    public function executeAndDownload(string $targetPath): void
+    public function checkoutAndDownload(string $targetPath): void
     {
-        // This method is designed to do a checkout with download
-        $this->setDownload(true);
-
         try {
             $response = $this->assetsClient->rawServiceRequest(
-                sprintf('checkout/%s', urlencode($this->getId())),
-                ['download' => $this->isDownload() ? 'true' : 'false']
+                sprintf('checkout/%s', urlencode($this->id)),
+                ['download' => 'true']
             );
 
             $this->assetsClient->writeResponseBodyToPath($response, $targetPath);
@@ -75,7 +76,7 @@ class CheckoutRequest extends Request
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
-                    $this->getId(),
+                    $this->id,
                     $e->getMessage()
                 ),
                 $e->getCode(),
@@ -83,52 +84,12 @@ class CheckoutRequest extends Request
             );
         }
 
-        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $this->getId(), $targetPath),
+        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $this->id, $targetPath),
             [
                 'method' => __METHOD__,
-                'id' => $this->getId(),
-                'download' => $this->isDownload()
+                'id' => $this->id,
+                'download' => true
             ]
         );
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-
-    /**
-     * @param string $id
-     * @return self
-     */
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-
-    /**
-     * @return bool
-     */
-    public function isDownload(): bool
-    {
-        return $this->download;
-    }
-
-
-    /**
-     * @param bool $download
-     * @return self
-     */
-    public function setDownload(bool $download): self
-    {
-        $this->download = $download;
-        return $this;
     }
 }

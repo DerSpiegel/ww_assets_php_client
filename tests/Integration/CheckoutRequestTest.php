@@ -24,9 +24,7 @@ class CheckoutRequestTest extends IntegrationFixture
         $assetId = $assetResponse->getId();
         $this->assertNotEmpty($assetId);
 
-        $response = (new CheckoutRequest($this->assetsClient))
-            ->setId($assetId)
-            ->execute();
+        $response = (new CheckoutRequest($this->assetsClient, id: $assetId))();
 
         $this->assertEquals(IntegrationUtils::getAssetsUsername(), $response->getCheckedOutBy());
 
