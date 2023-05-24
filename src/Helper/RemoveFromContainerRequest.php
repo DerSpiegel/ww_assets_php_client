@@ -23,7 +23,7 @@ class RemoveFromContainerRequest extends Request
     }
 
 
-    public function execute(): ProcessResponse
+    public function __invoke(): ProcessResponse
     {
         $q = SearchRequest::getRelationSearchQ(
                 $this->containerId,
@@ -48,9 +48,7 @@ class RemoveFromContainerRequest extends Request
             throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));
         }
 
-        $response = (new RemoveRelationRequest($this->assetsClient))
-            ->setRelationIds([$relationId])
-            ->execute();
+        $response = (new RemoveRelationRequest($this->assetsClient, relationIds: [$relationId]))();
 
         $this->logger->info('Relation removed',
             [

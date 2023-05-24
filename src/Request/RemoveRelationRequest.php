@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -13,15 +14,21 @@ use Exception;
  */
 class RemoveRelationRequest extends Request
 {
-    protected array $relationIds = [];
+    public function __construct(
+        AssetsClient   $assetsClient,
+        readonly array $relationIds = []
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
-    public function execute(): ProcessResponse
+    public function __invoke(): ProcessResponse
     {
         try {
             $response = $this->assetsClient->serviceRequest('removeRelation',
                 [
-                    'relationIds' => implode(',', $this->getRelationIds())
+                    'relationIds' => implode(',', $this->relationIds)
                 ]
             );
         } catch (Exception $e) {
@@ -31,31 +38,11 @@ class RemoveRelationRequest extends Request
         $this->logger->info('Relations removed',
             [
                 'method' => __METHOD__,
-                'ids' => $this->getRelationIds(),
+                'ids' => $this->relationIds,
                 'response' => $response
             ]
         );
 
         return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
-     * @return string[]
-     */
-    public function getRelationIds(): array
-    {
-        return $this->relationIds;
-    }
-
-
-    /**
-     * @param string[] $relationIds
-     * @return self
-     */
-    public function setRelationIds(array $relationIds): self
-    {
-        $this->relationIds = $relationIds;
-        return $this;
     }
 }

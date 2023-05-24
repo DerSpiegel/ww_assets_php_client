@@ -23,7 +23,7 @@ class CreateCollectionRequest extends Request
     }
 
 
-    public function execute(): AssetResponse
+    public function __invoke(): AssetResponse
     {
         $metadata = $this->metadata;
         $metadata['assetPath'] = $this->assetPath;
