@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -13,47 +14,33 @@ use Exception;
  */
 class GetFolderRequest extends Request
 {
-    protected string $path = '';
+    public function __construct(
+        AssetsClient $assetsClient,
+        readonly string $path = ''
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
-    public function execute(): FolderResponse
+    public function __invoke(): FolderResponse
     {
         try {
             $response = $this->assetsClient->apiRequest('GET', 'folder/get', [
-                'path' => $this->getPath()
+                'path' => $this->path
             ]);
         } catch (Exception $e) {
             throw new AssetsException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
                 $e->getCode(), $e);
         }
 
-        $this->logger->debug(sprintf('Folder <%s> retrieved', $this->getPath()),
+        $this->logger->debug(sprintf('Folder <%s> retrieved', $this->path),
             [
                 'method' => __METHOD__,
-                'folderPath' => $this->getPath()
+                'folderPath' => $this->path
             ]
         );
 
         return (new FolderResponse())->fromJson($response);
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-
-    /**
-     * @param string $path
-     * @return self
-     */
-    public function setPath(string $path): self
-    {
-        $this->path = $path;
-        return $this;
     }
 }

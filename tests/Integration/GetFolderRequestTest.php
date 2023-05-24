@@ -13,9 +13,7 @@ final class GetFolderRequestTest extends IntegrationFixture
     {
         $folderPath = IntegrationUtils::getAssetsTestsFolder();
 
-        $response = (new GetFolderRequest($this->assetsClient))
-            ->setPath($folderPath)
-            ->execute();
+        $response = (new GetFolderRequest($this->assetsClient, path: $folderPath))();
 
         $this->assertEquals($folderPath, $response->getPath());
     }
