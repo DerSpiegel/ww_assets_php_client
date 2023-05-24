@@ -24,6 +24,6 @@ class RemoveByIdRequest extends Request
 
     public function __invoke(): ProcessResponse
     {
-        return (new RemoveRequest($this->assetsClient))->setIds([$this->assetId])->execute();
+        return (new RemoveRequest($this->assetsClient, ids: [$this->assetId]))();
     }
 }

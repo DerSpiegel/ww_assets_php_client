@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
 
@@ -12,20 +13,26 @@ use Exception;
  */
 class RemoveRequest extends Request
 {
-    protected string $q = '';
-    protected array $ids = [];
-    protected string $folderPath = '';
+    public function __construct(
+        AssetsClient    $assetsClient,
+        readonly string $q = '',
+        readonly array  $ids = [],
+        readonly string $folderPath = ''
+    )
+    {
+        parent::__construct($assetsClient);
+    }
 
 
-    public function execute(): ProcessResponse
+    public function __invoke(): ProcessResponse
     {
         try {
             // filter the array, so the actual folder gets remove, not only its contents ?!
             $response = $this->assetsClient->serviceRequest('remove', array_filter(
                 [
-                    'q' => $this->getQ(),
-                    'ids' => implode(',', $this->getIds()),
-                    'folderPath' => $this->getFolderPath(),
+                    'q' => $this->q,
+                    'ids' => implode(',', $this->ids),
+                    'folderPath' => $this->folderPath,
                 ]
             ));
         } catch (Exception $e) {
@@ -35,73 +42,13 @@ class RemoveRequest extends Request
         $this->logger->info('Assets/Folders removed',
             [
                 'method' => __METHOD__,
-                'q' => $this->getQ(),
-                'ids' => $this->getIds(),
-                'folderPath' => $this->getFolderPath(),
+                'q' => $this->q,
+                'ids' => $this->ids,
+                'folderPath' => $this->folderPath,
                 'response' => $response
             ]
         );
 
         return (new ProcessResponse())->fromJson($response);
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getQ(): string
-    {
-        return $this->q;
-    }
-
-
-    /**
-     * @param string $q
-     * @return self
-     */
-    public function setQ(string $q): self
-    {
-        $this->q = $q;
-        return $this;
-    }
-
-
-    /**
-     * @return string[]
-     */
-    public function getIds(): array
-    {
-        return $this->ids;
-    }
-
-
-    /**
-     * @param string[] $ids
-     * @return self
-     */
-    public function setIds(array $ids): self
-    {
-        $this->ids = $ids;
-        return $this;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getFolderPath(): string
-    {
-        return $this->folderPath;
-    }
-
-
-    /**
-     * @param string $folderPath
-     * @return self
-     */
-    public function setFolderPath(string $folderPath): self
-    {
-        $this->folderPath = $folderPath;
-        return $this;
     }
 }
