@@ -15,8 +15,8 @@ abstract class Request
         public readonly AssetsClient $assetsClient
     )
     {
-        $this->assetsConfig = $this->assetsClient->getConfig();
-        $this->logger = $this->assetsClient->getLogger();
+        $this->assetsConfig = $this->assetsClient->config;
+        $this->logger = $this->assetsClient->logger;
     }
 
 

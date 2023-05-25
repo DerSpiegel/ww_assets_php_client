@@ -27,8 +27,8 @@ class ApiLoginRequest extends Request
     {
         return new ApiLoginRequest(
             $assetsClient,
-            username: $assetsClient->getConfig()->getUsername(),
-            password: $assetsClient->getConfig()->getPassword()
+            username: $assetsClient->config->getUsername(),
+            password: $assetsClient->config->getPassword()
         );
     }
 

@@ -53,14 +53,9 @@ class AssetsClient
     protected int $requestTimeout = 60;
 
 
-    /**
-     * AssetsClientBase constructor.
-     * @param AssetsConfig $config
-     * @param LoggerInterface $logger
-     */
     public function __construct(
-        protected AssetsConfig $config,
-        protected LoggerInterface $logger
+        readonly AssetsConfig $config,
+        readonly LoggerInterface $logger
     )
     {
         $this->httpClient = $this->newHttpClient();
@@ -85,21 +80,6 @@ class AssetsClient
     public function setAuthMethod(int $authMethod): void
     {
         $this->authMethod = $authMethod;
-    }
-
-
-    /**
-     * @return AssetsConfig
-     */
-    public function getConfig(): AssetsConfig
-    {
-        return $this->config;
-    }
-
-
-    public function getLogger(): LoggerInterface
-    {
-        return $this->logger;
     }
 
 
@@ -143,7 +123,7 @@ class AssetsClient
         $options = [
             RequestOptions::HEADERS => ['User-Agent' => $this->getHttpUserAgent()],
             RequestOptions::TIMEOUT => $this->getRequestTimeout(),
-            RequestOptions::VERIFY => $this->getConfig()->isVerifySslCertificate()
+            RequestOptions::VERIFY => $this->config->isVerifySslCertificate()
         ];
 
         if ($sendToken) {
