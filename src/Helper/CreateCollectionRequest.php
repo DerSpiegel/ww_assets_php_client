@@ -3,9 +3,9 @@
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
-use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\Request;
+use DerSpiegel\WoodWingAssetsClient\Request;
+use DerSpiegel\WoodWingAssetsClient\Service\AssetResponse;
+use DerSpiegel\WoodWingAssetsClient\Service\CreateRequest;
 
 
 /**

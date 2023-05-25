@@ -5,10 +5,10 @@ namespace DerSpiegel\WoodWingAssetsClient\Helper;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
-use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
-use DerSpiegel\WoodWingAssetsClient\Request\RemoveRelationRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\Request;
-use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
+use DerSpiegel\WoodWingAssetsClient\Request;
+use DerSpiegel\WoodWingAssetsClient\Service\ProcessResponse;
+use DerSpiegel\WoodWingAssetsClient\Service\RemoveRelationRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\SearchRequest;
 
 
 class RemoveFromContainerRequest extends Request

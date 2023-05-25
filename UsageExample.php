@@ -1,8 +1,8 @@
 <?php
 
-use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
+use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
+use DerSpiegel\WoodWingAssetsClient\Service\SearchRequest;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
 

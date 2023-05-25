@@ -3,9 +3,9 @@
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
-use DerSpiegel\WoodWingAssetsClient\Request\RemoveRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\Request;
+use DerSpiegel\WoodWingAssetsClient\Request;
+use DerSpiegel\WoodWingAssetsClient\Service\ProcessResponse;
+use DerSpiegel\WoodWingAssetsClient\Service\RemoveRequest;
 
 
 /**

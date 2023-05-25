@@ -3,8 +3,8 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\CopyRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\MoveRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\CopyRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\MoveRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 

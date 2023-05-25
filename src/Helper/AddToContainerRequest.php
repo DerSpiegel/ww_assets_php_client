@@ -4,8 +4,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
-use DerSpiegel\WoodWingAssetsClient\Request\CreateRelationRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\Request;
+use DerSpiegel\WoodWingAssetsClient\Request;
+use DerSpiegel\WoodWingAssetsClient\Service\CreateRelationRequest;
 
 
 /**

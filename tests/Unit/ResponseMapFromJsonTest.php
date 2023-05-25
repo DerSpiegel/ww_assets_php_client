@@ -3,7 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Unit;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
-use DerSpiegel\WoodWingAssetsClient\Request\ProcessResponse;
+use DerSpiegel\WoodWingAssetsClient\Service\ProcessResponse;
 use PHPUnit\Framework\TestCase;
 
 

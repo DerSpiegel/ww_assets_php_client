@@ -3,7 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\HistoryRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\HistoryRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 

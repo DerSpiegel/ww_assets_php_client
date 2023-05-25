@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
-use DerSpiegel\WoodWingAssetsClient\Request\BrowseRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\BrowseRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 
 

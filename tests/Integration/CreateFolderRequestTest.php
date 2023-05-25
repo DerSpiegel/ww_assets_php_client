@@ -2,9 +2,9 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
-use DerSpiegel\WoodWingAssetsClient\Request\CreateFolderRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\RemoveFolderRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\UpdateFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Api\CreateFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Api\RemoveFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Api\UpdateFolderRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 

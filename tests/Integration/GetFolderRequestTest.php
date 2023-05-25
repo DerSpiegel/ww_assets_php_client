@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
-use DerSpiegel\WoodWingAssetsClient\Request\GetFolderRequest;
+use DerSpiegel\WoodWingAssetsClient\Api\GetFolderRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 

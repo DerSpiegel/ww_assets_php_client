@@ -4,8 +4,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
-use DerSpiegel\WoodWingAssetsClient\Request\Request;
-use DerSpiegel\WoodWingAssetsClient\Request\SearchRequest;
+use DerSpiegel\WoodWingAssetsClient\Request;
+use DerSpiegel\WoodWingAssetsClient\Service\SearchRequest;
 
 
 /**

@@ -4,7 +4,7 @@ namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
 use DerSpiegel\WoodWingAssetsClient\Helper\SearchAssetRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\UpdateBulkRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\UpdateBulkRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 

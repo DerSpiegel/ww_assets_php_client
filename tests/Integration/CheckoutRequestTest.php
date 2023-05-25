@@ -3,8 +3,8 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\CheckoutRequest;
-use DerSpiegel\WoodWingAssetsClient\Request\UndoCheckoutRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\CheckoutRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\UndoCheckoutRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
