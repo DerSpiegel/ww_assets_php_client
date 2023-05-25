@@ -1,5 +1,17 @@
 # Change Log
 
+## 5.0.0 - 2023-05-25
+
+PHP 8.2 is now required.
+Backwards incompatible changes:
+AssetsClient::getConfig() is now AssetsClient::config, AssetsConfig::getUrl() is AssetsConfig::url.
+To keep sanitizing parameters, use AssetsConfig::create() instead of new AssetsConfig().
+Helper methods like AssetsClient::searchAsset() have been moved into dedicated request classes (Helper namespace).
+Requests are not executed through AssetsClient anymore, they are now invoked directly.
+Request classes have been moved into "Api", "Services" and "Helper" namespaces.
+Requests and responses now use readonly properties instead of getters and setters.
+CreateRelationRequest::relationType has changed from string to RelationType.
+
 ## 4.0.1 - 2023-03-10
 
 Fixed UsageStatsRecord::details response parsing.
