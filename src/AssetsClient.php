@@ -123,7 +123,7 @@ class AssetsClient
         $options = [
             RequestOptions::HEADERS => ['User-Agent' => $this->getHttpUserAgent()],
             RequestOptions::TIMEOUT => $this->getRequestTimeout(),
-            RequestOptions::VERIFY => $this->config->isVerifySslCertificate()
+            RequestOptions::VERIFY => $this->config->verifySslCertificate
         ];
 
         if ($sendToken) {
@@ -217,7 +217,7 @@ class AssetsClient
     {
         $url = sprintf(
             '%sservices/%s',
-            $this->config->getUrl(),
+            $this->config->url,
             $service
         );
 
@@ -268,7 +268,7 @@ class AssetsClient
     {
         $url = sprintf(
             '%sapi/%s',
-            $this->config->getUrl(),
+            $this->config->url,
             $service
         );
 
@@ -599,6 +599,6 @@ class AssetsClient
      */
     public function buildOriginalFileUrl(string $assetId): string
     {
-        return "{$this->config->getUrl()}file/$assetId/*/$assetId";
+        return "{$this->config->url}file/$assetId/*/$assetId";
     }
 }

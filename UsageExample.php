@@ -11,7 +11,7 @@ require_once 'vendor/autoload.php';
 $logger = new Logger('assetsClient');    // A logger is required
 $logger->pushHandler(new ErrorLogHandler());  // Log to PHP error_log
 
-$assetsConfig = new AssetsConfig(
+$assetsConfig = AssetsConfig::create(
     'https://assets.example.com/', // Assets URL (without app/ or services/ postfix)
     'username',               // Assets user name (API user preferred)
     'password'                // That user's password

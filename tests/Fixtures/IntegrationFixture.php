@@ -16,7 +16,7 @@ class IntegrationFixture extends TestCase
 
     protected function setUp(): void
     {
-        $this->assetsConfig = new AssetsConfig(
+        $this->assetsConfig = AssetsConfig::create(
             ASSETS_URL,
             ASSETS_USERNAME,
             ASSETS_PASSWORD
