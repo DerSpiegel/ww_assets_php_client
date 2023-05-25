@@ -51,7 +51,7 @@ $ docker run --rm --interactive --tty \
 Edit your copy, setting the correct Assets URL, username (API user preferred) and password in this section:
 
 ```php
-$assetsConfig = new AssetsConfig(
+$assetsConfig = AssetsConfig::create(
     'https://assets.example.com/', // Assets URL (without app/ or services/ postfix)
     'username',                    // Assets user name (API user preferred)
     'password'                     // That user's password
@@ -64,14 +64,15 @@ and returns the first 50 asset IDs – you can leave it as is for a first test:
 ```php
 $assetsClient = new AssetsClient($assetsConfig, $logger); // Create client
 
-$request = (new SearchRequest($assetsConfig))          // Create search request
-    ->setQ('')                                         // Assets query
-    ->setMetadataToReturn(['']);                       // Metadata fields to return
+$request = new SearchRequest($assetsClient,               // Create search request
+        q: '',                                            // Assets query
+        metadataToReturn: ['']                            // Metadata fields to return
+);
 
-$response = $assetsClient->search($request);            // Perform search
+$response = $request();                                   // Perform search
 
-foreach ($response->getHits() as $assetResponse) {     // Loop through results
-    echo $assetResponse->getId() . "\n";               // Access asset metadata
+foreach ($response->hits as $assetResponse) {             // Loop through results
+    echo $assetResponse->id . "\n";                       // Access asset metadata
 }
 ```
 
