@@ -7,12 +7,12 @@ use Psr\Log\LoggerInterface;
 
 abstract class Request
 {
-    public readonly AssetsConfig $assetsConfig;
-    public readonly LoggerInterface $logger;
+    readonly AssetsConfig $assetsConfig;
+    readonly LoggerInterface $logger;
 
 
     public function __construct(
-        public readonly AssetsClient $assetsClient
+        readonly AssetsClient $assetsClient
     )
     {
         $this->assetsConfig = $this->assetsClient->config;

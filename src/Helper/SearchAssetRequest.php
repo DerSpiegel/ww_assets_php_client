@@ -16,8 +16,8 @@ class SearchAssetRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        public readonly string $assetId,
-        public readonly array $metadataToReturn = []
+        readonly string $assetId,
+        readonly array $metadataToReturn = []
     )
     {
         parent::__construct($assetsClient);

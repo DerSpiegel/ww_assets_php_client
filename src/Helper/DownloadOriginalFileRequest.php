@@ -13,9 +13,9 @@ class DownloadOriginalFileRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        public readonly string $targetPath,
-        public readonly ?string $assetId = null,
-        public readonly ?AssetResponse $assetResponse = null
+        readonly string $targetPath,
+        readonly ?string $assetId = null,
+        readonly ?AssetResponse $assetResponse = null
     )
     {
         parent::__construct($assetsClient);

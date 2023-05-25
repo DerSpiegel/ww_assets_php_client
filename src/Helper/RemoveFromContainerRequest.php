@@ -15,8 +15,8 @@ class RemoveFromContainerRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        public readonly string $assetId,
-        public readonly string $containerId
+        readonly string $assetId,
+        readonly string $containerId
     )
     {
         parent::__construct($assetsClient);

@@ -15,8 +15,8 @@ class SearchAssetIdRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        public readonly string $q,
-        public readonly bool $failIfMultipleHits
+        readonly string $q,
+        readonly bool $failIfMultipleHits
     )
     {
         parent::__construct($assetsClient);

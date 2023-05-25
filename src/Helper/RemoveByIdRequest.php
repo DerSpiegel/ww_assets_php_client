@@ -15,7 +15,7 @@ class RemoveByIdRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        public readonly string $assetId
+        readonly string $assetId
     )
     {
         parent::__construct($assetsClient);

@@ -15,8 +15,8 @@ class CreateCollectionRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        public readonly string $assetPath,
-        public readonly array $metadata = []
+        readonly string $assetPath,
+        readonly array $metadata = []
     )
     {
         parent::__construct($assetsClient);
