@@ -3,11 +3,13 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\PromoteRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\UpdateRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 
-class CreateRequestTest extends IntegrationFixture
+class PromoteRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
@@ -23,11 +25,19 @@ class CreateRequestTest extends IntegrationFixture
         $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
-        $assetMetadata = $assetResponse->metadata;
+        $tmpFilename = sprintf('/tmp/%s-v2.jpg', $basename);
+        file_put_contents($tmpFilename, base64_decode(IntegrationUtils::getTinyJpegData()));
+        $fp = fopen($tmpFilename, 'r');
 
-        $this->assertEquals(IntegrationUtils::getAssetsUsername(), $assetMetadata['assetCreator']);
-        $this->assertEquals($basename, $assetMetadata['baseName']);
-        $this->assertEquals('image', $assetMetadata['assetDomain']);
+        (new UpdateRequest($this->assetsClient,
+            id: $assetId,
+            filedata: $fp
+        ))();
+
+        (new PromoteRequest($this->assetsClient,
+            id: $assetId,
+            version: 1
+        ))();
 
         (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
     }

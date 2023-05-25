@@ -7,12 +7,11 @@ use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 
-class CreateRequestTest extends IntegrationFixture
+class RemoveByIdRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
-        $basename = IntegrationUtils::getUniqueBasename(__CLASS__);
-        $filename = sprintf('%s.jpg', $basename);
+        $filename = IntegrationUtils::getUniqueBasename(__CLASS__) . '.jpg';
 
         $assetResponse = IntegrationUtils::createJpegAsset(
             $this->assetsClient,
@@ -23,12 +22,8 @@ class CreateRequestTest extends IntegrationFixture
         $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
-        $assetMetadata = $assetResponse->metadata;
+        $response = (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
 
-        $this->assertEquals(IntegrationUtils::getAssetsUsername(), $assetMetadata['assetCreator']);
-        $this->assertEquals($basename, $assetMetadata['baseName']);
-        $this->assertEquals('image', $assetMetadata['assetDomain']);
-
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        $this->assertEquals(1, $response->processedCount);
     }
 }

@@ -3,12 +3,30 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Fixtures;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Request\AssetResponse;
-use DerSpiegel\WoodWingAssetsClient\Request\CreateRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\AssetResponse;
+use DerSpiegel\WoodWingAssetsClient\Service\CreateRequest;
 
 
 class IntegrationUtils
 {
+    public static function getAssetsUsername(): string
+    {
+        return ASSETS_USERNAME;
+    }
+
+
+    public static function getAssetsTestsFolder(): string
+    {
+        return ASSETS_TESTS_FOLDER;
+    }
+
+
+    public static function getUniqueBasename(string $className): string
+    {
+        return sprintf('%s%s', strtr($className, '\\', '-'), uniqid());
+    }
+
+
     public static function createJpegAsset(AssetsClient $assetsClient, string $filename, array $metadata): AssetResponse
     {
         $tmpFilename = sprintf('/tmp/%s', $filename);
@@ -17,11 +35,10 @@ class IntegrationUtils
 
         $fp = fopen($tmpFilename, 'r');
 
-        $request = (new CreateRequest($assetsClient->getConfig()))
-            ->setFiledata($fp)
-            ->setMetadata($metadata);
-
-        return $assetsClient->create($request);
+        return (new CreateRequest($assetsClient,
+            filedata: $fp,
+            metadata: $metadata
+        ))();
     }
 
 
