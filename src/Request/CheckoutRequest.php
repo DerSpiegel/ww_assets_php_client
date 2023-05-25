@@ -55,7 +55,7 @@ class CheckoutRequest extends Request
             ]
         );
 
-        return (new CheckoutResponse())->fromJson($response);
+        return CheckoutResponse::createFromJson($response);
     }
 
 

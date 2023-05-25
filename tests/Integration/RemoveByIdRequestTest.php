@@ -19,11 +19,11 @@ class RemoveByIdRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
         $response = (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
 
-        $this->assertEquals(1, $response->getProcessedCount());
+        $this->assertEquals(1, $response->processedCount);
     }
 }

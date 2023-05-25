@@ -30,6 +30,6 @@ $request = new SearchRequest($assetsClient,          // Create search request
 
 $response = $request();                              // Perform search
 
-foreach ($response->getHits() as $assetResponse) {   // Loop through results
-    echo $assetResponse->getId() . "\n";             // Access asset metadata
+foreach ($response->hits as $assetResponse) {   // Loop through results
+    echo $assetResponse->id . "\n";             // Access asset metadata
 }

@@ -21,10 +21,10 @@ class UpdateRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
-        $this->assertEmpty($assetResponse->getMetadata()['headline'] ?? null);
+        $this->assertEmpty($assetResponse->metadata['headline'] ?? null);
 
         (new UpdateRequest($this->assetsClient,
             id: $assetId,
@@ -37,7 +37,7 @@ class UpdateRequestTest extends IntegrationFixture
             metadataToReturn: ['headline']
         ))();
 
-        $this->assertEquals($filename, $updatedAssetResponse->getMetadata()['headline']);
+        $this->assertEquals($filename, $updatedAssetResponse->metadata['headline']);
 
         (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
     }

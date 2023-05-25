@@ -2,31 +2,24 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class ProcessResponse
- * @package DerSpiegel\WoodWingAssetsClient\Request
+ * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy
  */
 class ProcessResponse extends Response
 {
-    #[MapFromJson] protected int $processedCount = 0;
-    #[MapFromJson] protected int $errorCount = 0;
-
-
-    /**
-     * @return int
-     */
-    public function getProcessedCount(): int
+    public function __construct(
+        #[MapFromJson] readonly int $processedCount = 0,
+        #[MapFromJson] readonly int $errorCount = 0
+    )
     {
-        return $this->processedCount;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getErrorCount(): int
+    public static function createFromJson(array $json): self
     {
-        return $this->errorCount;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

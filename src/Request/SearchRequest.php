@@ -55,7 +55,7 @@ class SearchRequest extends Request
             ]
         );
 
-        return (new SearchResponse())->fromJson($response);
+        return SearchResponse::createFromJson($response);
     }
 
 

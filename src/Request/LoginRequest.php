@@ -54,6 +54,6 @@ class LoginRequest extends Request
             throw new RuntimeException(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
         }
 
-        return (new LoginResponse())->fromJson($response);
+        return LoginResponse::createFromJson($response);
     }
 }

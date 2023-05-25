@@ -31,6 +31,6 @@ class DownloadOriginalFileRequestTest extends IntegrationFixture
         $this->assertTrue(file_exists($targetPath));
         $this->assertGreaterThan(0, filesize($targetPath));
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetResponse->getId()))();
+        (new RemoveByIdRequest($this->assetsClient, assetId: $assetResponse->id))();
     }
 }

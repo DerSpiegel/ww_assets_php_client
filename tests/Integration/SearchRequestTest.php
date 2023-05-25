@@ -12,6 +12,6 @@ final class SearchRequestTest extends IntegrationFixture
     {
         $response = (new SearchRequest($this->assetsClient, q: '', num: 0))();
 
-        $this->assertGreaterThan(0, $response->getTotalHits());
+        $this->assertGreaterThan(0, $response->totalHits);
     }
 }

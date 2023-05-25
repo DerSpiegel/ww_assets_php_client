@@ -2,53 +2,26 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class ApiLoginResponse
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class ApiLoginResponse extends Response
 {
-    #[MapFromJson] protected bool $loginSuccess = false;
-    #[MapFromJson] protected string $loginFaultMessage = '';
-    #[MapFromJson] protected string $serverVersion = '';
-    #[MapFromJson] protected string $authToken = '';
-
-
-    /**
-     * @return bool
-     */
-    public function isLoginSuccess(): bool
+    public function __construct(
+        #[MapFromJson] readonly bool   $loginSuccess = false,
+        #[MapFromJson] readonly string $loginFaultMessage = '',
+        #[MapFromJson] readonly string $serverVersion = '',
+        #[MapFromJson] readonly string $authToken = ''
+    )
     {
-        return $this->loginSuccess;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getLoginFaultMessage(): string
+    public static function createFromJson(array $json): self
     {
-        return $this->loginFaultMessage;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getServerVersion(): string
-    {
-        return $this->serverVersion;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getAuthToken(): string
-    {
-        return $this->authToken;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

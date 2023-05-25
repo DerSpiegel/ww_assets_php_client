@@ -3,7 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
 use Attribute;
-use ReflectionProperty;
+use ReflectionParameter;
 
 
 #[Attribute(Attribute::TARGET_PROPERTY)]
@@ -14,9 +14,9 @@ class MapFromJson
 
 
     public function __construct(
-        public string $name = '',
-        public ?ReflectionProperty $property = null,
-        public ?string $conversion = null
+        public string               $name = '', // Key in JSON
+        public ?ReflectionParameter $parameter = null,
+        public ?string              $conversion = null
     )
     {
     }

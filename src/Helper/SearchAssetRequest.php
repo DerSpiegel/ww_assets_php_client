@@ -31,15 +31,15 @@ class SearchAssetRequest extends Request
             metadataToReturn: empty($metadataToReturn) ? [SearchRequest::METADATA_TO_RETURN_DEFAULT] : $metadataToReturn
         ))();
 
-        if ($response->getTotalHits() === 0) {
+        if ($response->totalHits === 0) {
             throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $this->assetId), 404);
         }
 
-        if ($response->getTotalHits() > 1) {
+        if ($response->totalHits > 1) {
             // god help us if this happens
             throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $this->assetId), 404);
         }
 
-        return $response->getHits()[0];
+        return $response->hits[0];
     }
 }

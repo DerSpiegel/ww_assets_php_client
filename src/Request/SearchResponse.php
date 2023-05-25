@@ -2,84 +2,47 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class SearchResponse
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class SearchResponse extends Response
 {
-    #[MapFromJson] protected array $facets = [];
-    #[MapFromJson] protected int $firstResult = 0;
-    #[MapFromJson] protected int $maxResultHits = 0;
-    #[MapFromJson] protected int $totalHits = 0;
-
-    protected AssetResponseList $hits;
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
+    public function __construct(
+        readonly ?AssetResponseList   $hits = null,
+        #[MapFromJson] readonly array $facets = [],
+        #[MapFromJson] readonly int   $firstResult = 0,
+        #[MapFromJson] readonly int   $maxResultHits = 0,
+        #[MapFromJson] readonly int   $totalHits = 0,
+    )
     {
-        parent::fromJson($json);
+    }
+
+
+    protected static function applyJsonMapping(array $json): array
+    {
+        $result = parent::applyJsonMapping($json);
+
+        if (isset($result['totalHits'])) {
+            $result['totalHits'] =  max(0, $result['totalHits']);
+        }
 
         if (isset($json['hits']) && is_array($json['hits'])) {
-            $this->hits = new AssetResponseList();
+            $result['hits'] = new AssetResponseList();
 
             foreach ($json['hits'] as $hitJson) {
-                $this->hits->addValue((new AssetResponse())->fromJson($hitJson));
+                $result['hits']->addValue(AssetResponse::createFromJson($hitJson));
             }
         }
 
-        return $this;
+        return $result;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getFirstResult(): int
+    public static function createFromJson(array $json): self
     {
-        return $this->firstResult;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getMaxResultHits(): int
-    {
-        return $this->maxResultHits;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getTotalHits(): int
-    {
-        return max(0, $this->totalHits);
-    }
-
-
-    /**
-     * @return AssetResponseList
-     */
-    public function getHits(): AssetResponseList
-    {
-        return $this->hits;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getFacets(): array
-    {
-        return $this->facets;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

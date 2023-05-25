@@ -22,7 +22,7 @@ class PromoteRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
         $tmpFilename = sprintf('/tmp/%s-v2.jpg', $basename);

@@ -2,53 +2,40 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class HistoryResponseItem
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class HistoryResponseItem extends Response
 {
-    protected ?AssetResponse $hit = null;
-    protected UsageStatsRecord $usageStatsRecord;
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
+    public function __construct(
+        readonly ?AssetResponse $hit = null,
+        readonly ?UsageStatsRecord $usageStatsRecord = null
+    )
     {
-        parent::fromJson($json);
+    }
+
+
+    protected static function applyJsonMapping(array $json): array
+    {
+        $result = [];
 
         if (isset($json['hit']) && is_array($json['hit'])) {
-            $this->hit = (new AssetResponse())->fromJson($json['hit']);
+            $result['hit'] = AssetResponse::createFromJson($json['hit']);
         }
 
         if (isset($json['usageStatsRecord']) && is_array($json['usageStatsRecord'])) {
-            $this->usageStatsRecord = (new UsageStatsRecord())->fromJson($json['usageStatsRecord']);
+            $result['usageStatsRecord'] = UsageStatsRecord::createFromJson($json['usageStatsRecord']);
         }
 
-        return $this;
+        return $result;
     }
 
 
-    /**
-     * @return AssetResponse|null
-     */
-    public function getHit(): ?AssetResponse
+    public static function createFromJson(array $json): self
     {
-        return $this->hit;
-    }
-
-
-    /**
-     * @return UsageStatsRecord
-     */
-    public function getUsageStatsRecord(): UsageStatsRecord
-    {
-        return $this->usageStatsRecord;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

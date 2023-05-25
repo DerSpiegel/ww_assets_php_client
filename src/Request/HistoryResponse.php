@@ -2,58 +2,40 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class HistoryResponse
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class HistoryResponse extends Response
 {
-    #[MapFromJson] protected int $totalHits = 0;
-
-    protected HistoryResponseItemList $hits;
-
-
-    public function __construct()
+    public function __construct(
+        #[MapFromJson] readonly int $totalHits = 0,
+        readonly ?HistoryResponseItemList $hits = null
+    )
     {
-        $this->hits = new HistoryResponseItemList();
     }
 
 
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
+    protected static function applyJsonMapping(array $json): array
     {
-        parent::fromJson($json);
+        $result = parent::applyJsonMapping($json);
 
         if (isset($json['hits']) && is_array($json['hits'])) {
+            $result['hits'] = new HistoryResponseItemList();
+
             foreach ($json['hits'] as $hitJson) {
-                $this->hits->addValue((new HistoryResponseItem())->fromJson($hitJson));
+                $result['hits']->addValue(HistoryResponseItem::createFromJson($hitJson));
             }
         }
 
-        return $this;
+        return $result;
     }
 
 
-    /**
-     * @return int
-     */
-    public function getTotalHits(): int
+    public static function createFromJson(array $json): self
     {
-        return $this->totalHits;
-    }
-
-
-    /**
-     * @return HistoryResponseItemList
-     */
-    public function getHits(): HistoryResponseItemList
-    {
-        return $this->hits;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

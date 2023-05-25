@@ -481,16 +481,16 @@ class AssetsClient
 
         $response = ApiLoginRequest::createFromConfig($this)();
 
-        if (!$response->isLoginSuccess()) {
+        if (!$response->loginSuccess) {
             throw new RuntimeException(sprintf('%s: Assets API login failed: %s', __METHOD__,
-                $response->getLoginFaultMessage()));
+                $response->loginFaultMessage));
         }
 
-        if (strlen($response->getAuthToken()) === 0) {
+        if (strlen($response->authToken) === 0) {
             throw new RuntimeException(sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__));
         }
 
-        $this->bearerToken = 'Bearer ' . $response->getAuthToken();
+        $this->bearerToken = 'Bearer ' . $response->authToken;
 
         return $this->bearerToken;
     }
@@ -552,16 +552,16 @@ class AssetsClient
 
         $response = LoginRequest::createFromConfig($this)();
 
-        if (!$response->isLoginSuccess()) {
+        if (!$response->loginSuccess) {
             throw new RuntimeException(sprintf('%s: Assets login failed: %s', __METHOD__,
-                $response->getLoginFaultMessage()));
+                $response->loginFaultMessage));
         }
 
-        if (strlen($response->getCsrfToken()) === 0) {
+        if (strlen($response->csrfToken) === 0) {
             throw new RuntimeException(sprintf('%s: Assets login succeeded, but csrfToken is empty', __METHOD__));
         }
 
-        $this->csrfToken = $response->getCsrfToken();
+        $this->csrfToken = $response->csrfToken;
 
         return $this->csrfToken;
     }
@@ -575,7 +575,7 @@ class AssetsClient
     {
         try {
             $httpResponse = $this->serviceRequest('logout');
-            $logout = (new LogoutResponse())->fromJson($httpResponse);
+            $logout = LogoutResponse::createFromJson($httpResponse);
 
             if ($cleanUpToken) {
                 $this->bearerToken = '';

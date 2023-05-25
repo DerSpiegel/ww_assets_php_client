@@ -20,10 +20,10 @@ class CreateRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
-        $assetMetadata = $assetResponse->getMetadata();
+        $assetMetadata = $assetResponse->metadata;
 
         $this->assertEquals(IntegrationUtils::getAssetsUsername(), $assetMetadata['assetCreator']);
         $this->assertEquals($basename, $assetMetadata['baseName']);

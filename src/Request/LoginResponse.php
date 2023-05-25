@@ -2,63 +2,26 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
 
 /**
- * Class LoginResponse
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LoginResponse extends Response
 {
-    #[MapFromJson] protected bool $loginSuccess = false;
-    #[MapFromJson] protected string $loginFaultMessage = '';
-    #[MapFromJson] protected string $serverVersion = '';
-    #[MapFromJson] protected array $userProfile = [];
-    #[MapFromJson] protected string $csrfToken = '';
-
-
-    /**
-     * @return bool
-     */
-    public function isLoginSuccess(): bool
+    public function __construct(
+        #[MapFromJson] readonly bool   $loginSuccess = false,
+        #[MapFromJson] readonly string $loginFaultMessage = '',
+        #[MapFromJson] readonly string $serverVersion = '',
+        #[MapFromJson] readonly array  $userProfile = [],
+        #[MapFromJson] readonly string $csrfToken = ''
+    )
     {
-        return $this->loginSuccess;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getLoginFaultMessage(): string
+    public static function createFromJson(array $json): self
     {
-        return $this->loginFaultMessage;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getServerVersion(): string
-    {
-        return $this->serverVersion;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getUserProfile(): array
-    {
-        return $this->userProfile;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getCsrfToken(): string
-    {
-        return $this->csrfToken;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

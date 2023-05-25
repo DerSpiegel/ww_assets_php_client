@@ -20,7 +20,7 @@ class HistoryRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
         (new HistoryRequest($this->assetsClient, id: $assetId))();

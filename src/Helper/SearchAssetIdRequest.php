@@ -31,15 +31,15 @@ class SearchAssetIdRequest extends Request
             metadataToReturn: ['']
         ))();
 
-        if ($response->getTotalHits() === 0) {
+        if ($response->totalHits === 0) {
             throw new AssetsException(sprintf('%s: No asset found for query <%s>', __METHOD__, $this->q), 404);
         }
 
-        if (($response->getTotalHits() > 1) && $this->failIfMultipleHits) {
+        if (($response->totalHits > 1) && $this->failIfMultipleHits) {
             throw new AssetsException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
-                $response->getTotalHits(), $this->q), 404);
+                $response->totalHits, $this->q), 404);
         }
 
-        return $response->getHits()[0]->getId();
+        return $response->hits[0]->id;
     }
 }

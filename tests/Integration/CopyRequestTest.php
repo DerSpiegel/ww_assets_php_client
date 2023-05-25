@@ -21,7 +21,7 @@ class CopyRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
         $source = sprintf('%s/%s', IntegrationUtils::getAssetsTestsFolder(), $sourceFilename);
@@ -34,7 +34,7 @@ class CopyRequestTest extends IntegrationFixture
             fileReplacePolicy: CopyRequest::FILE_REPLACE_POLICY_THROW_EXCEPTION
         ))();
 
-        $this->assertEquals(1, $response->getProcessedCount());
+        $this->assertEquals(1, $response->processedCount);
 
         $targetId = (new SearchAssetIdRequest(
             $this->assetsClient,

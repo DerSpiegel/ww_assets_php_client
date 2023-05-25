@@ -17,16 +17,16 @@ final class CreateFolderRequestTest extends IntegrationFixture
 
         $folderResponse = (new CreateFolderRequest($this->assetsClient, path: $folderPath))();
 
-        $this->assertEquals($folderPath, $folderResponse->getPath());
+        $this->assertEquals($folderPath, $folderResponse->path);
 
         (new UpdateFolderRequest($this->assetsClient,
-            id: $folderResponse->getId(),
+            id: $folderResponse->id,
             path: $folderPath,
             metadata: ['description' => 'Test subfolder']
         ))();
 
         (new RemoveFolderRequest($this->assetsClient,
-            id: $folderResponse->getId(),
+            id: $folderResponse->id,
             path: $folderPath
         ))();
     }

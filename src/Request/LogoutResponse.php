@@ -2,22 +2,23 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class LogoutResponse
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268851-Assets-Server-REST-API-logout
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class LogoutResponse extends Response
 {
-    #[MapFromJson] protected bool $logoutSuccess = false;
-
-
-    /**
-     * @return bool
-     */
-    public function isLogoutSuccess(): bool
+    public function __construct(
+        #[MapFromJson] readonly bool $logoutSuccess = false
+    )
     {
-        return $this->logoutSuccess;
+    }
+
+
+    public static function createFromJson(array $json): self
+    {
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

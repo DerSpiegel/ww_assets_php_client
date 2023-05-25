@@ -42,7 +42,7 @@ class BrowseRequest extends Request
             ]
         );
 
-        return (new BrowseResponse())->fromJson($response);
+        return BrowseResponse::createFromJson($response);
     }
 
 

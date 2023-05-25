@@ -12,6 +12,6 @@ final class BrowseRequestTest extends IntegrationFixture
     {
         $response = (new BrowseRequest($this->assetsClient, path: '/'))();
 
-        $this->assertGreaterThan(0, $response->getItems());
+        $this->assertGreaterThan(0, $response->items);
     }
 }

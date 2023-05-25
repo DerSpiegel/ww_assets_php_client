@@ -13,9 +13,9 @@ final class ResponseMapFromJsonTest extends TestCase
     {
         $json = AssetsUtils::parseJsonResponse('{"processedCount": 13,"errorCount": 0}');
 
-        $response = (new ProcessResponse())->fromJson($json);
+        $response = ProcessResponse::createFromJson($json);
 
-        $this->assertEquals(13, $response->getProcessedCount());
-        $this->assertEquals(0, $response->getErrorCount());
+        $this->assertEquals(13, $response->processedCount);
+        $this->assertEquals(0, $response->errorCount);
     }
 }

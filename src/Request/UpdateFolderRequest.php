@@ -55,6 +55,6 @@ class UpdateFolderRequest extends Request
             ]
         );
 
-        return (new FolderResponse())->fromJson($response);
+        return FolderResponse::createFromJson($response);
     }
 }

@@ -2,44 +2,26 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
-
 use DateTimeImmutable;
+use ReflectionClass;
+
 
 /**
- * Class CheckoutResponse
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class CheckoutResponse extends Response
 {
-    #[MapFromJson(conversion: 'intToDateTime')] protected ?DateTimeImmutable $checkedOut = null;
-    #[MapFromJson] protected string $checkedOutBy = '';
-    #[MapFromJson] protected string $checkedOutOnClient = '';
-
-
-    /**
-     * @return int
-     */
-    public function getCheckedOut(): ?DateTimeImmutable
+    public function __construct(
+        #[MapFromJson(conversion: 'intToDateTime')] readonly ?DateTimeImmutable $checkedOut = null,
+        #[MapFromJson] readonly string                                          $checkedOutBy = '',
+        #[MapFromJson] readonly string                                          $checkedOutOnClient = ''
+    )
     {
-        return $this->checkedOut;
     }
 
 
-    /**
-     * @return string
-     */
-    public function getCheckedOutBy(): string
+    public static function createFromJson(array $json): self
     {
-        return $this->checkedOutBy;
-    }
-
-
-    /**
-     * @return string
-     */
-    public function getCheckedOutOnClient(): string
-    {
-        return $this->checkedOutOnClient;
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

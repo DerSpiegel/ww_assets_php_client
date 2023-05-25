@@ -52,6 +52,6 @@ class ApiLoginRequest extends Request
             throw new RuntimeException(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
         }
 
-        return (new ApiLoginResponse())->fromJson($response);
+        return ApiLoginResponse::createFromJson($response);
     }
 }

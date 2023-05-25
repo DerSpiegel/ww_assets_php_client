@@ -2,41 +2,37 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Request;
 
+use ReflectionClass;
+
 
 /**
- * Class BrowseResponse
- *
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse
- * @package DerSpiegel\WoodWingAssetsClient\Request
  */
 class BrowseResponse extends Response
 {
-    protected array $items = [];
-
-
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
+    public function __construct(
+        readonly array $items = []
+    )
     {
-        $this->items = [];
-
-        foreach ($json as $item) {
-            if (is_array($item)) {
-                $this->items[] = $item;
-            }
-        }
-
-        return $this;
     }
 
 
-    /**
-     * @return array
-     */
-    public function getItems(): array
+    protected static function applyJsonMapping(array $json): array
     {
-        return $this->items;
+        $result = ['items' => []];
+
+        foreach ($json as $item) {
+            if (is_array($item)) {
+                $result['items'][] = $item;
+            }
+        }
+
+        return $result;
+    }
+
+
+    public static function createFromJson(array $json): self
+    {
+        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

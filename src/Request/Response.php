@@ -7,21 +7,16 @@ use DerSpiegel\WoodWingAssetsClient\AssetsAction;
 use ReflectionClass;
 
 
-/**
- * Class Response
- * @package DerSpiegel\WoodWingAssetsClient\Request
- */
 abstract class Response
 {
-    /**
-     * @param array $json
-     * @return self
-     */
-    public function fromJson(array $json): self
+    protected static function applyJsonMapping(array $json): array
     {
-        foreach ($this->getPropertyFromJsonMapping() as $mapFromJson) {
-            $propertyName = $mapFromJson->property->getName();
-            $propertyType = $mapFromJson->property->getType()->getName();
+        $mapping = self::getJsonMapping();
+        $result = [];
+
+        foreach ($mapping as $mapFromJson) {
+            $parameterName = $mapFromJson->parameter->getName();
+            $parameterType = $mapFromJson->parameter->getType()->getName();
             $nameInJson = $mapFromJson->name;
 
             if (!isset($json[$nameInJson])) {
@@ -43,7 +38,7 @@ abstract class Response
                 }
             }
 
-            if ($propertyType === 'array') {
+            if ($parameterType === 'array') {
                 if (!is_array($value)) {
                     if (!empty($value)) {
                         $value = [$value];
@@ -51,41 +46,41 @@ abstract class Response
                         continue;
                     }
                 }
-            } elseif ($propertyType === 'bool') {
+            } elseif ($parameterType === 'bool') {
                 $value = boolval($value);
-            } elseif ($propertyType === 'int') {
+            } elseif ($parameterType === 'int') {
                 $value = intval($value);
-            } elseif ($propertyType === 'string') {
+            } elseif ($parameterType === 'string') {
                 $value = trim($value);
             }
 
-            $this->{$propertyName} = $value;
+            $result[$parameterName] = $value;
         }
 
-        return $this;
+        return $result;
     }
 
 
     /**
-     * Read this object's MapFromJson attributes
+     * Read this object's constructor parameter MapFromJson attributes
      *
-     * A simple MapFromJson attribute uses the property name as JSON key.
+     * A simple MapFromJson attribute uses the parameter name as JSON key.
      * If the JSON key differs, specify MapFromJson(name: 'JSON key').
      * If a conversion routine is to be applied, specify it like this: MapFromJson(conversion: 'intToDateTime').
      *
      * @return MapFromJson[]
      */
-    protected function getPropertyFromJsonMapping(): array
+    protected static function getJsonMapping(): array
     {
         $mapping = [];
 
         $reflection = new ReflectionClass(static::class);
 
-        foreach ($reflection->getProperties() as $property) {
-            foreach ($property->getAttributes(MapFromJson::class) as $attribute) {
-                $name = $attribute->getArguments()['name'] ?? $property->getName();
+        foreach ($reflection->getConstructor()->getParameters() as $parameter) {
+            foreach ($parameter->getAttributes(MapFromJson::class) as $attribute) {
+                $name = $attribute->getArguments()['name'] ?? $parameter->getName();
                 $conversion = $attribute->getArguments()['conversion'] ?? null;
-                $mapping[] = new MapFromJson($name, $property, $conversion);
+                $mapping[] = new MapFromJson($name, $parameter, $conversion);
                 break;
             }
         }

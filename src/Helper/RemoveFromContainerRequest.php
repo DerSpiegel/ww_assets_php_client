@@ -37,12 +37,11 @@ class RemoveFromContainerRequest extends Request
             metadataToReturn: ['id']
         ))();
 
-        if ($searchResponse->getTotalHits() === 0) {
-            return (new ProcessResponse())
-                ->fromJson(['processedCount' => 0, 'errorCount' => 0]);
+        if ($searchResponse->totalHits === 0) {
+            return ProcessResponse::createFromJson(['processedCount' => 0, 'errorCount' => 0]);
         }
 
-        $relationId = $searchResponse->getHits()[0]->getRelation()['relationId'] ?? '';
+        $relationId = $searchResponse->hits[0]->relation['relationId'] ?? '';
 
         if ($relationId === '') {
             throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));

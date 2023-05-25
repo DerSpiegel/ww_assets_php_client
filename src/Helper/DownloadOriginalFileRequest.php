@@ -42,16 +42,16 @@ class DownloadOriginalFileRequest extends Request
             $assetResponse = (new SearchAssetRequest($this->assetsClient, assetId: $this->assetId))();
         }
 
-        if (strlen($assetResponse->getOriginalUrl()) === 0) {
-            throw new AssetsException(sprintf('%s: Original URL of <%s> is empty', __METHOD__, $assetResponse->getId()), 404);
+        if (strlen($assetResponse->originalUrl) === 0) {
+            throw new AssetsException(sprintf('%s: Original URL of <%s> is empty', __METHOD__, $assetResponse->id), 404);
         }
 
-        $this->assetsClient->downloadFileToPath($assetResponse->getOriginalUrl(), $this->targetPath);
+        $this->assetsClient->downloadFileToPath($assetResponse->originalUrl, $this->targetPath);
 
-        $this->logger->debug(sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->getId(), $this->targetPath),
+        $this->logger->debug(sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->id, $this->targetPath),
             [
                 'method' => __METHOD__,
-                'assetId' => $assetResponse->getId()
+                'assetId' => $assetResponse->id
             ]
         );
     }

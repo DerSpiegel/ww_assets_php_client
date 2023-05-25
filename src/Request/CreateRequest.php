@@ -27,7 +27,7 @@ class CreateRequest extends CreateRequestBase
             throw new AssetsException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
         }
 
-        $assetResponse = (new AssetResponse())->fromJson($response);
+        $assetResponse = AssetResponse::createFromJson($response);
 
         $this->logger->info('Asset created',
             [

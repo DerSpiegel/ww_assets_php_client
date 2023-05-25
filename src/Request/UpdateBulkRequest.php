@@ -57,6 +57,6 @@ class UpdateBulkRequest extends CreateRequestBase
             ]
         );
 
-        return (new ProcessResponse())->fromJson($response);
+        return ProcessResponse::createFromJson($response);
     }
 }

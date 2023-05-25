@@ -23,7 +23,7 @@ class AddToContainerRequestTest extends IntegrationFixture
             ['folderPath' => IntegrationUtils::getAssetsTestsFolder()]
         );
 
-        $assetId = $assetResponse->getId();
+        $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
         $collectionResponse = (new CreateCollectionRequest(
@@ -31,7 +31,7 @@ class AddToContainerRequestTest extends IntegrationFixture
             assetPath: sprintf('%s/%s.collection', IntegrationUtils::getAssetsTestsFolder(), $basename)
         ))();
 
-        $collectionId = $collectionResponse->getId();
+        $collectionId = $collectionResponse->id;
 
         (new AddToContainerRequest($this->assetsClient,
             assetId: $assetId,
@@ -43,7 +43,7 @@ class AddToContainerRequestTest extends IntegrationFixture
             containerId: $collectionId
         ))();
 
-        $this->assertEquals(1, $processResponse->getProcessedCount());
+        $this->assertEquals(1, $processResponse->processedCount);
 
         (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
         (new RemoveByIdRequest($this->assetsClient, assetId: $collectionId))();

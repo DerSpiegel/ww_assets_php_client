@@ -85,6 +85,6 @@ class HistoryRequest extends Request
             ]
         );
 
-        return (new HistoryResponse())->fromJson($response);
+        return HistoryResponse::createFromJson($response);
     }
 }
