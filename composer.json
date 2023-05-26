@@ -40,5 +40,8 @@
   "require-dev": {
     "monolog/monolog": "^3.2",
     "phpunit/phpunit": "^9.5"
+  },
+  "scripts": {
+    "unit-tests": "vendor/bin/phpunit tests/Unit"
   }
 }
