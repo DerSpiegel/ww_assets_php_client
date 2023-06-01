@@ -1,5 +1,5 @@
 {
-  "name": "der-spiegel/ww-elvis-client",
+  "name": "der-spiegel/ww-assets-client",
   "description": "PHP client for the WoodWing Assets (formerly: Elvis DAM) system https://www.woodwing.com/en/products/woodwing-assets",
   "homepage": "https://github.com/DerSpiegel/ww_assets_php_client",
   "type": "library",
