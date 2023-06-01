@@ -1,7 +1,7 @@
 {
-  "name": "der-spiegel/ww-elvis-client",
-  "description": "PHP client for the WoodWing Assets (formerly: Elvis DAM) system https://www.woodwing.com/en/digital-asset-management-system",
-  "homepage": "https://github.com/DerSpiegel/ww_elvis_php_client",
+  "name": "der-spiegel/ww-assets-client",
+  "description": "PHP client for the WoodWing Assets (formerly: Elvis DAM) system https://www.woodwing.com/en/products/woodwing-assets",
+  "homepage": "https://github.com/DerSpiegel/ww_assets_php_client",
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -40,5 +40,8 @@
   "require-dev": {
     "monolog/monolog": "^3.2",
     "phpunit/phpunit": "^9.5"
+  },
+  "scripts": {
+    "unit-tests": "vendor/bin/phpunit tests/Unit"
   }
 }

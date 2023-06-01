@@ -18,7 +18,7 @@ This PHP client library uses its `REST API <https://helpcenter.woodwing.com/hc/e
 It is **not an official library** supplied by the vendor:
 Instead, it has been developed for and by the German `SPIEGEL Gruppe <https://gruppe.spiegel.de>`_ during its Assets implementation.
 
-The Assets Client is **open source and hosted on Github**: https://github.com/DerSpiegel/ww_elvis_php_client
+The Assets Client is **open source and hosted on Github**: https://github.com/DerSpiegel/ww_assets_php_client
 
 Indices and tables
 ------------------
