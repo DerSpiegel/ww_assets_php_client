@@ -327,7 +327,7 @@ class AssetsClient
     protected function getDefaultHttpUserAgent(): string
     {
         return sprintf(
-            'der-spiegel/ww-elvis-client (https://github.com/DerSpiegel/ww_elvis_php_client) PHP/%s',
+            'der-spiegel/ww-elvis-client (https://github.com/DerSpiegel/ww_assets_php_client) PHP/%s',
             PHP_VERSION
         );
     }
