@@ -27,7 +27,7 @@ It has been developed during the WoodWing Assets implementation at the German [S
 Use [Composer](https://getcomposer.org/) to add this library your project’s composer.json file:
 
 ```
-$ composer require der-spiegel/ww-elvis-client
+$ composer require der-spiegel/ww-assets-client
 ```
 
 ## Quick test 
@@ -41,12 +41,12 @@ $ mkdir MyExample && cd MyExample
 $ docker run --rm --interactive --tty \
   --volume $PWD:/app \
   --volume ${COMPOSER_HOME:-$HOME/.composer}:/tmp \
-  composer/composer require der-spiegel/ww-elvis-client monolog/monolog
+  composer/composer require der-spiegel/ww-assets-client monolog/monolog
 ```
 
 ### Copy and edit the example script
 
-`$ cp vendor/der-spiegel/ww-elvis-client/UsageExample.php MyExample.php`
+`$ cp vendor/der-spiegel/ww-assets-client/UsageExample.php MyExample.php`
 
 Edit your copy, setting the correct Assets URL, username (API user preferred) and password in this section:
 

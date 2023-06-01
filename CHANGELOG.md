@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.0.1 - 2023-06-01
+
+Rename Composer package from "der-spiegel/ww-elvis-client" to "der-spiegel/ww-assets-client".
+
 ## 5.0.0 - 2023-05-25
 
 PHP 8.2 is now required.
