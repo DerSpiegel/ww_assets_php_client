@@ -432,7 +432,7 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), NotAuthorizedAssetsException::CODE);
         }
 
         $response = ApiLoginRequest::createFromConfig($this)();
@@ -503,7 +503,7 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), NotAuthorizedAssetsException::CODE);
         }
 
         $response = LoginRequest::createFromConfig($this)();
