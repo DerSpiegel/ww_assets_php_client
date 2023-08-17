@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient;
 
-use RuntimeException;
+use BadFunctionCallException;
 
 
 class AssetsConfig
@@ -56,15 +56,15 @@ class AssetsConfig
     public function validate(): void
     {
         if (strlen($this->url) === 0) {
-            throw new RuntimeException(sprintf('%s: URL is empty.', __METHOD__));
+            throw new BadFunctionCallException(sprintf('%s: URL is empty.', __METHOD__));
         }
 
         if (strlen($this->username) === 0) {
-            throw new RuntimeException(sprintf('%s: Username is empty.', __METHOD__));
+            throw new BadFunctionCallException(sprintf('%s: Username is empty.', __METHOD__));
         }
 
         if (strlen($this->password) === 0) {
-            throw new RuntimeException(sprintf('%s: Password is empty.', __METHOD__));
+            throw new BadFunctionCallException(sprintf('%s: Password is empty.', __METHOD__));
         }
     }
 }

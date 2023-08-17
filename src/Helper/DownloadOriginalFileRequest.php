@@ -2,11 +2,11 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use BadFunctionCallException;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
 use DerSpiegel\WoodWingAssetsClient\Service\AssetResponse;
-use RuntimeException;
 
 
 class DownloadOriginalFileRequest extends Request
@@ -26,9 +26,9 @@ class DownloadOriginalFileRequest extends Request
     {
         if ($this->assetResponse === null) {
             if ($this->assetId === null) {
-                throw new RuntimeException(sprintf("%s: Both assetId and assetResponse are null - one of them must be given", __METHOD__));
+                throw new BadFunctionCallException(sprintf("%s: Both assetId and assetResponse are null - one of them must be given", __METHOD__));
             } elseif (trim($this->assetId) === '') {
-                throw new RuntimeException(sprintf("%s: assetId is empty", __METHOD__));
+                throw new BadFunctionCallException(sprintf("%s: assetId is empty", __METHOD__));
             }
         }
     }

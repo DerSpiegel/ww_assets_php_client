@@ -2,11 +2,11 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Api;
 
+use BadFunctionCallException;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
 use Exception;
-use RuntimeException;
 
 
 /**
@@ -29,7 +29,7 @@ class RemoveFolderRequest extends Request
     public function validate(): void
     {
         if (trim($this->id) === '') {
-            throw new RuntimeException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
+            throw new BadFunctionCallException(sprintf("%s: ID is empty in RemoveFolderRequest", __METHOD__));
         }
     }
 
