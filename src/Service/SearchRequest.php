@@ -22,6 +22,7 @@ class SearchRequest extends Request
     const METADATA_TO_RETURN_DEFAULT = 'all';
     const APPEND_REQUEST_SECRET_DEFAULT = false;
     const RETURN_HIGHLIGHTED_TEXT_DEFAULT = true;
+    const RETURN_THUMBNAIL_HITS_DEFAULT = false;
 
 
     public function __construct(
@@ -33,7 +34,8 @@ class SearchRequest extends Request
         readonly array  $metadataToReturn = [self::METADATA_TO_RETURN_DEFAULT],
         readonly array  $facets = [],
         readonly bool   $appendRequestSecret = self::APPEND_REQUEST_SECRET_DEFAULT,
-        readonly bool   $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT
+        readonly bool   $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT,
+        readonly bool   $returnThumbnailHits = self::RETURN_THUMBNAIL_HITS_DEFAULT
     )
     {
         parent::__construct($assetsClient);
@@ -95,6 +97,10 @@ class SearchRequest extends Request
 
         if ($this->returnHighlightedText !== self::RETURN_HIGHLIGHTED_TEXT_DEFAULT) {
             $params['returnHighlightedText'] = $this->returnHighlightedText;
+        }
+
+        if ($this->returnThumbnailHits !== self::RETURN_THUMBNAIL_HITS_DEFAULT) {
+            $params['returnThumbnailHits'] = $this->returnThumbnailHits;
         }
 
         return $params;
