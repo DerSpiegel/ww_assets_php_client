@@ -3,8 +3,9 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use RuntimeException;
+use Exception;
 
 
 /**
@@ -51,8 +52,8 @@ class LoginRequest extends Request
 
         try {
             $response = $this->assetsClient->serviceRequest('login', $data);
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
+        } catch (Exception $e) {
+            throw AssetsException::createFromCode(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
         }
 
         return LoginResponse::createFromJson($response);

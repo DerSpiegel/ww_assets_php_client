@@ -37,7 +37,7 @@ final class AssetsUtilsTest extends TestCase
 }
 EOT;
 
-        $this->expectExceptionMessage('Assets error: Not logged in');
+        $this->expectExceptionMessage('Not logged in');
         AssetsUtils::parseJsonResponse($jsonString);
     }
 
