@@ -1,5 +1,10 @@
 # Change Log
 
+## 5.0.2 - 2023-08-17
+
+Added support for SearchRequest::$returnThumbnailHits, AssetResponse::$thumbnailHits.
+Added readthedocs.com configuration file.
+
 ## 5.0.1 - 2023-06-01
 
 Rename Composer package from "der-spiegel/ww-elvis-client" to "der-spiegel/ww-assets-client".
