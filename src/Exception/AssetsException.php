@@ -2,11 +2,11 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Exception;
 
-use Exception;
+use RuntimeException;
 use Throwable;
 
 
-class AssetsException extends Exception
+class AssetsException extends RuntimeException
 {
     public static function createFromCode(string $message = "", int $code = 0, ?Throwable $previous = null): AssetsException
     {
