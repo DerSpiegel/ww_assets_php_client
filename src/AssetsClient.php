@@ -7,6 +7,7 @@ use DerSpiegel\WoodWingAssetsClient\Exception\NotAuthorizedAssetsException;
 use DerSpiegel\WoodWingAssetsClient\Service\ApiLoginRequest;
 use DerSpiegel\WoodWingAssetsClient\Service\LoginRequest;
 use DerSpiegel\WoodWingAssetsClient\Service\LogoutResponse;
+use DomainException;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -20,7 +21,6 @@ use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use RuntimeException;
 use SebastianBergmann\Timer\Timer;
 
 
@@ -110,7 +110,6 @@ class AssetsClient
      * @param bool $multipart - weather to send the data as multipart or application/json
      * @param bool $sendToken
      * @return ResponseInterface
-     * @throws RuntimeException
      */
     public function request(
         string $method,
@@ -138,7 +137,7 @@ class AssetsClient
                     $data['authcred'] = $this->getToken();
                     break;
                 default:
-                    throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod));
+                    throw new DomainException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod));
             }
         }
 
@@ -189,8 +188,7 @@ class AssetsClient
 
             return $response;
         } catch (GuzzleException $e) {
-            // throw RuntimeException instead, to match the exception thrown by `AssetsServerBase::parseJsonResponse`
-            throw new RuntimeException($e->getMessage(), $e->getCode());
+            throw AssetsException::createFromCode($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -235,7 +233,7 @@ class AssetsClient
             if (str_starts_with($httpResponse->getHeaderLine('content-type'), 'application/json')) {
                 AssetsUtils::parseJsonResponse($httpResponse->getBody());
             }
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
                     // TODO: prevent a possible loop here?
@@ -282,7 +280,7 @@ class AssetsClient
             }
 
             return AssetsUtils::parseJsonResponse($responseBbody);
-        } catch (RuntimeException $e) {
+        } catch (Exception $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
                     // TODO: prevent a possible loop here?
@@ -361,7 +359,7 @@ class AssetsClient
         try {
             $this->getToken(true);
             return true;
-        } catch (RuntimeException) {
+        } catch (Exception) {
             return false;
         }
     }
@@ -377,7 +375,7 @@ class AssetsClient
             self::AUTH_METHOD_BEARER_TOKEN => $this->getBearerToken($force),
             self::AUTH_METHOD_CSRF_TOKEN => $this->getCsrfToken($force),
             self::AUTH_METHOD_AUTHCRED => $this->getAuthCred(),
-            default => throw new RuntimeException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
+            default => throw new DomainException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
                 $this->authMethod)),
         };
     }
@@ -388,7 +386,7 @@ class AssetsClient
         $key = time();
         $this->loginAttempts[$key] = ($this->loginAttempts[$key] ?? 0) + 1;
         if ($this->loginAttempts[$key] > self::MAX_LOGIN_ATTEMPTS_PER_SECOND) {
-            throw new RuntimeException(sprintf("%s: MAX_LOGIN_ATTEMPTS_PER_SECOND exceeded", __METHOD__));
+            throw new AssetsException(sprintf("%s: MAX_LOGIN_ATTEMPTS_PER_SECOND exceeded", __METHOD__));
         }
     }
 
@@ -432,18 +430,18 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), NotAuthorizedAssetsException::CODE);
         }
 
         $response = ApiLoginRequest::createFromConfig($this)();
 
         if (!$response->loginSuccess) {
-            throw new RuntimeException(sprintf('%s: Assets API login failed: %s', __METHOD__,
+            throw new AssetsException(sprintf('%s: Assets API login failed: %s', __METHOD__,
                 $response->loginFaultMessage));
         }
 
         if (strlen($response->authToken) === 0) {
-            throw new RuntimeException(sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__));
+            throw new AssetsException(sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__));
         }
 
         $this->bearerToken = 'Bearer ' . $response->authToken;
@@ -503,18 +501,18 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), 401);
+            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), NotAuthorizedAssetsException::CODE);
         }
 
         $response = LoginRequest::createFromConfig($this)();
 
         if (!$response->loginSuccess) {
-            throw new RuntimeException(sprintf('%s: Assets login failed: %s', __METHOD__,
+            throw new AssetsException(sprintf('%s: Assets login failed: %s', __METHOD__,
                 $response->loginFaultMessage));
         }
 
         if (strlen($response->csrfToken) === 0) {
-            throw new RuntimeException(sprintf('%s: Assets login succeeded, but csrfToken is empty', __METHOD__));
+            throw new AssetsException(sprintf('%s: Assets login succeeded, but csrfToken is empty', __METHOD__));
         }
 
         $this->csrfToken = $response->csrfToken;
@@ -539,8 +537,8 @@ class AssetsClient
 
             return $logout;
 
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(sprintf('%s: Logout POST request failed', __METHOD__), $e->getCode(), $e);
+        } catch (Exception $e) {
+            throw new AssetsException(sprintf('%s: Logout POST request failed', __METHOD__), $e->getCode(), $e);
         }
     }
 

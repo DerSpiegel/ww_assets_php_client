@@ -2,11 +2,11 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
+use BadFunctionCallException;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
 use Exception;
-use RuntimeException;
 
 
 /**
@@ -28,7 +28,7 @@ class UndoCheckoutRequest extends Request
     public function validate(): void
     {
         if (trim($this->id) === '') {
-            throw new RuntimeException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
+            throw new BadFunctionCallException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
         }
     }
 

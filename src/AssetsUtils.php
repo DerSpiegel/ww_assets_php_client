@@ -2,7 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient;
 
-use RuntimeException;
+use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\SyntaxError;
@@ -42,8 +42,7 @@ class AssetsUtils
         $json = json_decode($jsonString, true, 512, JSON_THROW_ON_ERROR);
 
         if (isset($json['errorcode']) && isset($json['message'])) {
-            throw new RuntimeException(sprintf('%s: Assets error: %s', __METHOD__, $json['message']),
-                $json['errorcode']);
+            throw AssetsException::createFromCode($json['message'], intval($json['errorcode']));
         }
 
         return $json;

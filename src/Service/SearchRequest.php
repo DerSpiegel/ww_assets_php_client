@@ -4,7 +4,6 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
 use DerSpiegel\WoodWingAssetsClient\Request;
 use Exception;
@@ -47,8 +46,8 @@ class SearchRequest extends Request
         try {
             $response = $this->assetsClient->serviceRequest('search', $this->toArray());
         } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Search failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
-                $e);
+            $this->logger->error(sprintf('%s: Search failed: <%s> (%d)', __METHOD__, $e->getMessage(), $e->getCode()));
+            throw $e;
         }
 
         $this->logger->debug('Search performed',
