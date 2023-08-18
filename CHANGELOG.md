@@ -1,5 +1,11 @@
 # Change Log
 
+## 5.0.3 - 2023-08-18
+
+Exception cleanup: Throw an AssetsException in more cases, get rid of must RuntimeException and GuzzleException 
+instances. Throw more specific BadFunctionCallException instead of RuntimeException when invalid values are passed.
+Works with both "true" and "false" in the Assets Cluster Property returnStatusOkOnErrorForServicesApi.
+
 ## 5.0.2 - 2023-08-17
 
 Added support for SearchRequest::$returnThumbnailHits, AssetResponse::$thumbnailHits.
