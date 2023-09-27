@@ -1,5 +1,10 @@
 # Change Log
 
+## 5.0.4 - 2023-09-27
+
+Added RemoveRequest::$async, RemoveByIdRequest::$async parameters and ProcessResponse::$processId return value.
+Fixed UpdateBulkRequest::$async parameter being ignored.
+
 ## 5.0.3 - 2023-08-18
 
 Exception cleanup: Throw an AssetsException in more cases, get rid of must RuntimeException and GuzzleException 

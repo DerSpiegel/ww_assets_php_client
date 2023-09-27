@@ -31,7 +31,8 @@ class UpdateBulkRequest extends CreateRequestBase
         $requestData = [
             'q' => $this->q,
             'metadata' => json_encode(self::cleanMetadata($this->metadata)),
-            'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false'
+            'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false',
+            'async' => $this->async ? 'true' : 'false',
         ];
 
         try {

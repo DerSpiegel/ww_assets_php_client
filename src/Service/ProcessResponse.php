@@ -13,8 +13,9 @@ use ReflectionClass;
 class ProcessResponse extends Response
 {
     public function __construct(
-        #[MapFromJson] readonly int $processedCount = 0,
-        #[MapFromJson] readonly int $errorCount = 0
+        #[MapFromJson] readonly int    $processedCount = 0,
+        #[MapFromJson] readonly int    $errorCount = 0,
+        #[MapFromJson] readonly string $processId = ''
     )
     {
     }
