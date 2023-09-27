@@ -14,8 +14,9 @@ use DerSpiegel\WoodWingAssetsClient\Service\RemoveRequest;
 class RemoveByIdRequest extends Request
 {
     public function __construct(
-        AssetsClient $assetsClient,
-        readonly string $assetId
+        AssetsClient    $assetsClient,
+        readonly string $assetId,
+        readonly bool   $async = false
     )
     {
         parent::__construct($assetsClient);
@@ -24,6 +25,6 @@ class RemoveByIdRequest extends Request
 
     public function __invoke(): ProcessResponse
     {
-        return (new RemoveRequest($this->assetsClient, ids: [$this->assetId]))();
+        return (new RemoveRequest($this->assetsClient, ids: [$this->assetId], async: $this->async))();
     }
 }

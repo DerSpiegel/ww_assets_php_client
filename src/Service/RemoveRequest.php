@@ -18,7 +18,8 @@ class RemoveRequest extends Request
         AssetsClient    $assetsClient,
         readonly string $q = '',
         readonly array  $ids = [],
-        readonly string $folderPath = ''
+        readonly string $folderPath = '',
+        readonly bool   $async = false
     )
     {
         parent::__construct($assetsClient);
@@ -34,6 +35,7 @@ class RemoveRequest extends Request
                     'q' => $this->q,
                     'ids' => implode(',', $this->ids),
                     'folderPath' => $this->folderPath,
+                    'async' => $this->async ? 'true' : 'false',
                 ]
             ));
         } catch (Exception $e) {
