@@ -22,7 +22,7 @@
     "ext-iconv": "*",
     "ext-json": "*",
     "guzzlehttp/guzzle": ">=6.3 <7.6",
-    "phpunit/php-timer": "^5.0",
+    "phpunit/php-timer": "^6.0",
     "twig/twig": "^3.4"
   },
   "config": {
@@ -39,7 +39,7 @@
   },
   "require-dev": {
     "monolog/monolog": "^3.2",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^10"
   },
   "scripts": {
     "unit-tests": "vendor/bin/phpunit tests/Unit"

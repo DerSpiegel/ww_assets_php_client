@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.1.0 - 2023-11-03
+
+Updated dependencies: phpunit/php-timer from 5.0 to 6.0, phpunit/phpunit from 9.5 to 10.
+
 ## 5.0.4 - 2023-09-27
 
 Added RemoveRequest::$async, RemoveByIdRequest::$async parameters and ProcessResponse::$processId return value.
