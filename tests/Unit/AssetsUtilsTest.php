@@ -3,21 +3,20 @@
 namespace DerSpiegel\WoodWingAssetsClientTests\Unit;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 
 final class AssetsUtilsTest extends TestCase
 {
-    /**
-     * @dataProvider assetsIdProvider
-     */
+    #[DataProvider('assetsIdProvider')]
     public function testIsAssetsId(string $assetsId, bool $expected): void
     {
         $this->assertEquals($expected, AssetsUtils::isAssetsId($assetsId));
     }
 
 
-    public function assetsIdProvider(): array
+    public static function assetsIdProvider(): array
     {
         return [
             'valid' => ['DI2cep7646g8IG_t29rBG5', true],
@@ -42,16 +41,14 @@ EOT;
     }
 
 
-    /**
-     * @dataProvider elasticsearchEscapeProvider
-     */
+    #[DataProvider('elasticsearchEscapeProvider')]
     public function testEscapeForElasticsearch(string $input, string $expected): void
     {
         $this->assertEquals($expected, AssetsUtils::escapeForElasticsearch($input));
     }
 
 
-    public function elasticsearchEscapeProvider(): array
+    public static function elasticsearchEscapeProvider(): array
     {
         return [
             'empty' => ['', ''],
@@ -74,9 +71,7 @@ EOT;
     }
 
 
-    /**
-     * @dataProvider cleanUpUnchangedMetadataFieldsProvider
-     */
+    #[DataProvider('cleanUpUnchangedMetadataFieldsProvider')]
     public function testCleanUpUnchangedMetadataFields(array $oldMetadata, array $newMetadata, array $expected): void
     {
         AssetsUtils::cleanUpUnchangedMetadataFields($newMetadata, $oldMetadata);
@@ -85,7 +80,7 @@ EOT;
     }
 
 
-    public function cleanUpUnchangedMetadataFieldsProvider(): array
+    public static function cleanUpUnchangedMetadataFieldsProvider(): array
     {
         return [
             'empty' => [
