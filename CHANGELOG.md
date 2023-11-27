@@ -1,5 +1,9 @@
 # Change Log
 
+## 5.1.1 - 2023-11-27
+
+PHP 8.3 is now supported.
+
 ## 5.1.0 - 2023-11-03
 
 Updated dependencies: phpunit/php-timer from 5.0 to 6.0, phpunit/phpunit from 9.5 to 10.
