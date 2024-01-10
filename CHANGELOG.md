@@ -1,5 +1,12 @@
 # Change Log
 
+## 6.0.0 - 2024-01-10
+
+Backward incompatible API change: Introducing the AssetId class. Asset IDs must now be passed as an AssetId instance
+instead of a string, and are returned as AssetId (in AssetResponse).
+
+Added support for some Assets Admin functionality: MetricsRequest, ActiveUsersRequest (private API).
+
 ## 5.1.1 - 2023-11-27
 
 PHP 8.3 is now supported.

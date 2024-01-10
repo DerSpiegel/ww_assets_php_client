@@ -257,17 +257,17 @@ class AssetsClient
 
     /**
      * @param string $method
-     * @param string $service
+     * @param string $urlPath
      * @param array $data
      * @return array
      * @throws JsonException
      */
-    public function apiRequest(string $method, string $service, array $data = []): array
+    public function apiRequest(string $method, string $urlPath, array $data = []): array
     {
         $url = sprintf(
             '%sapi/%s',
             $this->config->url,
-            $service
+            $urlPath
         );
 
         try {
@@ -291,7 +291,52 @@ class AssetsClient
                     }
 
                     // try again
-                    return $this->apiRequest($method, $service, $data);
+                    return $this->apiRequest($method, $urlPath, $data);
+                default:
+                    // something went wrong
+                    throw $e;
+            }
+        }
+    }
+
+
+    /**
+     * @param string $method
+     * @param string $urlPath
+     * @param array $data
+     * @return array
+     * @throws JsonException
+     */
+    public function privateApiRequest(string $method, string $urlPath, array $data = []): array
+    {
+        $url = sprintf(
+            '%sprivate-api/%s',
+            $this->config->url,
+            $urlPath
+        );
+
+        try {
+            $httpResponse = $this->request($method, $url, $data, false);
+
+            $responseBbody = (string)$httpResponse->getBody();
+
+            if (empty($responseBbody)) {
+                return [];
+            }
+
+            return AssetsUtils::parseJsonResponse($responseBbody);
+        } catch (Exception $e) {
+            switch ($e->getCode()) {
+                case 401: // Unauthorized
+                    // TODO: prevent a possible loop here?
+
+                    // re-login
+                    if (!$this->reLogin()) {
+                        throw $e;
+                    }
+
+                    // try again
+                    return $this->privateApiRequest($method, $urlPath, $data);
                 default:
                     // something went wrong
                     throw $e;

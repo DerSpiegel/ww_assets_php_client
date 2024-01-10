@@ -3,6 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use BadFunctionCallException;
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
@@ -17,8 +18,8 @@ use Exception;
 class UndoCheckoutRequest extends Request
 {
     public function __construct(
-        AssetsClient $assetsClient,
-        readonly string $id = ''
+        AssetsClient      $assetsClient,
+        readonly ?AssetId $id = null
     )
     {
         parent::__construct($assetsClient);
@@ -27,7 +28,7 @@ class UndoCheckoutRequest extends Request
 
     public function validate(): void
     {
-        if (trim($this->id) === '') {
+        if ($this->id === null) {
             throw new BadFunctionCallException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
         }
     }
@@ -39,24 +40,24 @@ class UndoCheckoutRequest extends Request
 
         try {
             $response = $this->assetsClient->serviceRequest(
-                sprintf('undocheckout/%s', urlencode($this->id))
+                sprintf('undocheckout/%s', urlencode($this->id->id))
             );
         } catch (Exception $e) {
             throw new AssetsException(
                 sprintf(
                     '%s: Undo checkout of asset <%s> failed',
                     __METHOD__,
-                    $this->id
+                    $this->id->id
                 ),
                 $e->getCode(),
                 $e
             );
         }
 
-        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $this->id),
+        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $this->id->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->id,
+                'id' => $this->id->id,
                 'response' => $response
             ]
         );

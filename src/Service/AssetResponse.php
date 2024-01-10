@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
 use ReflectionClass;
@@ -13,15 +14,15 @@ use ReflectionClass;
 class AssetResponse extends Response
 {
     public function __construct(
-        #[MapFromJson] readonly string $id = '',
-        #[MapFromJson] readonly string $permissions = '',
-        #[MapFromJson] readonly array  $metadata = [],
-        #[MapFromJson] readonly string $highlightedText = '',
-        #[MapFromJson] readonly string $originalUrl = '',
-        #[MapFromJson] readonly string $previewUrl = '',
-        #[MapFromJson] readonly string $thumbnailUrl = '',
-        #[MapFromJson] readonly array  $relation = [],
-        readonly ?AssetResponseList    $thumbnailHits = null
+        #[MapFromJson(conversion: 'stringToId')] readonly ?AssetId $id = null,
+        #[MapFromJson] readonly string                             $permissions = '',
+        #[MapFromJson] readonly array                              $metadata = [],
+        #[MapFromJson] readonly string                             $highlightedText = '',
+        #[MapFromJson] readonly string                             $originalUrl = '',
+        #[MapFromJson] readonly string                             $previewUrl = '',
+        #[MapFromJson] readonly string                             $thumbnailUrl = '',
+        #[MapFromJson] readonly array                              $relation = [],
+        readonly ?AssetResponseList                                $thumbnailHits = null
     )
     {
     }

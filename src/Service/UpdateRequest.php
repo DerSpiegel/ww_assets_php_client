@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Exception;
@@ -15,14 +16,14 @@ use Exception;
 class UpdateRequest extends CreateRequestBase
 {
     public function __construct(
-        AssetsClient $assetsClient,
-        readonly string $id = '',
-        mixed $filedata = null,
-        array $metadata = [],
-        array $metadataToReturn = ['all'],
-        bool $parseMetadataModification = false,
-        readonly bool $clearCheckoutState = true
-)
+        AssetsClient      $assetsClient,
+        readonly ?AssetId $id = null,
+        mixed             $filedata = null,
+        array             $metadata = [],
+        array             $metadataToReturn = ['all'],
+        bool              $parseMetadataModification = false,
+        readonly bool     $clearCheckoutState = true
+    )
     {
         parent::__construct($assetsClient, $filedata, $metadata, $metadataToReturn, $parseMetadataModification);
     }
@@ -31,7 +32,7 @@ class UpdateRequest extends CreateRequestBase
     public function __invoke(): void
     {
         $requestData = [
-            'id' => $this->id,
+            'id' => $this->id->id,
             'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false'
         ];
 
@@ -53,7 +54,7 @@ class UpdateRequest extends CreateRequestBase
                 sprintf(
                     '%s: Update failed for asset <%s> - <%s> - <%s>',
                     __METHOD__,
-                    $this->id,
+                    $this->id->id,
                     $e->getMessage(),
                     json_encode($requestData)
                 ),
@@ -66,11 +67,11 @@ class UpdateRequest extends CreateRequestBase
             sprintf(
                 'Updated %s for asset <%s>',
                 implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
-                $this->id
+                $this->id->id
             ),
             [
                 'method' => __METHOD__,
-                'assetId' => $this->id,
+                'assetId' => $this->id->id,
                 'metadata' => $this->metadata
             ]
         );

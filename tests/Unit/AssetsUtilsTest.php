@@ -9,24 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 final class AssetsUtilsTest extends TestCase
 {
-    #[DataProvider('assetsIdProvider')]
-    public function testIsAssetsId(string $assetsId, bool $expected): void
-    {
-        $this->assertEquals($expected, AssetsUtils::isAssetsId($assetsId));
-    }
-
-
-    public static function assetsIdProvider(): array
-    {
-        return [
-            'valid' => ['DI2cep7646g8IG_t29rBG5', true],
-            'too short' => ['DI2cep7646g8IG_t29rBG', false],
-            'too long' => ['DI2cep7646g8IG_t29rBG55', false],
-            'empty' => ['', false]
-        ];
-    }
-
-
     public function testParseJsonResponseException(): void
     {
         $jsonString = <<<EOT

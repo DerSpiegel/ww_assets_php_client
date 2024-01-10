@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
 use DerSpiegel\WoodWingAssetsClient\Request;
@@ -15,8 +16,8 @@ class AddToContainerRequest extends Request
 {
     public function __construct(
         AssetsClient $assetsClient,
-        readonly string $assetId,
-        readonly string $containerId
+        readonly AssetId $assetId,
+        readonly AssetId $containerId
     )
     {
         parent::__construct($assetsClient);

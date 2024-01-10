@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
@@ -19,8 +20,8 @@ class CreateRelationRequest extends Request
     public function __construct(
         AssetsClient           $assetsClient,
         readonly ?RelationType $relationType = null,
-        readonly string        $target1Id = '',
-        readonly string        $target2Id = ''
+        readonly ?AssetId      $target1Id = null,
+        readonly ?AssetId      $target2Id = null
     )
     {
         parent::__construct($assetsClient);
@@ -33,8 +34,8 @@ class CreateRelationRequest extends Request
             $this->assetsClient->serviceRequest('createRelation',
                 [
                     'relationType' => $this->relationType->value,
-                    'target1Id' => $this->target1Id,
-                    'target2Id' => $this->target2Id
+                    'target1Id' => $this->target1Id->id,
+                    'target2Id' => $this->target2Id->id
                 ]
             );
         } catch (Exception $e) {
@@ -45,14 +46,14 @@ class CreateRelationRequest extends Request
             sprintf(
                 'Relation (%s) created between <%s> and <%s>',
                 $this->relationType->value,
-                $this->target1Id,
-                $this->target2Id
+                $this->target1Id->id,
+                $this->target2Id->id
             ),
             [
                 'method' => __METHOD__,
                 'relationType' => $this->relationType->value,
-                'target1Id' => $this->target1Id,
-                'target2Id' => $this->target2Id
+                'target1Id' => $this->target1Id->id,
+                'target2Id' => $this->target2Id->id
             ]
         );
     }

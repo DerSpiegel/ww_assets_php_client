@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
@@ -23,7 +24,7 @@ class SearchAssetIdRequest extends Request
     }
 
 
-    public function __invoke(): string
+    public function __invoke(): AssetId
     {
         $response = (new SearchRequest($this->assetsClient,
             q: $this->q,
