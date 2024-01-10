@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
@@ -16,9 +17,9 @@ use Exception;
 class CheckoutRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
-        readonly string $id = '',
-        readonly bool   $download = false
+        AssetsClient      $assetsClient,
+        readonly ?AssetId $id = null,
+        readonly bool     $download = false
     )
     {
         parent::__construct($assetsClient);
@@ -32,7 +33,7 @@ class CheckoutRequest extends Request
     {
         try {
             $response = $this->assetsClient->serviceRequest(
-                sprintf('checkout/%s', urlencode($this->id)),
+                sprintf('checkout/%s', urlencode($this->id->id)),
                 ['download' => 'false']
             );
         } catch (Exception $e) {
@@ -48,10 +49,10 @@ class CheckoutRequest extends Request
             );
         }
 
-        $this->logger->info(sprintf('Asset <%s> checked out', $this->id),
+        $this->logger->info(sprintf('Asset <%s> checked out', $this->id->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->id,
+                'id' => $this->id->id,
                 'download' => false
             ]
         );
@@ -67,7 +68,7 @@ class CheckoutRequest extends Request
     {
         try {
             $response = $this->assetsClient->rawServiceRequest(
-                sprintf('checkout/%s', urlencode($this->id)),
+                sprintf('checkout/%s', urlencode($this->id->id)),
                 ['download' => 'true']
             );
 
@@ -77,7 +78,7 @@ class CheckoutRequest extends Request
                 sprintf(
                     '%s: Checkout of asset <%s> failed: %s',
                     __METHOD__,
-                    $this->id,
+                    $this->id->id,
                     $e->getMessage()
                 ),
                 $e->getCode(),
@@ -85,10 +86,10 @@ class CheckoutRequest extends Request
             );
         }
 
-        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $this->id, $targetPath),
+        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $this->id->id, $targetPath),
             [
                 'method' => __METHOD__,
-                'id' => $this->id,
+                'id' => $this->id->id,
                 'download' => true
             ]
         );

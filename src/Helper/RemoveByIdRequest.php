@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Request;
 use DerSpiegel\WoodWingAssetsClient\Service\ProcessResponse;
@@ -14,9 +15,9 @@ use DerSpiegel\WoodWingAssetsClient\Service\RemoveRequest;
 class RemoveByIdRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
-        readonly string $assetId,
-        readonly bool   $async = false
+        AssetsClient     $assetsClient,
+        readonly AssetId $assetId,
+        readonly bool    $async = false
     )
     {
         parent::__construct($assetsClient);

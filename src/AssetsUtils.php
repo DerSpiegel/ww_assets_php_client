@@ -19,17 +19,6 @@ use Twig\TemplateWrapper;
  */
 class AssetsUtils
 {
-
-    /**
-     * @param string $id
-     * @return bool
-     */
-    public static function isAssetsId(string $id): bool
-    {
-        return (strlen($id) === 22);
-    }
-
-
     /**
      * Parse JSON response string into array, throw exception on error response
      *

@@ -34,6 +34,8 @@ abstract class Response
                     );
                 } elseif ($mapFromJson->conversion === MapFromJson::STRING_TO_ACTION) {
                     $value = AssetsAction::tryFrom($value) ?? AssetsAction::Other;
+                } elseif ($mapFromJson->conversion === MapFromJson::STRING_TO_ID) {
+                    $value = new AssetId($value);
                 }
             }
 

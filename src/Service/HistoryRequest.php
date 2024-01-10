@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsActionList;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
@@ -29,7 +30,7 @@ class HistoryRequest extends Request
 {
     public function __construct(
         AssetsClient                $assetsClient,
-        readonly string             $id = '',
+        readonly ?AssetId           $id = null,
         readonly ?AssetsActionList  $actions = null,
         readonly HistoryDetailLevel $detailLevel = HistoryDetailLevel::CustomActions,
         readonly int                $start = 0,
@@ -43,7 +44,7 @@ class HistoryRequest extends Request
     public function __invoke(): HistoryResponse
     {
         $data = [
-            'id' => $this->id,
+            'id' => $this->id->id,
             'start' => $this->start,
             'detailLevel' => $this->detailLevel->value
         ];
@@ -71,7 +72,7 @@ class HistoryRequest extends Request
                 sprintf(
                     '%s: Get history of asset <%s> failed: %s',
                     __METHOD__,
-                    $this->id,
+                    $this->id->id,
                     $e->getMessage()
                 ),
                 $e->getCode(),
@@ -79,10 +80,10 @@ class HistoryRequest extends Request
             );
         }
 
-        $this->logger->info(sprintf('Got history of asset <%s>', $this->id),
+        $this->logger->info(sprintf('Got history of asset <%s>', $this->id->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->id
+                'id' => $this->id->id
             ]
         );
 

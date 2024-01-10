@@ -2,6 +2,7 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Helper;
 
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
@@ -14,9 +15,9 @@ use DerSpiegel\WoodWingAssetsClient\Service\SearchRequest;
 class RemoveFromContainerRequest extends Request
 {
     public function __construct(
-        AssetsClient $assetsClient,
-        readonly string $assetId,
-        readonly string $containerId
+        AssetsClient     $assetsClient,
+        readonly AssetId $assetId,
+        readonly AssetId $containerId
     )
     {
         parent::__construct($assetsClient);
@@ -52,8 +53,8 @@ class RemoveFromContainerRequest extends Request
         $this->logger->info('Relation removed',
             [
                 'method' => __METHOD__,
-                'assetId' => $this->assetId,
-                'containerId' => $this->containerId,
+                'assetId' => $this->assetId->id,
+                'containerId' => $this->containerId->id,
                 'relationId' => $relationId
             ]
         );

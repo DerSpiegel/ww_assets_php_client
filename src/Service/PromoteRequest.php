@@ -3,6 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use BadFunctionCallException;
+use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
@@ -17,9 +18,9 @@ use Exception;
 class PromoteRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
-        readonly string $id = '',
-        readonly int    $version = 0
+        AssetsClient      $assetsClient,
+        readonly ?AssetId $id = null,
+        readonly int      $version = 0
     )
     {
         parent::__construct($assetsClient);
@@ -28,12 +29,12 @@ class PromoteRequest extends Request
 
     public function validate(): void
     {
-        if (trim($this->id) === '') {
-            throw new BadFunctionCallException(sprintf("%s: ID is empty in UndoCheckoutRequest", __METHOD__));
+        if ($this->id === null) {
+            throw new BadFunctionCallException(sprintf("%s: ID is empty in PromoteRequest", __METHOD__));
         }
 
         if ($this->version < 1) {
-            throw new BadFunctionCallException(sprintf("%s: Version is empty in UndoCheckoutRequest", __METHOD__));
+            throw new BadFunctionCallException(sprintf("%s: Version is empty in PromoteRequest", __METHOD__));
         }
     }
 
@@ -46,7 +47,7 @@ class PromoteRequest extends Request
             $response = $this->assetsClient->serviceRequest(
                 'version/promote',
                 [
-                    'assetId' => $this->id,
+                    'assetId' => $this->id->id,
                     'version' => $this->version
                 ]
             );
@@ -56,17 +57,17 @@ class PromoteRequest extends Request
                     '%s: Promote version <%d> of asset <%s> failed',
                     __METHOD__,
                     $this->version,
-                    $this->id
+                    $this->id->id
                 ),
                 $e->getCode(),
                 $e
             );
         }
 
-        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $this->version, $this->id),
+        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $this->version, $this->id->id),
             [
                 'method' => __METHOD__,
-                'id' => $this->id,
+                'id' => $this->id->id,
                 'response' => $response
             ]
         );
