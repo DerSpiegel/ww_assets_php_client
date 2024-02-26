@@ -33,7 +33,8 @@ class UpdateRequest extends CreateRequestBase
     {
         $requestData = [
             'id' => $this->id->id,
-            'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false'
+            'parseMetadataModifications' => $this->parseMetadataModification ? 'true' : 'false',
+            'metadataToReturn' => implode(',', $this->metadataToReturn)
         ];
 
         $metadata = self::cleanMetadata($this->metadata);

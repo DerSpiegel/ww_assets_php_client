@@ -13,7 +13,7 @@ Unit tests do not interact with an Assets server. You can always run them safely
 
     $ docker run -it --rm \
       --volume "$PWD":/usr/src/myapp --workdir /usr/src/myapp \
-      php:cli ./vendor/bin/phpunit tests/unit
+      php:cli ./vendor/bin/phpunit tests/Unit
 
 Integration tests
 =================
