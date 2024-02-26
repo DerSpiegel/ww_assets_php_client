@@ -15,11 +15,11 @@ use Exception;
 class CreateRequest extends CreateRequestBase
 {
     public function __construct(
-        AssetsClient $assetsClient,
-        mixed $filedata = null,
-        array $metadata = [],
-        array $metadataToReturn = ['all'],
-        bool $parseMetadataModification = false,
+        AssetsClient  $assetsClient,
+        mixed         $filedata = null,
+        array         $metadata = [],
+        array         $metadataToReturn = ['all'],
+        bool          $parseMetadataModification = false,
         readonly bool $autoRename = false
     )
     {
@@ -48,7 +48,18 @@ class CreateRequest extends CreateRequestBase
         try {
             $response = $this->assetsClient->serviceRequest('create', $requestData);
         } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Create failed: %s', __METHOD__, $e->getMessage()), $e->getCode(), $e);
+            $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
+
+            throw new AssetsException(
+                sprintf(
+                    '%s: Create failed - <%s> - <%s>',
+                    __METHOD__,
+                    $e->getMessage(),
+                    json_encode($logData)
+                ),
+                $e->getCode(),
+                $e
+            );
         }
 
         $assetResponse = AssetResponse::createFromJson($response);

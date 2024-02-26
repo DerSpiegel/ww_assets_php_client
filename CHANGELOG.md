@@ -1,5 +1,7 @@
 # Change Log
 
+Improve error logging in CreateRequest, UpdateRequest.
+
 ## 6.1.0 - 2024-02-26
 
 Fix CreateRequest::$parseMetadataModifications and CreateRequest::$metadataToReturn parameters being ignored. Add 
