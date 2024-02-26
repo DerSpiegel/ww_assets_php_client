@@ -29,7 +29,7 @@ class SearchAssetRequest extends Request
     {
         $response = (new SearchRequest($this->assetsClient,
             q: 'id:' . $this->assetId->id,
-            metadataToReturn: empty($metadataToReturn) ? [SearchRequest::METADATA_TO_RETURN_DEFAULT] : $metadataToReturn
+            metadataToReturn: empty($this->metadataToReturn) ? [SearchRequest::METADATA_TO_RETURN_DEFAULT] : $this->metadataToReturn
         ))();
 
         if ($response->totalHits === 0) {

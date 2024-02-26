@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.1.0 - 2024-02-26
+
+Fix SearchAssetRequest ignoring the metadataToReturn parameter, always returning all metadata.
+
 ## 6.0.0 - 2024-01-10
 
 Backward incompatible API change: Introducing the AssetId class. Asset IDs must now be passed as an AssetId instance
