@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.2.0 - 2024-02-27
+
+Add AssetsUtils::replaceInvalidFilenameCharacters().
+
 Improve error logging in CreateRequest, UpdateRequest.
 
 ## 6.1.0 - 2024-02-26
