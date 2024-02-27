@@ -135,6 +135,22 @@ class AssetsUtils
 
 
     /**
+     * Invalid file name characters in Assets Server
+     * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042269611-Invalid-file-name-characters-in-Assets-Server
+     */
+    public static function getInvalidFilenameCharacters(): array
+    {
+        return ['\\', '/', ':', '*', '?', '"', '<', '>', '|', '#', ';'];
+    }
+
+
+    public static function replaceInvalidFilenameCharacters(string $subject, string $replace): string
+    {
+        return str_replace(self::getInvalidFilenameCharacters(), $replace, $subject);
+    }
+
+    
+    /**
      * Get a Twig template for building an Assets query
      *
      * Call render($templateVariables) on the returned object to get the query string.

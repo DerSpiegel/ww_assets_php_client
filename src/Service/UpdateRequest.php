@@ -51,13 +51,15 @@ class UpdateRequest extends CreateRequestBase
         try {
             $this->assetsClient->serviceRequest('update', $requestData);
         } catch (Exception $e) {
+            $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
+
             throw new AssetsException(
                 sprintf(
                     '%s: Update failed for asset <%s> - <%s> - <%s>',
                     __METHOD__,
                     $this->id->id,
                     $e->getMessage(),
-                    json_encode($requestData)
+                    json_encode($logData)
                 ),
                 $e->getCode(),
                 $e

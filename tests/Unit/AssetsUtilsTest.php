@@ -39,6 +39,17 @@ EOT;
     }
 
 
+    public function testReplaceInvalidFilenameCharacters(): void
+    {
+        $invalidCharacters = AssetsUtils::getInvalidFilenameCharacters();
+        $input = 'test' . implode('', $invalidCharacters);
+        $replace = '-';
+        $expected = 'test' . str_repeat($replace, count($invalidCharacters));
+
+        $this->assertEquals($expected, AssetsUtils::replaceInvalidFilenameCharacters($input, $replace));
+    }
+
+
     public function testGetQueryTemplate(): void
     {
         $templateStr = '{% if ID %} title:"prefix {{ ID }}" {% endif %}';
