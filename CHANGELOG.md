@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.2.1 - 2024-04-30
+
+Check for invalid characters in AssetId::isValid().
+
 ## 6.2.0 - 2024-02-27
 
 Add AssetsUtils::replaceInvalidFilenameCharacters().

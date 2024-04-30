@@ -24,6 +24,6 @@ readonly class AssetId implements Stringable
 
     public static function isValid(string $id): bool
     {
-        return (strlen($id) === 22);
+        return (preg_match('/^[a-zA-Z0-9_-]{22}$/', $id) === 1);
     }
 }
