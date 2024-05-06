@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.3.0 - 2024-05-06
+
+Updated dependencies: phpunit/php-timer from 6.0 to 7.0, phpunit/phpunit from 10 to 11, guzzlehttp/guzzle from 7.5 to 7.8.
+
 ## 6.2.1 - 2024-04-30
 
 Check for invalid characters in AssetId::isValid().
