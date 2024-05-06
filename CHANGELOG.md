@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.3.1 - 2024-05-06
+
+Allow any Guzzle 7.* version (updating from 7.5 to the current 7.8).
+
 ## 6.2.1 - 2024-04-30
 
 Check for invalid characters in AssetId::isValid().
