@@ -1,8 +1,8 @@
 # Change Log
 
-## 6.3.1 - 2024-05-06
+## 6.3.0 - 2024-05-06
 
-Allow any Guzzle 7.* version (updating from 7.5 to the current 7.8).
+Updated dependencies: phpunit/php-timer from 6.0 to 7.0, phpunit/phpunit from 10 to 11, guzzlehttp/guzzle from 7.5 to 7.8.
 
 ## 6.2.1 - 2024-04-30
 
