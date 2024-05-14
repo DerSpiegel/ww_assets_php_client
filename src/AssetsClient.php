@@ -556,7 +556,7 @@ class AssetsClient
     {
         try {
             $httpResponse = $this->serviceRequest('POST', 'logout');
-            $logout = LogoutResponse::createFromJson($httpResponse);
+            $logout = LogoutResponse::createFromHttpResponse($httpResponse);
 
             if ($cleanUpToken) {
                 $this->bearerToken = '';

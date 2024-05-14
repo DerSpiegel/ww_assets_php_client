@@ -44,10 +44,8 @@ class PingRequest extends Request
 
     protected function toArray(): array
     {
-        $params = [
+        return [
             'uid' => $this->uid
         ];
-
-        return $params;
     }
 }

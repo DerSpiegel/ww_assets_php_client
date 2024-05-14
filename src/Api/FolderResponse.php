@@ -4,7 +4,6 @@ namespace DerSpiegel\WoodWingAssetsClient\Api;
 
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
 
 
 /**

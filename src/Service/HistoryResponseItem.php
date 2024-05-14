@@ -3,8 +3,6 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\Response;
-use Psr\Http\Message\ResponseInterface;
-use ReflectionClass;
 
 
 /**

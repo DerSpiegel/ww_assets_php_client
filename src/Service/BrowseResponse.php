@@ -2,10 +2,8 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
-use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
 use DerSpiegel\WoodWingAssetsClient\Response;
 use Psr\Http\Message\ResponseInterface;
-use ReflectionClass;
 
 
 /**

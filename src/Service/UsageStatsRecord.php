@@ -6,8 +6,6 @@ use DateTimeImmutable;
 use DerSpiegel\WoodWingAssetsClient\AssetsAction;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use Psr\Http\Message\ResponseInterface;
-use ReflectionClass;
 
 
 /**

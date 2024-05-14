@@ -3,11 +3,9 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DateTimeImmutable;
-use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
 use Psr\Http\Message\ResponseInterface;
-use ReflectionClass;
 
 
 /**

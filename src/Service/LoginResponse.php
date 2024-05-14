@@ -2,11 +2,9 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
-use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
 use Psr\Http\Message\ResponseInterface;
-use ReflectionClass;
 
 /**
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
