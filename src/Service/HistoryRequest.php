@@ -64,6 +64,7 @@ class HistoryRequest extends Request
 
         try {
             $response = $this->assetsClient->serviceRequest(
+                'POST',
                 'asset/history',
                 $data
             );

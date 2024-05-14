@@ -9,6 +9,6 @@ class MetricsRequest extends Request
 {
     public function __invoke(): array
     {
-        return $this->assetsClient->serviceRequest('system/metrics');
+        return $this->assetsClient->serviceRequest('POST', 'system/metrics');
     }
 }

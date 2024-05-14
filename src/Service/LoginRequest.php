@@ -51,7 +51,7 @@ class LoginRequest extends Request
         }
 
         try {
-            $response = $this->assetsClient->serviceRequest('login', $data);
+            $response = $this->assetsClient->serviceRequest('POST', 'login', $data);
         } catch (Exception $e) {
             throw AssetsException::createFromCode(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
         }

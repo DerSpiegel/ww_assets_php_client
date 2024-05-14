@@ -45,6 +45,7 @@ class PromoteRequest extends Request
 
         try {
             $response = $this->assetsClient->serviceRequest(
+                'POST',
                 'version/promote',
                 [
                     'assetId' => $this->id->id,

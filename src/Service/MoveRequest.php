@@ -44,7 +44,7 @@ class MoveRequest extends Request
     public function __invoke(): ProcessResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest('move', [
+            $response = $this->assetsClient->serviceRequest('POST', 'move', [
                 'source' => $this->source,
                 'target' => $this->target,
                 'folderReplacePolicy' => $this->folderReplacePolicy,

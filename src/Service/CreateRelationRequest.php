@@ -31,7 +31,7 @@ class CreateRelationRequest extends Request
     public function __invoke(): void
     {
         try {
-            $this->assetsClient->serviceRequest('createRelation',
+            $this->assetsClient->serviceRequest('POST', 'createRelation',
                 [
                     'relationType' => $this->relationType->value,
                     'target1Id' => $this->target1Id->id,

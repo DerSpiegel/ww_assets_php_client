@@ -40,6 +40,7 @@ class UndoCheckoutRequest extends Request
 
         try {
             $response = $this->assetsClient->serviceRequest(
+                'POST',
                 sprintf('undocheckout/%s', urlencode($this->id->id))
             );
         } catch (Exception $e) {

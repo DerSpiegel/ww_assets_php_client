@@ -30,7 +30,7 @@ class RemoveRequest extends Request
     {
         try {
             // filter the array, so the actual folder gets remove, not only its contents ?!
-            $response = $this->assetsClient->serviceRequest('remove', array_filter(
+            $response = $this->assetsClient->serviceRequest('POST', 'remove', array_filter(
                 [
                     'q' => $this->q,
                     'ids' => implode(',', $this->ids),

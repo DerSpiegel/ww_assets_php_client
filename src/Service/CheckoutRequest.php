@@ -33,6 +33,7 @@ class CheckoutRequest extends Request
     {
         try {
             $response = $this->assetsClient->serviceRequest(
+                'POST',
                 sprintf('checkout/%s', urlencode($this->id->id)),
                 ['download' => 'false']
             );
@@ -68,8 +69,10 @@ class CheckoutRequest extends Request
     {
         try {
             $response = $this->assetsClient->rawServiceRequest(
+                'POST',
                 sprintf('checkout/%s', urlencode($this->id->id)),
-                ['download' => 'true']
+                ['download' => 'true'],
+                false
             );
 
             $this->assetsClient->writeResponseBodyToPath($response, $targetPath);

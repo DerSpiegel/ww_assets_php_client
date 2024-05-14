@@ -49,7 +49,7 @@ class UpdateRequest extends CreateRequestBase
         }
 
         try {
-            $this->assetsClient->serviceRequest('update', $requestData);
+            $this->assetsClient->serviceRequest('POST', 'update', $requestData);
         } catch (Exception $e) {
             $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
 

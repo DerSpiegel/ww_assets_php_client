@@ -44,7 +44,7 @@ class SearchRequest extends Request
     public function __invoke(): SearchResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest('search', $this->toArray());
+            $response = $this->assetsClient->serviceRequest('POST', 'search', $this->toArray());
         } catch (Exception $e) {
             $this->logger->error(sprintf('%s: Search failed: <%s> (%d)', __METHOD__, $e->getMessage(), $e->getCode()));
             throw $e;

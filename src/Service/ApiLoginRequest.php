@@ -49,7 +49,7 @@ class ApiLoginRequest extends Request
         }
 
         try {
-            $response = $this->assetsClient->serviceRequest('apilogin', $data);
+            $response = $this->assetsClient->serviceRequest('POST', 'apilogin', $data);
         } catch (Exception $e) {
             throw AssetsException::createFromCode(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
         }
