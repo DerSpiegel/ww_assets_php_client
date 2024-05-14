@@ -36,7 +36,7 @@ class UpdateBulkRequest extends CreateRequestBase
         ];
 
         try {
-            $response = $this->assetsClient->serviceRequest('POST', 'updatebulk', $requestData);
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'updatebulk', $requestData);
         } catch (Exception $e) {
             throw new AssetsException(
                 sprintf(
@@ -58,6 +58,6 @@ class UpdateBulkRequest extends CreateRequestBase
             ]
         );
 
-        return ProcessResponse::createFromJson($response);
+        return ProcessResponse::createFromHttpResponse($httpResponse);
     }
 }

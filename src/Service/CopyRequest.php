@@ -38,7 +38,7 @@ class CopyRequest extends Request
     public function __invoke(): ProcessResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest('POST', 'copy', [
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'copy', [
                 'source' => $this->source,
                 'target' => $this->target,
                 'fileReplacePolicy' => $this->fileReplacePolicy
@@ -66,6 +66,6 @@ class CopyRequest extends Request
             ]
         );
 
-        return ProcessResponse::createFromJson($response);
+        return ProcessResponse::createFromHttpResponse($httpResponse);
     }
 }

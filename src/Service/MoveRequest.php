@@ -44,7 +44,7 @@ class MoveRequest extends Request
     public function __invoke(): ProcessResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest('POST', 'move', [
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'move', [
                 'source' => $this->source,
                 'target' => $this->target,
                 'folderReplacePolicy' => $this->folderReplacePolicy,
@@ -77,6 +77,6 @@ class MoveRequest extends Request
             ]
         );
 
-        return ProcessResponse::createFromJson($response);
+        return ProcessResponse::createFromHttpResponse($httpResponse);
     }
 }

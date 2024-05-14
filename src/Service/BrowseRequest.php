@@ -30,7 +30,7 @@ class BrowseRequest extends Request
     public function __invoke(): BrowseResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest('POST', 'browse', $this->toArray());
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'browse', $this->toArray());
         } catch (Exception $e) {
             throw new AssetsException(sprintf('%s: Browse failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
                 $e);
@@ -43,7 +43,7 @@ class BrowseRequest extends Request
             ]
         );
 
-        return BrowseResponse::createFromJson($response);
+        return BrowseResponse::createFromHttpResponse($httpResponse);
     }
 
 

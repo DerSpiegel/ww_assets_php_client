@@ -32,7 +32,7 @@ class CheckoutRequest extends Request
     public function __invoke(): CheckoutResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest(
+            $httpResponse = $this->assetsClient->serviceRequest(
                 'POST',
                 sprintf('checkout/%s', urlencode($this->id->id)),
                 ['download' => 'false']
@@ -58,24 +58,24 @@ class CheckoutRequest extends Request
             ]
         );
 
-        return CheckoutResponse::createFromJson($response);
+        return CheckoutResponse::createFromHttpResponse($httpResponse);
     }
 
 
     /**
      * Check out and download
      */
-    public function checkoutAndDownload(string $targetPath): void
+    public function checkoutAndDownload(string $targetPath): EmptyResponse
     {
         try {
-            $response = $this->assetsClient->rawServiceRequest(
+            $httpResponse = $this->assetsClient->serviceRequest(
                 'POST',
                 sprintf('checkout/%s', urlencode($this->id->id)),
                 ['download' => 'true'],
                 false
             );
 
-            $this->assetsClient->writeResponseBodyToPath($response, $targetPath);
+            $this->assetsClient->writeResponseBodyToPath($httpResponse, $targetPath);
         } catch (Exception $e) {
             throw new AssetsException(
                 sprintf(
@@ -96,5 +96,7 @@ class CheckoutRequest extends Request
                 'download' => true
             ]
         );
+
+        return EmptyResponse::createFromHttpResponse($httpResponse);
     }
 }

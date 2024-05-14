@@ -28,10 +28,10 @@ class CreateRelationRequest extends Request
     }
 
 
-    public function __invoke(): void
+    public function __invoke(): EmptyResponse
     {
         try {
-            $this->assetsClient->serviceRequest('POST', 'createRelation',
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'createRelation',
                 [
                     'relationType' => $this->relationType->value,
                     'target1Id' => $this->target1Id->id,
@@ -56,5 +56,7 @@ class CreateRelationRequest extends Request
                 'target2Id' => $this->target2Id->id
             ]
         );
+
+        return EmptyResponse::createFromHttpResponse($httpResponse);
     }
 }

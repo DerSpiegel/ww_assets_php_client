@@ -193,17 +193,7 @@ class AssetsClient
     }
 
 
-    /**
-     * @throws JsonException
-     */
-    public function serviceRequest(string $method, string $service, array $data = [], bool $multipart = true): array
-    {
-        $httpResponse = $this->rawServiceRequest($method, $service, $data, $multipart);
-        return AssetsUtils::parseJsonResponse($httpResponse->getBody());
-    }
-
-
-    public function rawServiceRequest(string $method, string $service, array $data, bool $multipart): ResponseInterface
+    public function serviceRequest(string $method, string $service, array $data = [], bool $multipart = true): ResponseInterface
     {
         $url = sprintf(
             '%sservices/%s',
@@ -236,7 +226,7 @@ class AssetsClient
                     }
 
                     // try again
-                    return $this->rawServiceRequest($method, $service, $data, $multipart);
+                    return $this->serviceRequest($method, $service, $data, $multipart);
                 default:
                     // something went wrong
                     throw $e;

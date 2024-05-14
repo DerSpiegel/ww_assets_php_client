@@ -63,7 +63,7 @@ class HistoryRequest extends Request
         }
 
         try {
-            $response = $this->assetsClient->serviceRequest(
+            $httpResponse = $this->assetsClient->serviceRequest(
                 'POST',
                 'asset/history',
                 $data
@@ -88,6 +88,6 @@ class HistoryRequest extends Request
             ]
         );
 
-        return HistoryResponse::createFromJson($response);
+        return HistoryResponse::createFromHttpResponse($httpResponse);
     }
 }

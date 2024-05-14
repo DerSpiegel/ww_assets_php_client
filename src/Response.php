@@ -3,6 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient;
 
 use DateTimeImmutable;
+use Psr\Http\Message\ResponseInterface;
 use ReflectionClass;
 
 

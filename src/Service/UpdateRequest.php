@@ -29,7 +29,7 @@ class UpdateRequest extends CreateRequestBase
     }
 
 
-    public function __invoke(): void
+    public function __invoke(): EmptyResponse
     {
         $requestData = [
             'id' => $this->id->id,
@@ -49,7 +49,7 @@ class UpdateRequest extends CreateRequestBase
         }
 
         try {
-            $this->assetsClient->serviceRequest('POST', 'update', $requestData);
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'update', $requestData);
         } catch (Exception $e) {
             $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
 
@@ -78,5 +78,7 @@ class UpdateRequest extends CreateRequestBase
                 'metadata' => $this->metadata
             ]
         );
+
+        return EmptyResponse::createFromHttpResponse($httpResponse);
     }
 }
