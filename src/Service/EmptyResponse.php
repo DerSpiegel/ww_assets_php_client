@@ -13,10 +13,4 @@ class EmptyResponse extends Response
     )
     {
     }
-
-
-    public static function createFromHttpResponse(ResponseInterface $httpResponse): self
-    {
-        return new self($httpResponse);
-    }
 }

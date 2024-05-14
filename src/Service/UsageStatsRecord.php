@@ -36,16 +36,4 @@ class UsageStatsRecord extends Response
     )
     {
     }
-
-
-    public static function createFromJson(array $json, ?ResponseInterface $httpResponse = null): self
-    {
-        $args = self::applyJsonMapping($json);
-
-        if ($httpResponse !== null) {
-            $args['httpResponse'] = $httpResponse;
-        }
-
-        return (new ReflectionClass(static::class))->newInstanceArgs($args);
-    }
 }

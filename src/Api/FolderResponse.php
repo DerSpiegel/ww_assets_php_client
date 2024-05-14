@@ -21,10 +21,4 @@ class FolderResponse extends Response
     )
     {
     }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
-    }
 }
