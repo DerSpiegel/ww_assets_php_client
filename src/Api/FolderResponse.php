@@ -4,7 +4,6 @@ namespace DerSpiegel\WoodWingAssetsClient\Api;
 
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
 
 
 /**
@@ -20,11 +19,5 @@ class FolderResponse extends Response
         #[MapFromJson] readonly string $permissions = ''
     )
     {
-    }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

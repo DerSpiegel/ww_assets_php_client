@@ -3,7 +3,6 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
 
 
 /**
@@ -32,11 +31,5 @@ class HistoryResponseItem extends Response
         }
 
         return $result;
-    }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

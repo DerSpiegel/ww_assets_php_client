@@ -31,9 +31,9 @@ final class ResponseMapFromJsonTest extends TestCase
               "rating" : 3,
               "thumbnailState" : "yes"
             },
-            "originalUrl" : "http://demo.assets-server.com/file/DHWrgjWCqg0ByPIdY5yM0G/*/Singing%20Sands%20Beach.jpg?_=5",
-            "previewUrl" : "http://demo.assets-server.com/preview/DHWrgjWCqg0ByPIdY5yM0G/previews/maxWidth_1600_maxHeight_1600.jpg/*/Singing%2520Sands%2520Beach_preview.jpg?_=1",
-            "thumbnailUrl" : "http://demo.assets-server.com/thumbnail/DHWrgjWCqg0ByPIdY5yM0G/*/Singing%20Sands%20Beach_thumb.jpg?_=1"
+            "originalUrl" : "https://demo.assets-server.com/file/DHWrgjWCqg0ByPIdY5yM0G/*/Singing%20Sands%20Beach.jpg?_=5",
+            "previewUrl" : "https://demo.assets-server.com/preview/DHWrgjWCqg0ByPIdY5yM0G/previews/maxWidth_1600_maxHeight_1600.jpg/*/Singing%2520Sands%2520Beach_preview.jpg?_=1",
+            "thumbnailUrl" : "https://demo.assets-server.com/thumbnail/DHWrgjWCqg0ByPIdY5yM0G/*/Singing%20Sands%20Beach_thumb.jpg?_=1"
           }
         EOD
         );

@@ -5,14 +5,14 @@ namespace DerSpiegel\WoodWingAssetsClient;
 use BadFunctionCallException;
 
 
-class AssetsConfig
+readonly class AssetsConfig
 {
     public function __construct(
-        readonly string $url, // Must end with a slash
-        readonly string $username,
-        readonly string $password,
-        readonly string $elasticsearchUrl = '',
-        readonly bool   $verifySslCertificate = true
+        public string $url, // Must end with a slash
+        public string $username,
+        public string $password,
+        public string $elasticsearchUrl = '',
+        public bool   $verifySslCertificate = true
     )
     {
     }

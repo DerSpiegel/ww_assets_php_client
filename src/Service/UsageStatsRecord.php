@@ -6,7 +6,6 @@ use DateTimeImmutable;
 use DerSpiegel\WoodWingAssetsClient\AssetsAction;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
 
 
 /**
@@ -34,11 +33,5 @@ class UsageStatsRecord extends Response
         #[MapFromJson] readonly bool                                            $versionCreatingAction = false
     )
     {
-    }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

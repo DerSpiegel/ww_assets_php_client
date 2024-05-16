@@ -46,7 +46,7 @@ class CreateRequest extends CreateRequestBase
         }
 
         try {
-            $response = $this->assetsClient->serviceRequest('create', $requestData);
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'create', $requestData);
         } catch (Exception $e) {
             $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
 
@@ -62,7 +62,7 @@ class CreateRequest extends CreateRequestBase
             );
         }
 
-        $assetResponse = AssetResponse::createFromJson($response);
+        $assetResponse = AssetResponse::createFromHttpResponse($httpResponse);
 
         $this->logger->info('Asset created',
             [

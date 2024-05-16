@@ -39,12 +39,13 @@ class PromoteRequest extends Request
     }
 
 
-    public function __invoke(): void
+    public function __invoke(): EmptyResponse
     {
         $this->validate();
 
         try {
-            $response = $this->assetsClient->serviceRequest(
+            $httpResponse = $this->assetsClient->serviceRequest(
+                'POST',
                 'version/promote',
                 [
                     'assetId' => $this->id->id,
@@ -68,8 +69,10 @@ class PromoteRequest extends Request
             [
                 'method' => __METHOD__,
                 'id' => $this->id->id,
-                'response' => $response
+                'response' => $httpResponse
             ]
         );
+
+        return EmptyResponse::createFromHttpResponse($httpResponse);
     }
 }

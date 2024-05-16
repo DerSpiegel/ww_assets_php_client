@@ -4,7 +4,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @see https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login
@@ -12,6 +12,7 @@ use ReflectionClass;
 class LoginResponse extends Response
 {
     public function __construct(
+        readonly ?ResponseInterface    $httpResponse = null,
         #[MapFromJson] readonly bool   $loginSuccess = false,
         #[MapFromJson] readonly string $loginFaultMessage = '',
         #[MapFromJson] readonly string $serverVersion = '',
@@ -19,11 +20,5 @@ class LoginResponse extends Response
         #[MapFromJson] readonly string $csrfToken = ''
     )
     {
-    }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

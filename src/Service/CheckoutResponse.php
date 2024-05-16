@@ -5,7 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 use DateTimeImmutable;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
+use Psr\Http\Message\ResponseInterface;
 
 
 /**
@@ -14,16 +14,11 @@ use ReflectionClass;
 class CheckoutResponse extends Response
 {
     public function __construct(
+        readonly ?ResponseInterface                                             $httpResponse = null,
         #[MapFromJson(conversion: 'intToDateTime')] readonly ?DateTimeImmutable $checkedOut = null,
         #[MapFromJson] readonly string                                          $checkedOutBy = '',
         #[MapFromJson] readonly string                                          $checkedOutOnClient = ''
     )
     {
-    }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

@@ -21,6 +21,6 @@ final class SearchRequestTest extends IntegrationFixture
     {
         $this->expectException(BadRequestAssetsException::class);
 
-        $response = (new SearchRequest($this->assetsClient, q: 'noSuchField:', num: 0))();
+        (new SearchRequest($this->assetsClient, q: 'noSuchField:', num: 0))();
     }
 }

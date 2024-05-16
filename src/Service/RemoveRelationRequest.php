@@ -27,7 +27,7 @@ class RemoveRelationRequest extends Request
     public function __invoke(): ProcessResponse
     {
         try {
-            $response = $this->assetsClient->serviceRequest('removeRelation',
+            $httpResponse = $this->assetsClient->serviceRequest('POST', 'removeRelation',
                 [
                     'relationIds' => implode(',', $this->relationIds)
                 ]
@@ -40,10 +40,10 @@ class RemoveRelationRequest extends Request
             [
                 'method' => __METHOD__,
                 'ids' => $this->relationIds,
-                'response' => $response
+                'response' => $httpResponse
             ]
         );
 
-        return ProcessResponse::createFromJson($response);
+        return ProcessResponse::createFromHttpResponse($httpResponse);
     }
 }

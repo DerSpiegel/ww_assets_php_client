@@ -4,7 +4,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
-use ReflectionClass;
+use Psr\Http\Message\ResponseInterface;
 
 
 /**
@@ -13,6 +13,7 @@ use ReflectionClass;
 class SearchResponse extends Response
 {
     public function __construct(
+        readonly ?ResponseInterface   $httpResponse = null,
         readonly ?AssetResponseList   $hits = null,
         #[MapFromJson] readonly array $facets = [],
         #[MapFromJson] readonly int   $firstResult = 0,
@@ -40,11 +41,5 @@ class SearchResponse extends Response
         }
 
         return $result;
-    }
-
-
-    public static function createFromJson(array $json): self
-    {
-        return (new ReflectionClass(static::class))->newInstanceArgs(self::applyJsonMapping($json));
     }
 }

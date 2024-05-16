@@ -107,7 +107,7 @@ class AssetsClient
      * @param string $method
      * @param string $url
      * @param array $data
-     * @param bool $multipart - weather to send the data as multipart or application/json
+     * @param bool $multipart - whether to send the data as multipart or application/json
      * @param bool $sendToken
      * @return ResponseInterface
      */
@@ -153,7 +153,7 @@ class AssetsClient
                 case 'GET':
                 case 'HEAD':
                     // send data as query string
-                    $url = sprintf("%s?%s", $url, http_build_query($data));
+                    $url .= '?' . http_build_query($data);
                     break;
                 case 'POST':
                 case 'PUT':
@@ -193,25 +193,7 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $service
-     * @param array $data
-     * @return array
-     * @throws JsonException
-     */
-    public function serviceRequest(string $service, array $data = []): array
-    {
-        $httpResponse = $this->rawServiceRequest($service, $data);
-        return AssetsUtils::parseJsonResponse($httpResponse->getBody());
-    }
-
-
-    /**
-     * @param string $service
-     * @param array $data
-     * @return ResponseInterface
-     */
-    public function rawServiceRequest(string $service, array $data = []): ResponseInterface
+    public function serviceRequest(string $method, string $service, array $data = [], bool $multipart = true): ResponseInterface
     {
         $url = sprintf(
             '%sservices/%s',
@@ -226,7 +208,7 @@ class AssetsClient
         }
 
         try {
-            $httpResponse = $this->request('POST', $url, $data, true, !$loginRequest);
+            $httpResponse = $this->request($method, $url, $data, $multipart, !$loginRequest);
 
             // Even usually-binary responses like "checkout and download" return JSON on error (i.e. "not logged in").
             // So when we get JSON back, run it through AssetsUtils::parseJsonResponse() which throws an exception on error.
@@ -244,7 +226,7 @@ class AssetsClient
                     }
 
                     // try again
-                    return $this->rawServiceRequest($service, $data);
+                    return $this->serviceRequest($method, $service, $data, $multipart);
                 default:
                     // something went wrong
                     throw $e;
@@ -573,8 +555,8 @@ class AssetsClient
     public function logout(bool $cleanUpToken = true): LogoutResponse
     {
         try {
-            $httpResponse = $this->serviceRequest('logout');
-            $logout = LogoutResponse::createFromJson($httpResponse);
+            $httpResponse = $this->serviceRequest('POST', 'logout');
+            $logout = LogoutResponse::createFromHttpResponse($httpResponse);
 
             if ($cleanUpToken) {
                 $this->bearerToken = '';
