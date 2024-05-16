@@ -1,5 +1,16 @@
 # Change Log
 
+## 7.0.0 - 2024-05-16
+
+Backward incompatible API changes: AssetsClient::rawServiceRequest() has been removed. AssetsClient::serviceRequest() 
+parameters have been changed ($method is now required), and it returns an HTTP response object instead of an array.
+
+Added an httpResponse property (that contains the raw Guzzle HTTP response object) to all Response objects.
+
+All Request::__invoke() methods now return a Response object. The ones which returned void before return an EmptyResponse.
+
+Added PingRequest.
+
 ## 6.3.1 - 2024-05-06
 
 Updated dependencies: monolog/monolog from 3.2 to 3.6.
