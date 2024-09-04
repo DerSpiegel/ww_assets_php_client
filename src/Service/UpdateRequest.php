@@ -15,6 +15,9 @@ use Exception;
  */
 class UpdateRequest extends CreateRequestBase
 {
+    const KEEP_METADATA_DEFAULT = false;
+
+
     public function __construct(
         AssetsClient      $assetsClient,
         readonly ?AssetId $id = null,
@@ -22,7 +25,8 @@ class UpdateRequest extends CreateRequestBase
         array             $metadata = [],
         array             $metadataToReturn = ['all'],
         bool              $parseMetadataModification = false,
-        readonly bool     $clearCheckoutState = true
+        readonly bool     $clearCheckoutState = true,
+        readonly bool     $keepMetadata = self::KEEP_METADATA_DEFAULT, // Requires Assets Server 6.107 or higher
     )
     {
         parent::__construct($assetsClient, $filedata, $metadata, $metadataToReturn, $parseMetadataModification);
@@ -46,6 +50,10 @@ class UpdateRequest extends CreateRequestBase
         if (is_resource($this->filedata)) {
             $requestData['Filedata'] = $this->filedata;
             $requestData['clearCheckoutState'] = $this->clearCheckoutState ? 'true' : 'false';
+
+            if ($this->keepMetadata !== self::KEEP_METADATA_DEFAULT) {
+                $requestData['keepMetadata'] = $this->keepMetadata ? 'true' : 'false';
+            }
         }
 
         try {

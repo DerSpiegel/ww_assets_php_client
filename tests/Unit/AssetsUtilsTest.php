@@ -73,6 +73,9 @@ EOT;
     }
 
 
+    /**
+     * @return array<string, mixed>
+     */
     public static function cleanUpUnchangedMetadataFieldsProvider(): array
     {
         return [

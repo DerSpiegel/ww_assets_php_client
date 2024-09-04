@@ -13,6 +13,7 @@ class FolderResponse extends Response
 {
     public function __construct(
         #[MapFromJson] readonly string $id = '',
+        /** @var array<string, mixed> */
         #[MapFromJson] readonly array  $metadata = [],
         #[MapFromJson] readonly string $name = '',
         #[MapFromJson] readonly string $path = '',
