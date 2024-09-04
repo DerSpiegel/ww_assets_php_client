@@ -20,6 +20,7 @@ class UpdateFolderRequest extends Request
         AssetsClient    $assetsClient,
         readonly string $id = '',
         readonly string $path = '',
+        /** @var array<string, mixed> */
         readonly array  $metadata = []
     )
     {

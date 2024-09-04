@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ResponseMapFromJsonTest extends TestCase
 {
-    public function testAssetResponseJson()
+    public function testAssetResponseJson(): void
     {
         $json = AssetsUtils::parseJsonResponse(<<<'EOD'
           {
@@ -44,7 +44,7 @@ final class ResponseMapFromJsonTest extends TestCase
     }
 
 
-    public function testProcessResponseJson()
+    public function testProcessResponseJson(): void
     {
         $json = AssetsUtils::parseJsonResponse('{"processedCount": 13,"errorCount": 0}');
 

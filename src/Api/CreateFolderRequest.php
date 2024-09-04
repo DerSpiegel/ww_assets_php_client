@@ -18,6 +18,7 @@ class CreateFolderRequest extends Request
     public function __construct(
         AssetsClient    $assetsClient,
         readonly string $path = '',
+        /** @var array<string, mixed> */
         readonly array  $metadata = []
     )
     {
