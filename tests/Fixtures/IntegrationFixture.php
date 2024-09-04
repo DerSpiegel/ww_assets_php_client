@@ -4,6 +4,8 @@ namespace DerSpiegel\WoodWingAssetsClientTests\Fixtures;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\AssetsConfig;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
@@ -22,6 +24,11 @@ class IntegrationFixture extends TestCase
             ASSETS_PASSWORD
         );
 
-        $this->assetsClient = new AssetsClient($this->assetsConfig, new Logger('assetsClient'));
+        $logger = new Logger('assetsClient');
+
+        // Enable for debugging (displays log lines on STDOUT):
+        // $logger->pushHandler(new StreamHandler('php://stdout', Level::Debug));
+
+        $this->assetsClient = new AssetsClient($this->assetsConfig, $logger);
     }
 }
