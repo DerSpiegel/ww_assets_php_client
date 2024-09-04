@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.1.0 - 2024-09-04
+
+Add support for the new "keepUpdate" parameter (available since Assets Server 6.107) in UpdateRequest.
+
 ## 7.0.0 - 2024-05-16
 
 Backward incompatible API changes: AssetsClient::rawServiceRequest() has been removed. AssetsClient::serviceRequest() 
