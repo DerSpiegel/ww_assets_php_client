@@ -5,14 +5,27 @@ namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 use DerSpiegel\WoodWingAssetsClient\Helper\DownloadOriginalFileRequest;
 use DerSpiegel\WoodWingAssetsClient\Helper\RemoveByIdRequest;
 use DerSpiegel\WoodWingAssetsClient\Helper\SearchAssetRequest;
+use DerSpiegel\WoodWingAssetsClient\Service\ApiLoginRequest;
 use DerSpiegel\WoodWingAssetsClient\Service\AssetResponse;
 use DerSpiegel\WoodWingAssetsClient\Service\UpdateRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationUtils;
 
 
-class CheckinRequestTest extends IntegrationFixture
+class UpdateRequestCheckinTest extends IntegrationFixture
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $response = ApiLoginRequest::createFromConfig($this->assetsClient)();
+
+        if (version_compare($response->serverVersion, '6.107', '<')) {
+            $this->markTestSkipped('This test requires Assets Server 6.107 or higher');
+        }
+    }
+
+
     public function test(): void
     {
         $basename = IntegrationUtils::getUniqueBasename(__CLASS__);
@@ -35,8 +48,7 @@ class CheckinRequestTest extends IntegrationFixture
 
         $tmpFileV1 = sprintf('%s/%s_v1.jpg', sys_get_temp_dir(), IntegrationUtils::getUniqueBasename(__CLASS__));
 
-        (new DownloadOriginalFileRequest(
-            $this->assetsClient,
+        (new DownloadOriginalFileRequest($this->assetsClient,
             targetPath: $tmpFileV1,
             assetResponse: $assetResponse
         ))();
@@ -47,7 +59,7 @@ class CheckinRequestTest extends IntegrationFixture
 
         (new UpdateRequest($this->assetsClient,
             id: $assetResponse->id,
-            metadata: ['description' => $descriptionOnCreate],
+            metadata: ['description' => $descriptionAfterUpdate],
         ))();
 
         $assetResponse = (new SearchAssetRequest($this->assetsClient, $assetResponse->id))();
