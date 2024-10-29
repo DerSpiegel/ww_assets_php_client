@@ -77,7 +77,7 @@ class UpdateRequest extends CreateRequestBase
         $this->logger->info(
             sprintf(
                 'Updated %s for asset <%s>',
-                implode(array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
+                implode(', ', array_intersect(['metadata', 'Filedata'], array_keys($requestData))),
                 $this->id->id
             ),
             [
