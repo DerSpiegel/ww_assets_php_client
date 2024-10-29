@@ -9,6 +9,7 @@ use Twig\Error\SyntaxError;
 use Twig\Extension\EscaperExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
+use Twig\Runtime\EscaperRuntime;
 use Twig\Sandbox\SecurityPolicy;
 use Twig\TemplateWrapper;
 
@@ -185,14 +186,13 @@ class AssetsUtils
 
         // Add Elasticsearch escape filter, and make it the default
 
-        $escaper = $twig->getExtension(EscaperExtension::class);
+        $escaper = $twig->getRuntime(EscaperRuntime::class);
+        $escaper->setEscaper('query', function ($string, $charset) {
+            return AssetsUtils::escapeForElasticsearch($string ?? '');
+        });
 
-        $escaper->setEscaper('query',
-            function ($twig, $string, $charset) {
-                return AssetsUtils::escapeForElasticsearch($string ?? '');
-            });
-
-        $escaper->setDefaultStrategy('query');
+        $escaperExtension = $twig->getExtension(EscaperExtension::class);
+        $escaperExtension->setDefaultStrategy('query');
 
         return $twig->createTemplate($templateString);
     }
