@@ -2,9 +2,9 @@
 
 namespace DerSpiegel\WoodWingAssetsClientTests\Integration;
 
-use DerSpiegel\WoodWingAssetsClient\Exception\BadRequestAssetsException;
 use DerSpiegel\WoodWingAssetsClient\Service\SearchRequest;
 use DerSpiegel\WoodWingAssetsClientTests\Fixtures\IntegrationFixture;
+use GuzzleHttp\Exception\ClientException;
 
 
 final class SearchRequestTest extends IntegrationFixture
@@ -19,7 +19,8 @@ final class SearchRequestTest extends IntegrationFixture
 
     public function testMalformedQuery(): void
     {
-        $this->expectException(BadRequestAssetsException::class);
+        $this->expectException(ClientException::class);
+        $this->expectExceptionCode(400);
 
         (new SearchRequest($this->assetsClient, q: 'noSuchField:', num: 0))();
     }

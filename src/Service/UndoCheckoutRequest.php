@@ -18,10 +18,9 @@ use Exception;
 class UndoCheckoutRequest extends Request
 {
     public function __construct(
-        AssetsClient      $assetsClient,
+        AssetsClient $assetsClient,
         readonly ?AssetId $id = null
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -38,24 +37,13 @@ class UndoCheckoutRequest extends Request
     {
         $this->validate();
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest(
-                'POST',
-                sprintf('undocheckout/%s', urlencode($this->id->id))
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Undo checkout of asset <%s> failed',
-                    __METHOD__,
-                    $this->id->id
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            sprintf('undocheckout/%s', urlencode($this->id->id))
+        );
 
-        $this->logger->info(sprintf('Undo checkout for asset <%s> performed', $this->id->id),
+        $this->logger->info(
+            sprintf('Undo checkout for asset <%s> performed', $this->id->id),
             [
                 'method' => __METHOD__,
                 'id' => $this->id->id,

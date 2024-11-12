@@ -14,13 +14,12 @@ use Exception;
 class LoginRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $username = '',
         readonly string $password = '',
         readonly string $clientType = '',
-        readonly bool   $returnProfile = false
-    )
-    {
+        readonly bool $returnProfile = false
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -50,11 +49,7 @@ class LoginRequest extends Request
             $data['clientType'] = $this->clientType;
         }
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'login', $data);
-        } catch (Exception $e) {
-            throw AssetsException::createFromCode(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'login', $data);
 
         return LoginResponse::createFromHttpResponse($httpResponse);
     }

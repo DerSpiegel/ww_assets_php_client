@@ -25,32 +25,27 @@ class SearchRequest extends Request
 
 
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $q = '',
-        readonly int    $start = self::START_DEFAULT,
-        readonly int    $num = self::NUM_DEFAULT,
-        readonly array  $sort = [self::SORT_DEFAULT],
-        readonly array  $metadataToReturn = [self::METADATA_TO_RETURN_DEFAULT],
-        readonly array  $facets = [],
-        readonly bool   $appendRequestSecret = self::APPEND_REQUEST_SECRET_DEFAULT,
-        readonly bool   $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT,
-        readonly bool   $returnThumbnailHits = self::RETURN_THUMBNAIL_HITS_DEFAULT
-    )
-    {
+        readonly int $start = self::START_DEFAULT,
+        readonly int $num = self::NUM_DEFAULT,
+        readonly array $sort = [self::SORT_DEFAULT],
+        readonly array $metadataToReturn = [self::METADATA_TO_RETURN_DEFAULT],
+        readonly array $facets = [],
+        readonly bool $appendRequestSecret = self::APPEND_REQUEST_SECRET_DEFAULT,
+        readonly bool $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT,
+        readonly bool $returnThumbnailHits = self::RETURN_THUMBNAIL_HITS_DEFAULT
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): SearchResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'search', $this->toArray());
-        } catch (Exception $e) {
-            $this->logger->error(sprintf('%s: Search failed: <%s> (%d)', __METHOD__, $e->getMessage(), $e->getCode()));
-            throw $e;
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'search', $this->toArray());
 
-        $this->logger->debug('Search performed',
+        $this->logger->debug(
+            'Search performed',
             [
                 'method' => __METHOD__,
                 'query' => $this->q
@@ -117,11 +112,10 @@ class SearchRequest extends Request
      * @return string
      */
     public static function getRelationSearchQ(
-        string        $relatedTo,
-        string        $relationTarget = '',
+        string $relatedTo,
+        string $relationTarget = '',
         ?RelationType $relationType = null
-    ): string
-    {
+    ): string {
         $q = sprintf('relatedTo:%s', $relatedTo);
 
         if ($relationTarget !== '') {

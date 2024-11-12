@@ -12,7 +12,6 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
@@ -56,8 +55,7 @@ class AssetsClient
     public function __construct(
         readonly AssetsConfig $config,
         readonly LoggerInterface $logger
-    )
-    {
+    ) {
         $this->httpClient = $this->newHttpClient();
         $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
     }
@@ -114,11 +112,10 @@ class AssetsClient
     public function request(
         string $method,
         string $url,
-        array  $data = [],
-        bool   $multipart = true,
-        bool   $sendToken = true
-    ): ResponseInterface
-    {
+        array $data = [],
+        bool $multipart = true,
+        bool $sendToken = true
+    ): ResponseInterface {
         $options = [
             RequestOptions::HEADERS => ['User-Agent' => $this->getHttpUserAgent()],
             RequestOptions::TIMEOUT => $this->getRequestTimeout(),
@@ -137,7 +134,9 @@ class AssetsClient
                     $data['authcred'] = $this->getToken();
                     break;
                 default:
-                    throw new DomainException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod));
+                    throw new DomainException(
+                        sprintf("%s: Invalid Authentication method <%d>", __METHOD__, $this->authMethod)
+                    );
             }
         }
 
@@ -145,7 +144,6 @@ class AssetsClient
             // send data as multipart (e.g. for `services/*`)
             $options[RequestOptions::MULTIPART] = $this->dataToMultipart($data);
         } else {
-
             // send data according to the request method
             //send data as application/json (e.g. for `api/*`)
 
@@ -172,29 +170,29 @@ class AssetsClient
         }
         $options[RequestOptions::COOKIES] = $jar;
 
-        try {
-            $httpClient = $this->httpClient;
+        $httpClient = $this->httpClient;
 
-            $timer = new Timer();
-            $timer->start();
+        $timer = new Timer();
+        $timer->start();
 
-            $response = $httpClient->request($method, $url, $options);
+        $response = $httpClient->request($method, $url, $options);
 
-            $duration = $timer->stop();
-            $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url, $duration->asString()));
+        $duration = $timer->stop();
+        $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url, $duration->asString()));
 
-            // store cookies for further requests
-            $this->cookies = $jar->toArray();
+        // store cookies for further requests
+        $this->cookies = $jar->toArray();
 
-            return $response;
-        } catch (GuzzleException $e) {
-            throw AssetsException::createFromCode($e->getMessage(), $e->getCode(), $e);
-        }
+        return $response;
     }
 
 
-    public function serviceRequest(string $method, string $service, array $data = [], bool $multipart = true): ResponseInterface
-    {
+    public function serviceRequest(
+        string $method,
+        string $service,
+        array $data = [],
+        bool $multipart = true
+    ): ResponseInterface {
         $url = sprintf(
             '%sservices/%s',
             $this->config->url,
@@ -229,6 +227,14 @@ class AssetsClient
                     return $this->serviceRequest($method, $service, $data, $multipart);
                 default:
                     // something went wrong
+                    $this->logger->error(sprintf(
+                        '%s: %s request to <%s> failed: <%d> "%s"',
+                        __METHOD__,
+                        $method,
+                        $url,
+                        $e->getCode(),
+                        $e->getMessage()
+                    ));
                     throw $e;
             }
         }
@@ -276,6 +282,14 @@ class AssetsClient
                     return $this->apiRequest($method, $urlPath, $data);
                 default:
                     // something went wrong
+                    $this->logger->error(sprintf(
+                        '%s: %s request to <%s> failed: <%d> "%s"',
+                        __METHOD__,
+                        $method,
+                        $url,
+                        $e->getCode(),
+                        $e->getMessage()
+                    ));
                     throw $e;
             }
         }
@@ -402,8 +416,13 @@ class AssetsClient
             self::AUTH_METHOD_BEARER_TOKEN => $this->getBearerToken($force),
             self::AUTH_METHOD_CSRF_TOKEN => $this->getCsrfToken($force),
             self::AUTH_METHOD_AUTHCRED => $this->getAuthCred(),
-            default => throw new DomainException(sprintf("%s: Invalid Authentication method <%d>", __METHOD__,
-                $this->authMethod)),
+            default => throw new DomainException(
+                sprintf(
+                    "%s: Invalid Authentication method <%d>",
+                    __METHOD__,
+                    $this->authMethod
+                )
+            ),
         };
     }
 
@@ -457,18 +476,25 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), NotAuthorizedAssetsException::CODE);
+            throw new NotAuthorizedAssetsException(
+                sprintf("%s: Not Authorized", __METHOD__),
+                NotAuthorizedAssetsException::CODE
+            );
         }
 
         $response = ApiLoginRequest::createFromConfig($this)();
 
         if (!$response->loginSuccess) {
-            throw new AssetsException(sprintf('%s: Assets API login failed: %s', __METHOD__,
-                $response->loginFaultMessage));
+            throw new NotAuthorizedAssetsException(
+                sprintf('%s: Assets API login failed: %s', __METHOD__, $response->loginFaultMessage),
+                NotAuthorizedAssetsException::CODE
+            );
         }
 
         if (strlen($response->authToken) === 0) {
-            throw new AssetsException(sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__));
+            throw new AssetsException(
+                sprintf('%s: Assets API login succeeded, but authToken is empty', __METHOD__)
+            );
         }
 
         $this->bearerToken = 'Bearer ' . $response->authToken;
@@ -528,14 +554,22 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(sprintf("%s: Not Authorized", __METHOD__), NotAuthorizedAssetsException::CODE);
+            throw new NotAuthorizedAssetsException(
+                sprintf("%s: Not Authorized", __METHOD__),
+                NotAuthorizedAssetsException::CODE
+            );
         }
 
         $response = LoginRequest::createFromConfig($this)();
 
         if (!$response->loginSuccess) {
-            throw new AssetsException(sprintf('%s: Assets login failed: %s', __METHOD__,
-                $response->loginFaultMessage));
+            throw new AssetsException(
+                sprintf(
+                    '%s: Assets login failed: %s',
+                    __METHOD__,
+                    $response->loginFaultMessage
+                )
+            );
         }
 
         if (strlen($response->csrfToken) === 0) {
@@ -554,19 +588,14 @@ class AssetsClient
      */
     public function logout(bool $cleanUpToken = true): LogoutResponse
     {
-        try {
-            $httpResponse = $this->serviceRequest('POST', 'logout');
-            $logout = LogoutResponse::createFromHttpResponse($httpResponse);
+        $httpResponse = $this->serviceRequest('POST', 'logout');
+        $logout = LogoutResponse::createFromHttpResponse($httpResponse);
 
-            if ($cleanUpToken) {
-                $this->bearerToken = '';
-            }
-
-            return $logout;
-
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Logout POST request failed', __METHOD__), $e->getCode(), $e);
+        if ($cleanUpToken) {
+            $this->bearerToken = '';
         }
+
+        return $logout;
     }
 
 
@@ -576,13 +605,8 @@ class AssetsClient
      */
     public function downloadFileToPath(string $url, string $targetPath): void
     {
-        try {
-            $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
-            $this->writeResponseBodyToPath($httpResponse, $targetPath);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Failed to download <%s>: %s', __METHOD__, $url, $e->getMessage()),
-                $e->getCode(), $e);
-        }
+        $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
+        $this->writeResponseBodyToPath($httpResponse, $targetPath);
     }
 
 
@@ -595,8 +619,13 @@ class AssetsClient
         $fp = fopen($targetPath, 'wb');
 
         if ($fp === false) {
-            throw new AssetsException(sprintf('%s: Failed to open <%s> for writing', __METHOD__,
-                $targetPath));
+            throw new AssetsException(
+                sprintf(
+                    '%s: Failed to open <%s> for writing',
+                    __METHOD__,
+                    $targetPath
+                )
+            );
         }
 
         $ok = true;
@@ -612,8 +641,13 @@ class AssetsClient
         fclose($fp);
 
         if (!$ok) {
-            throw new AssetsException(sprintf('%s: Failed to write HTTP response to <%s>', __METHOD__,
-                $targetPath));
+            throw new AssetsException(
+                sprintf(
+                    '%s: Failed to write HTTP response to <%s>',
+                    __METHOD__,
+                    $targetPath
+                )
+            );
         }
     }
 

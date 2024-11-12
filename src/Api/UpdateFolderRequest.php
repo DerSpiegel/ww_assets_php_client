@@ -17,13 +17,12 @@ use Exception;
 class UpdateFolderRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $id = '',
         readonly string $path = '',
         /** @var array<string, mixed> */
-        readonly array  $metadata = []
-    )
-    {
+        readonly array $metadata = []
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -40,16 +39,12 @@ class UpdateFolderRequest extends Request
     {
         $this->validate();
 
-        try {
-            $response = $this->assetsClient->apiRequest('PUT', "folder/{$this->id}", [
-                'metadata' => (object)$this->metadata
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Update folder failed: <%s>', __METHOD__, $e->getMessage()),
-                $e->getCode(), $e);
-        }
+        $response = $this->assetsClient->apiRequest('PUT', "folder/$this->id", [
+            'metadata' => (object)$this->metadata
+        ]);
 
-        $this->logger->info(sprintf('Updated metadata for folder <%s> (%s)', $this->path, $this->id),
+        $this->logger->info(
+            sprintf('Updated metadata for folder <%s> (%s)', $this->path, $this->id),
             [
                 'method' => __METHOD__,
                 'folderPath' => $this->path,

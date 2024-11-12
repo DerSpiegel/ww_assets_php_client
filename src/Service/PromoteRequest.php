@@ -18,11 +18,10 @@ use Exception;
 class PromoteRequest extends Request
 {
     public function __construct(
-        AssetsClient      $assetsClient,
+        AssetsClient $assetsClient,
         readonly ?AssetId $id = null,
-        readonly int      $version = 0
-    )
-    {
+        readonly int $version = 0
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -43,29 +42,17 @@ class PromoteRequest extends Request
     {
         $this->validate();
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest(
-                'POST',
-                'version/promote',
-                [
-                    'assetId' => $this->id->id,
-                    'version' => $this->version
-                ]
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Promote version <%d> of asset <%s> failed',
-                    __METHOD__,
-                    $this->version,
-                    $this->id->id
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            'version/promote',
+            [
+                'assetId' => $this->id->id,
+                'version' => $this->version
+            ]
+        );
 
-        $this->logger->info(sprintf('Promote version <%d> for asset <%s> performed', $this->version, $this->id->id),
+        $this->logger->info(
+            sprintf('Promote version <%d> for asset <%s> performed', $this->version, $this->id->id),
             [
                 'method' => __METHOD__,
                 'id' => $this->id->id,

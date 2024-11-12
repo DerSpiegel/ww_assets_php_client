@@ -17,11 +17,10 @@ use Exception;
 class RemoveFolderRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $id = '',
         readonly string $path = ''
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -38,13 +37,10 @@ class RemoveFolderRequest extends Request
     {
         $this->validate();
 
-        try {
-            $response = $this->assetsClient->apiRequest('DELETE', sprintf('folder/%s', $this->id));
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
-        }
+        $response = $this->assetsClient->apiRequest('DELETE', sprintf('folder/%s', $this->id));
 
-        $this->logger->info('Folder removed',
+        $this->logger->info(
+            'Folder removed',
             [
                 'method' => __METHOD__,
                 'id' => $this->id,

@@ -17,11 +17,10 @@ use Exception;
 class CheckoutRequest extends Request
 {
     public function __construct(
-        AssetsClient      $assetsClient,
+        AssetsClient $assetsClient,
         readonly ?AssetId $id = null,
-        readonly bool     $download = false
-    )
-    {
+        readonly bool $download = false
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -31,26 +30,14 @@ class CheckoutRequest extends Request
      */
     public function __invoke(): CheckoutResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest(
-                'POST',
-                sprintf('checkout/%s', urlencode($this->id->id)),
-                ['download' => 'false']
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Checkout of asset <%s> failed: %s',
-                    __METHOD__,
-                    $this->id,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            sprintf('checkout/%s', urlencode($this->id->id)),
+            ['download' => 'false']
+        );
 
-        $this->logger->info(sprintf('Asset <%s> checked out', $this->id->id),
+        $this->logger->info(
+            sprintf('Asset <%s> checked out', $this->id->id),
             [
                 'method' => __METHOD__,
                 'id' => $this->id->id,
@@ -67,29 +54,17 @@ class CheckoutRequest extends Request
      */
     public function checkoutAndDownload(string $targetPath): EmptyResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest(
-                'POST',
-                sprintf('checkout/%s', urlencode($this->id->id)),
-                ['download' => 'true'],
-                false
-            );
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            sprintf('checkout/%s', urlencode($this->id->id)),
+            ['download' => 'true'],
+            false
+        );
 
-            $this->assetsClient->writeResponseBodyToPath($httpResponse, $targetPath);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Checkout of asset <%s> failed: %s',
-                    __METHOD__,
-                    $this->id->id,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $this->assetsClient->writeResponseBodyToPath($httpResponse, $targetPath);
 
-        $this->logger->info(sprintf('Asset <%s> checked out and downloaded to <%s>', $this->id->id, $targetPath),
+        $this->logger->info(
+            sprintf('Asset <%s> checked out and downloaded to <%s>', $this->id->id, $targetPath),
             [
                 'method' => __METHOD__,
                 'id' => $this->id->id,

@@ -19,14 +19,14 @@ class UpdateRequest extends CreateRequestBase
 
 
     public function __construct(
-        AssetsClient      $assetsClient,
+        AssetsClient $assetsClient,
         readonly ?AssetId $id = null,
-        mixed             $filedata = null,
-        array             $metadata = [],
-        array             $metadataToReturn = ['all'],
-        bool              $parseMetadataModification = false,
-        readonly bool     $clearCheckoutState = true,
-        readonly bool     $keepMetadata = self::KEEP_METADATA_DEFAULT, // Requires Assets Server 6.107 or higher
+        mixed $filedata = null,
+        array $metadata = [],
+        array $metadataToReturn = ['all'],
+        bool $parseMetadataModification = false,
+        readonly bool $clearCheckoutState = true,
+        readonly bool $keepMetadata = self::KEEP_METADATA_DEFAULT, // Requires Assets Server 6.107 or higher
     )
     {
         parent::__construct($assetsClient, $filedata, $metadata, $metadataToReturn, $parseMetadataModification);
@@ -56,23 +56,7 @@ class UpdateRequest extends CreateRequestBase
             }
         }
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'update', $requestData);
-        } catch (Exception $e) {
-            $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
-
-            throw new AssetsException(
-                sprintf(
-                    '%s: Update failed for asset <%s> - <%s> - <%s>',
-                    __METHOD__,
-                    $this->id->id,
-                    $e->getMessage(),
-                    json_encode($logData)
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'update', $requestData);
 
         $this->logger->info(
             sprintf(
