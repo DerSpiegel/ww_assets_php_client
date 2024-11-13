@@ -30,7 +30,7 @@ class AssetsHealth
     }
 
 
-    protected function isServiceUnavailableException(Exception $exception): bool
+    public function isServiceUnavailableException(Exception $exception): bool
     {
         // A "400 Bad Request" or "500 Internal Server Error" might be request specific, so we cannot assume that
         // other requests won't work.

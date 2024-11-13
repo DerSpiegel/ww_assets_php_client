@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.1.1 - 2024-11-13
+
+Make AssetsHealth::isServiceUnavailableException() public.
+
 ## 8.1.0 - 2024-11-13
 
 Add AssetsHealth class which can be used to integrate with a circuit breaker.
