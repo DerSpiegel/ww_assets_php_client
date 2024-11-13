@@ -1,5 +1,15 @@
 # Change Log
 
+## 8.0.0 - 2024-11-13
+
+Exception changes: Instead of wrapping them in an AssetsException, throw the original exception (e. g. GuzzleException).
+(This reverts many changes made in 5.0.3.)
+Throw an NotAuthorizedAssetsException when API login fails.
+
+Fix PHP warning 'The "Twig\Extension\EscaperExtension::setEscaper()" method is deprecated'.
+
+Fix missing separator in UpdateRequest log message.
+
 ## 7.1.0 - 2024-09-04
 
 Add support for the new "keepUpdate" parameter (available since Assets Server 6.107) in UpdateRequest.
