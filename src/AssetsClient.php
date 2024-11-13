@@ -12,6 +12,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
@@ -40,6 +41,7 @@ class AssetsClient
     const RELATION_TARGET_PARENT = 'parent';
 
     protected Client $httpClient;
+    readonly AssetsHealth $health;
 
     private bool $allowReLogin = true;
     protected string $authCred = '';
@@ -58,6 +60,8 @@ class AssetsClient
     ) {
         $this->httpClient = $this->newHttpClient();
         $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
+
+        $this->health = $config->health ?? new AssetsHealth();
     }
 
 
@@ -175,10 +179,17 @@ class AssetsClient
         $timer = new Timer();
         $timer->start();
 
-        $response = $httpClient->request($method, $url, $options);
+        try {
+            $response = $httpClient->request($method, $url, $options);
+        } catch (GuzzleException $e) {
+            $this->health->setServiceIsAvailableByException($e);
+            throw $e;
+        }
 
         $duration = $timer->stop();
         $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url, $duration->asString()));
+
+        $this->health->setServiceIsAvailable(true);
 
         // store cookies for further requests
         $this->cookies = $jar->toArray();
@@ -476,19 +487,23 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(
+            $e = new NotAuthorizedAssetsException(
                 sprintf("%s: Not Authorized", __METHOD__),
                 NotAuthorizedAssetsException::CODE
             );
+            $this->health->setServiceIsAvailableByException($e);
+            throw $e;
         }
 
         $response = ApiLoginRequest::createFromConfig($this)();
 
         if (!$response->loginSuccess) {
-            throw new NotAuthorizedAssetsException(
+            $e = new NotAuthorizedAssetsException(
                 sprintf('%s: Assets API login failed: %s', __METHOD__, $response->loginFaultMessage),
                 NotAuthorizedAssetsException::CODE
             );
+            $this->health->setServiceIsAvailableByException($e);
+            throw $e;
         }
 
         if (strlen($response->authToken) === 0) {
@@ -554,22 +569,27 @@ class AssetsClient
         }
 
         if (!$this->allowReLogin) {
-            throw new NotAuthorizedAssetsException(
+            $e = new NotAuthorizedAssetsException(
                 sprintf("%s: Not Authorized", __METHOD__),
                 NotAuthorizedAssetsException::CODE
             );
+            $this->health->setServiceIsAvailableByException($e);
+            throw $e;
         }
 
         $response = LoginRequest::createFromConfig($this)();
 
         if (!$response->loginSuccess) {
-            throw new AssetsException(
+            $e = new NotAuthorizedAssetsException(
                 sprintf(
                     '%s: Assets login failed: %s',
                     __METHOD__,
                     $response->loginFaultMessage
-                )
+                ),
+                NotAuthorizedAssetsException::CODE
             );
+            $this->health->setServiceIsAvailableByException($e);
+            throw $e;
         }
 
         if (strlen($response->csrfToken) === 0) {

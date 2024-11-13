@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.1.0 - 2024-11-13
+
+Add AssetsHealth class which can be used to integrate with a circuit breaker.
+
 ## 8.0.0 - 2024-11-13
 
 Exception changes: Instead of wrapping them in an AssetsException, throw the original exception (e. g. GuzzleException).

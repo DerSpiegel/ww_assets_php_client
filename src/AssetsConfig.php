@@ -12,9 +12,9 @@ readonly class AssetsConfig
         public string $username,
         public string $password,
         public string $elasticsearchUrl = '',
-        public bool   $verifySslCertificate = true
-    )
-    {
+        public bool $verifySslCertificate = true,
+        public ?AssetsHealth $health = null,
+    ) {
     }
 
 
@@ -26,9 +26,9 @@ readonly class AssetsConfig
         string $username,
         string $password,
         string $elasticsearchUrl = '',
-        bool   $verifySslCertificate = true
-    ): self
-    {
+        bool $verifySslCertificate = true,
+        ?AssetsHealth $health = null,
+    ): self {
         $url = trim($url);
 
         // If the Assets URL doesn't end with a slash, append it
@@ -45,7 +45,8 @@ readonly class AssetsConfig
             $username,
             $password,
             $elasticsearchUrl,
-            $verifySslCertificate
+            $verifySslCertificate,
+            $health,
         );
     }
 
