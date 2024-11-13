@@ -16,22 +16,17 @@ class PingRequest extends Request
     public function __construct(
         AssetsClient $assetsClient,
         readonly string $uid = '',
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): EmptyResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('GET', 'ping', $this->toArray());
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Ping failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
-                $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('GET', 'ping', $this->toArray());
 
-        $this->logger->debug('Ping performed',
+        $this->logger->debug(
+            'Ping performed',
             [
                 'method' => __METHOD__,
                 'uid' => $this->uid

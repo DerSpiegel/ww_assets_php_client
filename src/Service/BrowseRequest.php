@@ -21,22 +21,17 @@ class BrowseRequest extends Request
         readonly string $path = '',
         readonly string $fromRoot = '',
         readonly bool $includeFolders = self::INCLUDE_FOLDERS_DEFAULT,
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): BrowseResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'browse', $this->toArray());
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Browse failed: <%s>', __METHOD__, $e->getMessage()), $e->getCode(),
-                $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'browse', $this->toArray());
 
-        $this->logger->debug('Browse performed',
+        $this->logger->debug(
+            'Browse performed',
             [
                 'method' => __METHOD__,
                 'path' => $this->path

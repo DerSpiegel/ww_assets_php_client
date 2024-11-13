@@ -14,12 +14,11 @@ use Exception;
 class ApiLoginRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $username = '',
         readonly string $password = '',
         readonly string $clientId = ''
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -48,11 +47,7 @@ class ApiLoginRequest extends Request
             $data['clientId'] = $this->clientId;
         }
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'apilogin', $data);
-        } catch (Exception $e) {
-            throw AssetsException::createFromCode(sprintf('%s: Login POST request failed', __METHOD__), $e->getCode(), $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'apilogin', $data);
 
         return ApiLoginResponse::createFromHttpResponse($httpResponse);
     }

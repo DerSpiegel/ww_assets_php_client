@@ -29,14 +29,13 @@ enum HistoryDetailLevel: int
 class HistoryRequest extends Request
 {
     public function __construct(
-        AssetsClient                $assetsClient,
-        readonly ?AssetId           $id = null,
-        readonly ?AssetsActionList  $actions = null,
+        AssetsClient $assetsClient,
+        readonly ?AssetId $id = null,
+        readonly ?AssetsActionList $actions = null,
         readonly HistoryDetailLevel $detailLevel = HistoryDetailLevel::CustomActions,
-        readonly int                $start = 0,
-        readonly ?int               $num = null
-    )
-    {
+        readonly int $start = 0,
+        readonly ?int $num = null
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -54,34 +53,25 @@ class HistoryRequest extends Request
         }
 
         if (($this->detailLevel === HistoryDetailLevel::CustomActions) && (!empty($this->actions))) {
-            $data['actions'] = implode(',', array_map(
-                function ($value) {
-                    return $value->value;
-                },
-                $this->actions->getArrayCopy()
-            ));
-        }
-
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest(
-                'POST',
-                'asset/history',
-                $data
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Get history of asset <%s> failed: %s',
-                    __METHOD__,
-                    $this->id->id,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
+            $data['actions'] = implode(
+                ',',
+                array_map(
+                    function ($value) {
+                        return $value->value;
+                    },
+                    $this->actions->getArrayCopy()
+                )
             );
         }
 
-        $this->logger->info(sprintf('Got history of asset <%s>', $this->id->id),
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            'asset/history',
+            $data
+        );
+
+        $this->logger->info(
+            sprintf('Got history of asset <%s>', $this->id->id),
             [
                 'method' => __METHOD__,
                 'id' => $this->id->id

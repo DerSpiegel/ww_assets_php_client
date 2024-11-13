@@ -15,14 +15,13 @@ use Exception;
 class CreateRequest extends CreateRequestBase
 {
     public function __construct(
-        AssetsClient  $assetsClient,
-        mixed         $filedata = null,
-        array         $metadata = [],
-        array         $metadataToReturn = ['all'],
-        bool          $parseMetadataModification = false,
+        AssetsClient $assetsClient,
+        mixed $filedata = null,
+        array $metadata = [],
+        array $metadataToReturn = ['all'],
+        bool $parseMetadataModification = false,
         readonly bool $autoRename = false
-    )
-    {
+    ) {
         parent::__construct($assetsClient, $filedata, $metadata, $metadataToReturn, $parseMetadataModification);
     }
 
@@ -45,26 +44,12 @@ class CreateRequest extends CreateRequestBase
             $requestData['Filedata'] = $this->filedata;
         }
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'create', $requestData);
-        } catch (Exception $e) {
-            $logData = array_filter($requestData, fn($key) => ($key !== 'Filedata'), ARRAY_FILTER_USE_KEY);
-
-            throw new AssetsException(
-                sprintf(
-                    '%s: Create failed - <%s> - <%s>',
-                    __METHOD__,
-                    $e->getMessage(),
-                    json_encode($logData)
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'create', $requestData);
 
         $assetResponse = AssetResponse::createFromHttpResponse($httpResponse);
 
-        $this->logger->info('Asset created',
+        $this->logger->info(
+            'Asset created',
             [
                 'method' => __METHOD__,
                 'assetId' => $assetResponse->id->id,

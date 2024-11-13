@@ -24,40 +24,25 @@ class CopyRequest extends Request
 
 
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $source = '',
         readonly string $target = '',
         readonly string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME
-
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): ProcessResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'copy', [
-                'source' => $this->source,
-                'target' => $this->target,
-                'fileReplacePolicy' => $this->fileReplacePolicy
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Copy from <%s> to <%s> failed: %s',
-                    __METHOD__,
-                    $this->source,
-                    $this->target,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'copy', [
+            'source' => $this->source,
+            'target' => $this->target,
+            'fileReplacePolicy' => $this->fileReplacePolicy
+        ]);
 
-        $this->logger->info(sprintf('Asset copied to <%s>', $this->target),
+        $this->logger->info(
+            sprintf('Asset copied to <%s>', $this->target),
             [
                 'method' => __METHOD__,
                 'source' => $this->source,

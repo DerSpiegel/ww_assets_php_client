@@ -28,45 +28,31 @@ class MoveRequest extends Request
 
 
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $source = '',
         readonly string $target = '',
         readonly string $folderReplacePolicy = self::FOLDER_REPLACE_POLICY_AUTO_RENAME,
         readonly string $fileReplacePolicy = self::FILE_REPLACE_POLICY_AUTO_RENAME,
         readonly string $filterQuery = '',
-        readonly bool   $flattenFolders = false
-    )
-    {
+        readonly bool $flattenFolders = false
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): ProcessResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'move', [
-                'source' => $this->source,
-                'target' => $this->target,
-                'folderReplacePolicy' => $this->folderReplacePolicy,
-                'fileReplacePolicy' => $this->fileReplacePolicy,
-                'filterQuery' => $this->filterQuery,
-                'flattenFolders' => $this->flattenFolders ? 'true' : 'false'
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Move/rename from <%s> to <%s> failed: %s',
-                    __METHOD__,
-                    $this->source,
-                    $this->target,
-                    $e->getMessage()
-                ),
-                $e->getCode(),
-                $e
-            );
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'move', [
+            'source' => $this->source,
+            'target' => $this->target,
+            'folderReplacePolicy' => $this->folderReplacePolicy,
+            'fileReplacePolicy' => $this->fileReplacePolicy,
+            'filterQuery' => $this->filterQuery,
+            'flattenFolders' => $this->flattenFolders ? 'true' : 'false'
+        ]);
 
-        $this->logger->info(sprintf('Asset/folder moved to <%s>', $this->target),
+        $this->logger->info(
+            sprintf('Asset/folder moved to <%s>', $this->target),
             [
                 'method' => __METHOD__,
                 'source' => $this->source,

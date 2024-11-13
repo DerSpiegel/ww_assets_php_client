@@ -15,34 +15,34 @@ use Exception;
 class RemoveRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $q = '',
-        readonly array  $ids = [],
+        readonly array $ids = [],
         readonly string $folderPath = '',
-        readonly bool   $async = false
-    )
-    {
+        readonly bool $async = false
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): ProcessResponse
     {
-        try {
-            // filter the array, so the actual folder gets remove, not only its contents ?!
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'remove', array_filter(
+        // filter the array, so the actual folder gets remove, not only its contents ?!
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            'remove',
+            array_filter(
                 [
                     'q' => $this->q,
                     'ids' => implode(',', $this->ids),
                     'folderPath' => $this->folderPath,
                     'async' => $this->async ? 'true' : 'false',
                 ]
-            ));
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Remove failed', __METHOD__), $e->getCode(), $e);
-        }
+            )
+        );
 
-        $this->logger->info('Assets/Folders removed',
+        $this->logger->info(
+            'Assets/Folders removed',
             [
                 'method' => __METHOD__,
                 'q' => $this->q,

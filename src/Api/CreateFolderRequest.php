@@ -16,29 +16,24 @@ use Exception;
 class CreateFolderRequest extends Request
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $path = '',
         /** @var array<string, mixed> */
-        readonly array  $metadata = []
-    )
-    {
+        readonly array $metadata = []
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): FolderResponse
     {
-        try {
-            $response = $this->assetsClient->apiRequest('POST', 'folder', [
-                'path' => $this->path,
-                'metadata' => (object)$this->metadata
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Create folder failed: <%s>', __METHOD__, $e->getMessage()),
-                $e->getCode(), $e);
-        }
+        $response = $this->assetsClient->apiRequest('POST', 'folder', [
+            'path' => $this->path,
+            'metadata' => (object)$this->metadata
+        ]);
 
-        $this->logger->info(sprintf('Folder <%s> created', $this->path),
+        $this->logger->info(
+            sprintf('Folder <%s> created', $this->path),
             [
                 'method' => __METHOD__,
                 'folderPath' => $this->path,

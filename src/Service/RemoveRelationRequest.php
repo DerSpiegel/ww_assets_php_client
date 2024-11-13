@@ -16,27 +16,24 @@ use Exception;
 class RemoveRelationRequest extends Request
 {
     public function __construct(
-        AssetsClient   $assetsClient,
+        AssetsClient $assetsClient,
         readonly array $relationIds = []
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): ProcessResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'removeRelation',
-                [
-                    'relationIds' => implode(',', $this->relationIds)
-                ]
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Remove relation failed', __METHOD__), $e->getCode(), $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST', 'removeRelation',
+            [
+                'relationIds' => implode(',', $this->relationIds)
+            ]
+        );
 
-        $this->logger->info('Relations removed',
+        $this->logger->info(
+            'Relations removed',
             [
                 'method' => __METHOD__,
                 'ids' => $this->relationIds,

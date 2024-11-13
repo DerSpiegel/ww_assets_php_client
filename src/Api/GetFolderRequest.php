@@ -18,24 +18,19 @@ class GetFolderRequest extends Request
     public function __construct(
         AssetsClient $assetsClient,
         readonly string $path = ''
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): FolderResponse
     {
-        try {
-            $response = $this->assetsClient->apiRequest('GET', 'folder/get', [
-                'path' => $this->path
-            ]);
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Get folder failed: <%s>', __METHOD__, $e->getMessage()),
-                $e->getCode(), $e);
-        }
+        $response = $this->assetsClient->apiRequest('GET', 'folder/get', [
+            'path' => $this->path
+        ]);
 
-        $this->logger->debug(sprintf('Folder <%s> retrieved', $this->path),
+        $this->logger->debug(
+            sprintf('Folder <%s> retrieved', $this->path),
             [
                 'method' => __METHOD__,
                 'folderPath' => $this->path

@@ -18,29 +18,25 @@ use Exception;
 class CreateRelationRequest extends Request
 {
     public function __construct(
-        AssetsClient           $assetsClient,
+        AssetsClient $assetsClient,
         readonly ?RelationType $relationType = null,
-        readonly ?AssetId      $target1Id = null,
-        readonly ?AssetId      $target2Id = null
-    )
-    {
+        readonly ?AssetId $target1Id = null,
+        readonly ?AssetId $target2Id = null
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): EmptyResponse
     {
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'createRelation',
-                [
-                    'relationType' => $this->relationType->value,
-                    'target1Id' => $this->target1Id->id,
-                    'target2Id' => $this->target2Id->id
-                ]
-            );
-        } catch (Exception $e) {
-            throw new AssetsException(sprintf('%s: Create relation failed', __METHOD__), $e->getCode(), $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST', 'createRelation',
+            [
+                'relationType' => $this->relationType->value,
+                'target1Id' => $this->target1Id->id,
+                'target2Id' => $this->target2Id->id
+            ]
+        );
 
         $this->logger->info(
             sprintf(

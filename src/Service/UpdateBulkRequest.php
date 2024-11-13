@@ -15,13 +15,12 @@ use Exception;
 class UpdateBulkRequest extends CreateRequestBase
 {
     public function __construct(
-        AssetsClient    $assetsClient,
+        AssetsClient $assetsClient,
         readonly string $q = '',
-        array           $metadata = [],
-        readonly bool   $async = false,
-        bool            $parseMetadataModification = false
-    )
-    {
+        array $metadata = [],
+        readonly bool $async = false,
+        bool $parseMetadataModification = false
+    ) {
         parent::__construct($assetsClient, null, $metadata, [], $parseMetadataModification);
     }
 
@@ -35,22 +34,10 @@ class UpdateBulkRequest extends CreateRequestBase
             'async' => $this->async ? 'true' : 'false',
         ];
 
-        try {
-            $httpResponse = $this->assetsClient->serviceRequest('POST', 'updatebulk', $requestData);
-        } catch (Exception $e) {
-            throw new AssetsException(
-                sprintf(
-                    '%s: Update Bulk failed for query <%s> - <%s> - <%s>',
-                    __METHOD__,
-                    $this->q,
-                    $e->getMessage(),
-                    json_encode($requestData)
-                ),
-                $e->getCode(),
-                $e);
-        }
+        $httpResponse = $this->assetsClient->serviceRequest('POST', 'updatebulk', $requestData);
 
-        $this->logger->info(sprintf('Updated bulk for query <%s>', $this->q),
+        $this->logger->info(
+            sprintf('Updated bulk for query <%s>', $this->q),
             [
                 'method' => __METHOD__,
                 'query' => $this->q,
