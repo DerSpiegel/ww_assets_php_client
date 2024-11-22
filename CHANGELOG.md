@@ -1,5 +1,13 @@
 # Change Log
 
+## 8.1.2 - 2024-11-22
+
+PHP 8.4 is now supported.
+
+Assume Assets is down on HTTP 502 / 503 / 504. Do not assume this on authentication failure.
+
+Add test for AssetsHealth.
+
 ## 8.1.1 - 2024-11-13
 
 Make AssetsHealth::isServiceUnavailableException() public.

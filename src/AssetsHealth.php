@@ -2,9 +2,9 @@
 
 namespace DerSpiegel\WoodWingAssetsClient;
 
-use DerSpiegel\WoodWingAssetsClient\Exception\NotAuthorizedAssetsException;
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\ServerException;
 
 
 class AssetsHealth
@@ -34,8 +34,14 @@ class AssetsHealth
     {
         // A "400 Bad Request" or "500 Internal Server Error" might be request specific, so we cannot assume that
         // other requests won't work.
-        // But if authentication fails or no connection can be established, it is likely that the service is down.
+        // But
+        // * if no connection can be established,
+        // * or "502 Bad Gateway", "503 Service Unavailable" or "504 Gateway Timeout" is returned,
+        // we assume that the service is down.
 
-        return (($exception instanceof NotAuthorizedAssetsException) || ($exception instanceof ConnectException));
+        return (
+            ($exception instanceof ConnectException) ||
+            (($exception instanceof ServerException) && in_array($exception->getCode(), [502, 503, 504]))
+        );
     }
 }
