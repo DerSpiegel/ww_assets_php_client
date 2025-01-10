@@ -1,5 +1,9 @@
 # Change Log
 
+## 8.1.3 - 2025-01-10
+
+Fix double question mark in "forceDownload" URL query string.
+
 The optional custom HTTP User-Agent can now be set via AssetsConfig. 
 
 ## 8.1.2 - 2024-11-22

@@ -155,7 +155,7 @@ class AssetsClient
                 case 'GET':
                 case 'HEAD':
                     // send data as query string
-                    $url .= '?' . http_build_query($data);
+                    $url = AssetsUtils::buildGetUrl($url, $data);
                     break;
                 case 'POST':
                 case 'PUT':
