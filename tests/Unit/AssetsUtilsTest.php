@@ -50,6 +50,26 @@ EOT;
     }
 
 
+    public function testBuildGetUrl(): void
+    {
+        $this->assertEquals(
+            'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?forceDownload=true',
+            AssetsUtils::buildGetUrl(
+                'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg',
+                ['forceDownload' => 'true']
+            )
+        );
+
+        $this->assertEquals(
+            'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?_=6&forceDownload=true',
+            AssetsUtils::buildGetUrl(
+                'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?_=6',
+                ['forceDownload' => 'true']
+            )
+        );
+    }
+
+
     public function testGetQueryTemplate(): void
     {
         $templateStr = '{% if ID %} title:"prefix {{ ID }}" {% endif %}';

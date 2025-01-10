@@ -39,6 +39,14 @@ class AssetsUtils
     }
 
 
+    public static function buildGetUrl(string $url, array $data = []): string
+    {
+        return $url
+            . (str_contains($url, '?') ? '&' : '?')
+            . http_build_query($data);
+    }
+
+
     /**
      * @param array $currentMetadata
      * @param array $updateMetadata

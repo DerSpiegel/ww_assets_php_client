@@ -59,7 +59,7 @@ class AssetsClient
         readonly LoggerInterface $logger
     ) {
         $this->httpClient = $this->newHttpClient();
-        $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
+        $this->setHttpUserAgent($this->config->httpUserAgent ?? $this->getDefaultHttpUserAgent());
 
         $this->health = $config->health ?? new AssetsHealth();
     }
@@ -155,7 +155,7 @@ class AssetsClient
                 case 'GET':
                 case 'HEAD':
                     // send data as query string
-                    $url .= '?' . http_build_query($data);
+                    $url = AssetsUtils::buildGetUrl($url, $data);
                     break;
                 case 'POST':
                 case 'PUT':
