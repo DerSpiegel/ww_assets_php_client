@@ -14,6 +14,7 @@ readonly class AssetsConfig
         public string $elasticsearchUrl = '',
         public bool $verifySslCertificate = true,
         public ?AssetsHealth $health = null,
+        public ?string $httpUserAgent = null,
     ) {
     }
 
@@ -28,6 +29,7 @@ readonly class AssetsConfig
         string $elasticsearchUrl = '',
         bool $verifySslCertificate = true,
         ?AssetsHealth $health = null,
+        ?string $httpUserAgent = null,
     ): self {
         $url = trim($url);
 
@@ -47,6 +49,7 @@ readonly class AssetsConfig
             $elasticsearchUrl,
             $verifySslCertificate,
             $health,
+            $httpUserAgent,
         );
     }
 

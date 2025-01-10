@@ -59,7 +59,7 @@ class AssetsClient
         readonly LoggerInterface $logger
     ) {
         $this->httpClient = $this->newHttpClient();
-        $this->setHttpUserAgent($this->getDefaultHttpUserAgent());
+        $this->setHttpUserAgent($this->config->httpUserAgent ?? $this->getDefaultHttpUserAgent());
 
         $this->health = $config->health ?? new AssetsHealth();
     }

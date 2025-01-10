@@ -1,5 +1,7 @@
 # Change Log
 
+The optional custom HTTP User-Agent can now be set via AssetsConfig. 
+
 ## 8.1.2 - 2024-11-22
 
 PHP 8.4 is now supported.
