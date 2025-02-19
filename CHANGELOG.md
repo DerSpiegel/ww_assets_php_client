@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.0.0 - 2025-02-19
+
+PHP 8.4 is now required.
+
 ## 8.1.3 - 2025-01-10
 
 Fix double question mark in "forceDownload" URL query string.
