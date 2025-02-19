@@ -5,5 +5,5 @@ namespace DerSpiegel\WoodWingAssetsClient\Exception;
 
 class NotAuthorizedAssetsException extends AssetsException
 {
-    const CODE = 401;
+    const int CODE = 401;
 }

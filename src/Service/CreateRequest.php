@@ -3,8 +3,6 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
-use Exception;
 
 
 /**
