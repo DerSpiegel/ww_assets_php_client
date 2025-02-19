@@ -28,6 +28,6 @@ class CreateCollectionRequest extends Request
         $metadata = $this->metadata;
         $metadata['assetPath'] = $this->assetPath;
 
-        return (new CreateRequest($this->assetsClient, metadata: $metadata))();
+        return new CreateRequest($this->assetsClient, metadata: $metadata)();
     }
 }

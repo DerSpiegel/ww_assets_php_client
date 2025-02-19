@@ -26,10 +26,10 @@ class AddToContainerRequest extends Request
 
     public function __invoke(): void
     {
-        (new CreateRelationRequest($this->assetsClient,
+        new CreateRelationRequest($this->assetsClient,
             relationType: RelationType::Contains,
             target1Id: $this->containerId,
             target2Id: $this->assetId
-        ))();
+        )();
     }
 }

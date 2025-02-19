@@ -27,10 +27,10 @@ class SearchAssetRequest extends Request
 
     public function __invoke(): AssetResponse
     {
-        $response = (new SearchRequest($this->assetsClient,
+        $response = new SearchRequest($this->assetsClient,
             q: 'id:' . $this->assetId->id,
             metadataToReturn: empty($this->metadataToReturn) ? [SearchRequest::METADATA_TO_RETURN_DEFAULT] : $this->metadataToReturn
-        ))();
+        )();
 
         if ($response->totalHits === 0) {
             throw new AssetsException(sprintf('%s: Asset with ID <%s> not found', __METHOD__, $this->assetId->id), 404);

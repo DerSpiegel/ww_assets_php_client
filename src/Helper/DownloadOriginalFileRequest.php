@@ -40,7 +40,7 @@ class DownloadOriginalFileRequest extends Request
         if ($this->assetResponse !== null) {
             $assetResponse = $this->assetResponse;
         } else {
-            $assetResponse = (new SearchAssetRequest($this->assetsClient, assetId: $this->assetId))();
+            $assetResponse = new SearchAssetRequest($this->assetsClient, assetId: $this->assetId)();
         }
 
         if (strlen($assetResponse->originalUrl) === 0) {
