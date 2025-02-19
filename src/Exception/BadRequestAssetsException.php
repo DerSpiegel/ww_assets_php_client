@@ -5,5 +5,5 @@ namespace DerSpiegel\WoodWingAssetsClient\Exception;
 
 class BadRequestAssetsException extends AssetsException
 {
-    const CODE = 400;
+    const int CODE = 400;
 }

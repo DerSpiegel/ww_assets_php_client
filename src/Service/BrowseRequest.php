@@ -3,9 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use Exception;
 
 
 /**
@@ -13,7 +11,7 @@ use Exception;
  */
 class BrowseRequest extends Request
 {
-    const INCLUDE_FOLDERS_DEFAULT = true;
+    const bool INCLUDE_FOLDERS_DEFAULT = true;
 
 
     public function __construct(

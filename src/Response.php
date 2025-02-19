@@ -99,7 +99,7 @@ abstract class Response
             $args['httpResponse'] = $httpResponse;
         }
 
-        return (new ReflectionClass(static::class))->newInstanceArgs($args);
+        return new ReflectionClass(static::class)->newInstanceArgs($args);
     }
 
 

@@ -5,9 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 use BadFunctionCallException;
 use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use Exception;
 
 
 /**

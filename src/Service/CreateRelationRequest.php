@@ -4,10 +4,8 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use Exception;
 
 
 /**

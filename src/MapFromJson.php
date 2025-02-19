@@ -9,9 +9,9 @@ use ReflectionParameter;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 class MapFromJson
 {
-    public const INT_TO_DATETIME = 'intToDateTime';
-    public const STRING_TO_ACTION = 'stringToAction';
-    public const STRING_TO_ID = 'stringToId';
+    public const string INT_TO_DATETIME = 'intToDateTime';
+    public const string STRING_TO_ACTION = 'stringToAction';
+    public const string STRING_TO_ID = 'stringToId';
 
 
     public function __construct(

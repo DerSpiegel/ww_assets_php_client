@@ -30,15 +30,15 @@ use SebastianBergmann\Timer\Timer;
  */
 class AssetsClient
 {
-    const AUTH_METHOD_BEARER_TOKEN = 1;
-    const AUTH_METHOD_CSRF_TOKEN = 2;
-    const AUTH_METHOD_AUTHCRED = 3;
+    const int AUTH_METHOD_BEARER_TOKEN = 1;
+    const int AUTH_METHOD_CSRF_TOKEN = 2;
+    const int AUTH_METHOD_AUTHCRED = 3;
 
-    const MAX_LOGIN_ATTEMPTS_PER_SECOND = 10;
+    const int MAX_LOGIN_ATTEMPTS_PER_SECOND = 10;
 
-    const RELATION_TARGET_ANY = 'any';
-    const RELATION_TARGET_CHILD = 'child';
-    const RELATION_TARGET_PARENT = 'parent';
+    const string RELATION_TARGET_ANY = 'any';
+    const string RELATION_TARGET_CHILD = 'child';
+    const string RELATION_TARGET_PARENT = 'parent';
 
     protected Client $httpClient;
     readonly AssetsHealth $health;

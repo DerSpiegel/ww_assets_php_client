@@ -3,9 +3,7 @@
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use Exception;
 
 
 /**
@@ -15,12 +13,12 @@ use Exception;
  */
 class CopyRequest extends Request
 {
-    const FILE_REPLACE_POLICY_AUTO_RENAME = 'AUTO_RENAME';
-    const FILE_REPLACE_POLICY_OVERWRITE = 'OVERWRITE';
-    const FILE_REPLACE_POLICY_OVERWRITE_IF_NEWER = 'OVERWRITE_IF_NEWER';
-    const FILE_REPLACE_POLICY_REMOVE_SOURCE = 'REMOVE_SOURCE';
-    const FILE_REPLACE_POLICY_THROW_EXCEPTION = 'THROW_EXCEPTION';
-    const FILE_REPLACE_POLICY_DO_NOTHING = 'DO_NOTHING';
+    const string FILE_REPLACE_POLICY_AUTO_RENAME = 'AUTO_RENAME';
+    const string FILE_REPLACE_POLICY_OVERWRITE = 'OVERWRITE';
+    const string FILE_REPLACE_POLICY_OVERWRITE_IF_NEWER = 'OVERWRITE_IF_NEWER';
+    const string FILE_REPLACE_POLICY_REMOVE_SOURCE = 'REMOVE_SOURCE';
+    const string FILE_REPLACE_POLICY_THROW_EXCEPTION = 'THROW_EXCEPTION';
+    const string FILE_REPLACE_POLICY_DO_NOTHING = 'DO_NOTHING';
 
 
     public function __construct(

@@ -6,7 +6,6 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use Exception;
 
 /**
  * Search for assets
@@ -15,13 +14,13 @@ use Exception;
  */
 class SearchRequest extends Request
 {
-    const START_DEFAULT = 0;
-    const NUM_DEFAULT = 50;
-    const SORT_DEFAULT = 'assetCreated-desc';
-    const METADATA_TO_RETURN_DEFAULT = 'all';
-    const APPEND_REQUEST_SECRET_DEFAULT = false;
-    const RETURN_HIGHLIGHTED_TEXT_DEFAULT = true;
-    const RETURN_THUMBNAIL_HITS_DEFAULT = false;
+    const int START_DEFAULT = 0;
+    const int NUM_DEFAULT = 50;
+    const string SORT_DEFAULT = 'assetCreated-desc';
+    const string METADATA_TO_RETURN_DEFAULT = 'all';
+    const bool APPEND_REQUEST_SECRET_DEFAULT = false;
+    const bool RETURN_HIGHLIGHTED_TEXT_DEFAULT = true;
+    const bool RETURN_THUMBNAIL_HITS_DEFAULT = false;
 
 
     public function __construct(

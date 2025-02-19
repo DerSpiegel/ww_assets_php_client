@@ -4,8 +4,6 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 
 use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
-use Exception;
 
 
 /**
@@ -15,7 +13,7 @@ use Exception;
  */
 class UpdateRequest extends CreateRequestBase
 {
-    const KEEP_METADATA_DEFAULT = false;
+    const bool KEEP_METADATA_DEFAULT = false;
 
 
     public function __construct(

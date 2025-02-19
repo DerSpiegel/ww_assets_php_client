@@ -32,11 +32,11 @@ class RemoveFromContainerRequest extends Request
                 RelationType::Contains)
             . sprintf(' id:%s', $this->assetId);
 
-        $searchResponse = (new SearchRequest($this->assetsClient,
+        $searchResponse = new SearchRequest($this->assetsClient,
             q: $q,
             num: 2,
             metadataToReturn: ['id']
-        ))();
+        )();
 
         if ($searchResponse->totalHits === 0) {
             return ProcessResponse::createFromJson(['processedCount' => 0, 'errorCount' => 0]);
@@ -48,7 +48,7 @@ class RemoveFromContainerRequest extends Request
             throw new AssetsException(sprintf('%s: Relation ID not found in search response', __METHOD__));
         }
 
-        $response = (new RemoveRelationRequest($this->assetsClient, relationIds: [$relationId]))();
+        $response = new RemoveRelationRequest($this->assetsClient, relationIds: [$relationId])();
 
         $this->logger->info('Relation removed',
             [

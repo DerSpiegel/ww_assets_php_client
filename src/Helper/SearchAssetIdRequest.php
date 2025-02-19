@@ -26,11 +26,11 @@ class SearchAssetIdRequest extends Request
 
     public function __invoke(): AssetId
     {
-        $response = (new SearchRequest($this->assetsClient,
+        $response = new SearchRequest($this->assetsClient,
             q: $this->q,
             num: 2,
             metadataToReturn: ['']
-        ))();
+        )();
 
         if ($response->totalHits === 0) {
             throw new AssetsException(sprintf('%s: No asset found for query <%s>', __METHOD__, $this->q), 404);
