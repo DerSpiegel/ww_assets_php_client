@@ -5,20 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\AssetsActionList;
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
-use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use DerSpiegel\WoodWingAssetsClient\Request;
-use Exception;
-
-
-enum HistoryDetailLevel: int
-{
-    case CustomActions = 0;
-    case Level1 = 1;
-    case Level2 = 2;
-    case Level3 = 3;
-    case Level4 = 4;
-    case AllActions = 5;
-}
 
 
 /**
