@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.1.0 - 2025-04-10
+
+Add support for raw JSON requests (like the ones used by the Assets UI) using SearchRequest::json.
+
 ## 9.0.0 - 2025-02-19
 
 PHP 8.4 is now required.
