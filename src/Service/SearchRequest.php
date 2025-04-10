@@ -2,10 +2,10 @@
 
 namespace DerSpiegel\WoodWingAssetsClient\Service;
 
-
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\RelationType;
 use DerSpiegel\WoodWingAssetsClient\Request;
+
 
 /**
  * Search for assets
@@ -33,7 +33,8 @@ class SearchRequest extends Request
         readonly array $facets = [],
         readonly bool $appendRequestSecret = self::APPEND_REQUEST_SECRET_DEFAULT,
         readonly bool $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT,
-        readonly bool $returnThumbnailHits = self::RETURN_THUMBNAIL_HITS_DEFAULT
+        readonly bool $returnThumbnailHits = self::RETURN_THUMBNAIL_HITS_DEFAULT,
+        readonly string $json = ''
     ) {
         parent::__construct($assetsClient);
     }
@@ -41,13 +42,20 @@ class SearchRequest extends Request
 
     public function __invoke(): SearchResponse
     {
-        $httpResponse = $this->assetsClient->serviceRequest('POST', 'search', $this->toArray());
+        $isRawJsonRequest = !empty($this->json);
+
+        $httpResponse = $this->assetsClient->serviceRequest(
+            'POST',
+            'search',
+            $this->toArray(),
+            !$isRawJsonRequest
+        );
 
         $this->logger->debug(
             'Search performed',
             [
                 'method' => __METHOD__,
-                'query' => $this->q
+                'query' => $isRawJsonRequest ? $this->json : $this->q
             ]
         );
 
@@ -55,11 +63,12 @@ class SearchRequest extends Request
     }
 
 
-    /**
-     * @return array
-     */
     protected function toArray(): array
     {
+        if (!empty($this->json)) {
+            return json_decode($this->json, true, 512, JSON_THROW_ON_ERROR);
+        }
+
         $params = [
             'q' => $this->q
         ];
@@ -104,11 +113,6 @@ class SearchRequest extends Request
      * Get query for relation search
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041854172#additional-queries
-     *
-     * @param string $relatedTo
-     * @param string $relationTarget
-     * @param RelationType|null $relationType
-     * @return string
      */
     public static function getRelationSearchQ(
         string $relatedTo,
