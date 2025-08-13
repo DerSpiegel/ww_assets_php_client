@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.2.0 - 2025-08-13
+
+Update to PHPUnit 12 and php-timer 8.
+
 ## 9.1.0 - 2025-04-10
 
 Add support for raw JSON requests (like the ones used by the Assets UI) using SearchRequest::json.
