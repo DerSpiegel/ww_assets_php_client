@@ -238,14 +238,16 @@ class AssetsClient
                     return $this->serviceRequest($method, $service, $data, $multipart);
                 default:
                     // something went wrong
-                    $this->logger->error(sprintf(
-                        '%s: %s request to <%s> failed: <%d> "%s"',
-                        __METHOD__,
-                        $method,
-                        $url,
-                        $e->getCode(),
-                        $e->getMessage()
-                    ));
+                    $this->logger->error(
+                        sprintf(
+                            '%s: %s request to <%s> failed: <%d> "%s"',
+                            __METHOD__,
+                            $method,
+                            $url,
+                            $e->getCode(),
+                            $e->getMessage()
+                        )
+                    );
                     throw $e;
             }
         }
@@ -293,14 +295,16 @@ class AssetsClient
                     return $this->apiRequest($method, $urlPath, $data);
                 default:
                     // something went wrong
-                    $this->logger->error(sprintf(
-                        '%s: %s request to <%s> failed: <%d> "%s"',
-                        __METHOD__,
-                        $method,
-                        $url,
-                        $e->getCode(),
-                        $e->getMessage()
-                    ));
+                    $this->logger->error(
+                        sprintf(
+                            '%s: %s request to <%s> failed: <%d> "%s"',
+                            __METHOD__,
+                            $method,
+                            $url,
+                            $e->getCode(),
+                            $e->getMessage()
+                        )
+                    );
                     throw $e;
             }
         }
@@ -625,7 +629,36 @@ class AssetsClient
      */
     public function downloadFileToPath(string $url, string $targetPath): void
     {
-        $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
+        try {
+            $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
+        } catch (GuzzleException $e) {
+            switch ($e->getCode()) {
+                case 401: // Unauthorized
+                    // TODO: prevent a possible loop here?
+
+                    // re-login
+                    if (!$this->reLogin()) {
+                        throw $e;
+                    }
+
+                    // try again
+                    $this->downloadFileToPath($url, $targetPath);
+                    return;
+                default:
+                    // something went wrong
+                    $this->logger->error(
+                        sprintf(
+                            '%s: GET request to <%s> failed: <%d> "%s"',
+                            __METHOD__,
+                            $url,
+                            $e->getCode(),
+                            $e->getMessage()
+                        )
+                    );
+                    throw $e;
+            }
+        }
+
         $this->writeResponseBodyToPath($httpResponse, $targetPath);
     }
 
