@@ -1,5 +1,10 @@
 # Change Log
 
+## 9.3.0 - 2025-08-18
+
+When the Assets sessions expires in AssetsClient::downloadFileToPath(), re-authenticate instead of 
+throwing an exception. 
+
 ## 9.2.0 - 2025-08-13
 
 Update to PHPUnit 12 and php-timer 8.
