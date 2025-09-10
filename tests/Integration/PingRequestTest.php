@@ -10,7 +10,7 @@ final class PingRequestTest extends IntegrationFixture
 {
     public function test(): void
     {
-        $response = (new PingRequest($this->assetsClient, uid: uniqid(true)))();
+        $response = new PingRequest($this->assetsClient, uid: uniqid(true))();
 
         $this->assertEquals(200, $response->httpResponse->getStatusCode());
         $this->assertEquals(true, $this->assetsClient->health->serviceIsAvailable());

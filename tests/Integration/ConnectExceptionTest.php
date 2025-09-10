@@ -24,7 +24,7 @@ final class ConnectExceptionTest extends IntegrationFixture
 
         $this->expectException(ConnectException::class);
 
-        (new PingRequest($assetsClient, uid: uniqid(true)))();
+        new PingRequest($assetsClient, uid: uniqid(true))();
 
         $this->assertEquals(false, $assetsClient->health->serviceIsAvailable());
     }

@@ -24,12 +24,12 @@ class CheckoutRequestTest extends IntegrationFixture
         $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
-        $response = (new CheckoutRequest($this->assetsClient, id: $assetId))();
+        $response = new CheckoutRequest($this->assetsClient, id: $assetId)();
 
         $this->assertEquals(IntegrationUtils::getAssetsUsername(), $response->checkedOutBy);
 
-        (new UndoCheckoutRequest($this->assetsClient, id: $assetId))();
+        new UndoCheckoutRequest($this->assetsClient, id: $assetId)();
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 }

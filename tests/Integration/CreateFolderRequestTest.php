@@ -15,19 +15,19 @@ final class CreateFolderRequestTest extends IntegrationFixture
     {
         $folderPath = sprintf('%s/Subfolder to delete %s', IntegrationUtils::getAssetsTestsFolder(), uniqid());
 
-        $folderResponse = (new CreateFolderRequest($this->assetsClient, path: $folderPath))();
+        $folderResponse = new CreateFolderRequest($this->assetsClient, path: $folderPath)();
 
         $this->assertEquals($folderPath, $folderResponse->path);
 
-        (new UpdateFolderRequest($this->assetsClient,
+        new UpdateFolderRequest($this->assetsClient,
             id: $folderResponse->id,
             path: $folderPath,
             metadata: ['description' => 'Test subfolder']
-        ))();
+        )();
 
-        (new RemoveFolderRequest($this->assetsClient,
+        new RemoveFolderRequest($this->assetsClient,
             id: $folderResponse->id,
             path: $folderPath
-        ))();
+        )();
     }
 }

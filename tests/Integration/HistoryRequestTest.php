@@ -23,8 +23,8 @@ class HistoryRequestTest extends IntegrationFixture
         $assetId = $assetResponse->id;
         $this->assertNotEmpty($assetId);
 
-        (new HistoryRequest($this->assetsClient, id: $assetId))();
+        new HistoryRequest($this->assetsClient, id: $assetId)();
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 }

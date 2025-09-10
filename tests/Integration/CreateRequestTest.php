@@ -29,6 +29,6 @@ class CreateRequestTest extends IntegrationFixture
         $this->assertEquals($basename, $assetMetadata['baseName']);
         $this->assertEquals('image', $assetMetadata['assetDomain']);
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 }

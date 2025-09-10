@@ -26,19 +26,19 @@ class UpdateBulkRequestTest extends IntegrationFixture
 
         $this->assertEmpty($assetResponse->metadata['headline'] ?? null);
 
-        (new UpdateBulkRequest($this->assetsClient,
+        new UpdateBulkRequest($this->assetsClient,
             q: sprintf('id:%s', $assetId),
             metadata: ['headline' => $filename]
-        ))();
+        )();
 
-        $updatedAssetResponse = (new SearchAssetRequest(
+        $updatedAssetResponse = new SearchAssetRequest(
             $this->assetsClient,
             assetId: $assetId,
             metadataToReturn: ['headline']
-        ))();
+        )();
 
         $this->assertEquals($filename, $updatedAssetResponse->metadata['headline']);
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 }

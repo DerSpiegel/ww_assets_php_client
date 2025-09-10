@@ -29,16 +29,16 @@ class PromoteRequestTest extends IntegrationFixture
         file_put_contents($tmpFilename, base64_decode(IntegrationUtils::getTinyJpegData()));
         $fp = fopen($tmpFilename, 'r');
 
-        (new UpdateRequest($this->assetsClient,
+        new UpdateRequest($this->assetsClient,
             id: $assetId,
             filedata: $fp
-        ))();
+        )();
 
-        (new PromoteRequest($this->assetsClient,
+        new PromoteRequest($this->assetsClient,
             id: $assetId,
             version: 1
-        ))();
+        )();
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 }
