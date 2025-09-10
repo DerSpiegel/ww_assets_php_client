@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.4.0 - 2025-09-10
+
+Added support for AssetUpdateStartRequest (private API).
+
 ## 9.3.0 - 2025-08-18
 
 When the Assets sessions expires in AssetsClient::downloadFileToPath(), re-authenticate instead of 
