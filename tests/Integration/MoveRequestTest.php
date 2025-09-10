@@ -27,14 +27,14 @@ class MoveRequestTest extends IntegrationFixture
         $source = sprintf('%s/%s', IntegrationUtils::getAssetsTestsFolder(), $sourceFilename);
         $target = sprintf('%s/Moved%s', IntegrationUtils::getAssetsTestsFolder(), $sourceFilename);
 
-        $response = (new MoveRequest($this->assetsClient,
+        $response = new MoveRequest($this->assetsClient,
             source: $source,
             target: $target,
             fileReplacePolicy: CopyRequest::FILE_REPLACE_POLICY_THROW_EXCEPTION
-        ))();
+        )();
 
         $this->assertEquals(1, $response->processedCount);
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 }

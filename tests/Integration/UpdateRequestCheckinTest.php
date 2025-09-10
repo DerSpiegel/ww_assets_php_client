@@ -48,21 +48,21 @@ class UpdateRequestCheckinTest extends IntegrationFixture
 
         $tmpFileV1 = sprintf('%s/%s_v1.jpg', sys_get_temp_dir(), IntegrationUtils::getUniqueBasename(__CLASS__));
 
-        (new DownloadOriginalFileRequest($this->assetsClient,
+        new DownloadOriginalFileRequest($this->assetsClient,
             targetPath: $tmpFileV1,
             assetResponse: $assetResponse
-        ))();
+        )();
 
         // Update description
 
         $descriptionAfterUpdate = 'Description from UPDATE';
 
-        (new UpdateRequest($this->assetsClient,
+        new UpdateRequest($this->assetsClient,
             id: $assetResponse->id,
             metadata: ['description' => $descriptionAfterUpdate],
-        ))();
+        )();
 
-        $assetResponse = (new SearchAssetRequest($this->assetsClient, $assetResponse->id))();
+        $assetResponse = new SearchAssetRequest($this->assetsClient, $assetResponse->id)();
 
         $this->assertEquals(1, $assetResponse->metadata['versionNumber'], 'Wrong versionNumber after update');
         $this->assertEquals($descriptionAfterUpdate, $assetResponse->metadata['description'], 'Wrong description after update');
@@ -83,7 +83,7 @@ class UpdateRequestCheckinTest extends IntegrationFixture
 
         // Cleanup
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetId))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
     }
 
 
@@ -104,15 +104,15 @@ class UpdateRequestCheckinTest extends IntegrationFixture
 
     protected function updateAssetFile(AssetResponse $assetResponse, string $tmpFile, bool $keepMetadata): AssetResponse
     {
-        (new UpdateRequest($this->assetsClient,
+        new UpdateRequest($this->assetsClient,
             id: $assetResponse->id,
             filedata: fopen($tmpFile, 'r'),
             keepMetadata: $keepMetadata
-        ))();
+        )();
 
-        return (new SearchAssetRequest($this->assetsClient,
+        return new SearchAssetRequest($this->assetsClient,
             assetId: $assetResponse->id,
             metadataToReturn: ['description','versionNumber']
-        ))();
+        )();
     }
 }

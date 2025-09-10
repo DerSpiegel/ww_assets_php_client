@@ -22,15 +22,15 @@ class DownloadOriginalFileRequestTest extends IntegrationFixture
 
         $targetPath = sprintf('%s/%s', sys_get_temp_dir(), $filename);
 
-        (new DownloadOriginalFileRequest(
+        new DownloadOriginalFileRequest(
             $this->assetsClient,
             targetPath: $targetPath,
             assetResponse: $assetResponse
-        ))();
+        )();
 
         $this->assertTrue(file_exists($targetPath));
         $this->assertGreaterThan(0, filesize($targetPath));
 
-        (new RemoveByIdRequest($this->assetsClient, assetId: $assetResponse->id))();
+        new RemoveByIdRequest($this->assetsClient, assetId: $assetResponse->id)();
     }
 }
