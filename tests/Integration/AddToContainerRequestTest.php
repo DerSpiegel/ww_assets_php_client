@@ -33,17 +33,29 @@ class AddToContainerRequestTest extends IntegrationFixture
 
         $collectionId = $collectionResponse->id;
 
-        new AddToContainerRequest($this->assetsClient,
+        new AddToContainerRequest(
+            $this->assetsClient,
             assetId: $assetId,
             containerId: $collectionId
         )();
 
-        $processResponse = new RemoveFromContainerRequest($this->assetsClient,
+        sleep(1);
+
+        $processResponse = new RemoveFromContainerRequest(
+            $this->assetsClient,
             assetId: $assetId,
             containerId: $collectionId
         )();
 
-        $this->assertEquals(1, $processResponse->processedCount);
+        $this->assertEquals(
+            1,
+            $processResponse->processedCount,
+            sprintf(
+                'RemoveFromContainer returns processedCount=1 (assetId=%s, containerId=%s)',
+                $assetId,
+                $collectionId
+            )
+        );
 
         new RemoveByIdRequest($this->assetsClient, assetId: $assetId)();
         new RemoveByIdRequest($this->assetsClient, assetId: $collectionId)();
