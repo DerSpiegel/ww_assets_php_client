@@ -4,6 +4,7 @@ namespace DerSpiegel\WoodWingAssetsClient\PrivateApi\System;
 
 use DerSpiegel\WoodWingAssetsClient\AssetsClient;
 use DerSpiegel\WoodWingAssetsClient\Request;
+use DerSpiegel\WoodWingAssetsClient\Service\ProcessResponse;
 
 
 class AssetUpdateStartRequest extends Request
@@ -27,13 +28,24 @@ class AssetUpdateStartRequest extends Request
     }
 
 
-    public function __invoke(): array
+    public function __invoke(): ProcessResponse
     {
-        return $this->assetsClient->privateApiRequest(
+        $data = $this->toArray();
+
+        $httpResponse = $this->assetsClient->privateApiRequest(
             'POST',
             'system/asset/update/start',
-            $this->toArray()
+            $data
         );
+
+        $this->logger->info(
+            sprintf('Sending request to <system/asset/update/start>: %s', json_encode($data)),
+            [
+                'method' => __METHOD__,
+            ]
+        );
+
+        return ProcessResponse::createFromHttpResponse($httpResponse);
     }
 
 

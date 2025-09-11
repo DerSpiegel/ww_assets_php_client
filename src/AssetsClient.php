@@ -315,10 +315,9 @@ class AssetsClient
      * @param string $method
      * @param string $urlPath
      * @param array $data
-     * @return array
-     * @throws JsonException
+     * @return ResponseInterface
      */
-    public function privateApiRequest(string $method, string $urlPath, array $data = []): array
+    public function privateApiRequest(string $method, string $urlPath, array $data = []): ResponseInterface
     {
         $url = sprintf(
             '%sprivate-api/%s',
@@ -328,14 +327,6 @@ class AssetsClient
 
         try {
             $httpResponse = $this->request($method, $url, $data, false);
-
-            $responseBbody = (string)$httpResponse->getBody();
-
-            if (empty($responseBbody)) {
-                return [];
-            }
-
-            return AssetsUtils::parseJsonResponse($responseBbody);
         } catch (Exception $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
@@ -353,6 +344,8 @@ class AssetsClient
                     throw $e;
             }
         }
+
+        return $httpResponse;
     }
 
 

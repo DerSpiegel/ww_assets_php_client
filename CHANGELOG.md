@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.4.1 - 2025-09-11
+
+Return ProcessResponse from AssetUpdateStartRequest.
+
 ## 9.4.0 - 2025-09-10
 
 Added support for AssetUpdateStartRequest (private API).
