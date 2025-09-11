@@ -24,8 +24,6 @@ class AssetsUtils
      * Parse JSON response string into array, throw exception on error response
      *
      * @see https://helpcenter.woodwing.com/hc/en-us/articles/360041851272-Assets-Server-REST-API-error-handling
-     * @param string $jsonString
-     * @return array
      */
     public static function parseJsonResponse(string $jsonString): array
     {
@@ -47,10 +45,6 @@ class AssetsUtils
     }
 
 
-    /**
-     * @param array $currentMetadata
-     * @param array $updateMetadata
-     */
     public static function cleanUpUnchangedMetadataFields(array &$updateMetadata, array $currentMetadata): void
     {
         foreach ($updateMetadata as $key => $newValue) {
@@ -99,8 +93,6 @@ class AssetsUtils
     /**
      * Escape a query term for use with Elasticsearch
      *
-     * @param string $queryTerm Query term
-     * @return string Escaped query term
      * @see https://stackoverflow.com/questions/33845230/escape-elasticsearch-special-characters-in-php
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.5/query-dsl-query-string-query.html#_reserved_characters
      */
@@ -163,13 +155,6 @@ class AssetsUtils
      * Get a Twig template for building an Assets query
      *
      * Call render($templateVariables) on the returned object to get the query string.
-     *
-     * @param string $templateString
-     * @param array $allowedTags
-     * @param array $allowedFilters
-     * @return TemplateWrapper
-     * @throws LoaderError
-     * @throws SyntaxError
      */
     public static function getQueryTemplate(string $templateString, array $allowedTags = [], array $allowedFilters = []): TemplateWrapper
     {

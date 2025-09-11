@@ -65,10 +65,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param bool $allowReLogin
-     * @return self
-     */
     public function setAllowReLogin(bool $allowReLogin): self
     {
         $this->allowReLogin = $allowReLogin;
@@ -76,28 +72,18 @@ class AssetsClient
     }
 
 
-    /**
-     * @param int $authMethod
-     */
     public function setAuthMethod(int $authMethod): void
     {
         $this->authMethod = $authMethod;
     }
 
 
-    /**
-     * @return int
-     */
     public function getRequestTimeout(): int
     {
         return $this->requestTimeout;
     }
 
 
-    /**
-     * @param int $seconds
-     * @return self
-     */
     public function setRequestTimeout(int $seconds): self
     {
         $this->requestTimeout = max($seconds, 1);
@@ -105,19 +91,11 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $method
-     * @param string $url
-     * @param array $data
-     * @param bool $multipart - whether to send the data as multipart or application/json
-     * @param bool $sendToken
-     * @return ResponseInterface
-     */
     public function request(
         string $method,
         string $url,
         array $data = [],
-        bool $multipart = true,
+        bool $multipart = true, // Whether to send the data as multipart or application/json
         bool $sendToken = true
     ): ResponseInterface {
         $options = [
@@ -256,13 +234,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $method
-     * @param string $urlPath
-     * @param array $data
-     * @return array
-     * @throws JsonException
-     */
     public function apiRequest(string $method, string $urlPath, array $data = []): array
     {
         $url = sprintf(
@@ -311,14 +282,7 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $method
-     * @param string $urlPath
-     * @param array $data
-     * @return array
-     * @throws JsonException
-     */
-    public function privateApiRequest(string $method, string $urlPath, array $data = []): array
+    public function privateApiRequest(string $method, string $urlPath, array $data = []): ResponseInterface
     {
         $url = sprintf(
             '%sprivate-api/%s',
@@ -328,14 +292,6 @@ class AssetsClient
 
         try {
             $httpResponse = $this->request($method, $url, $data, false);
-
-            $responseBbody = (string)$httpResponse->getBody();
-
-            if (empty($responseBbody)) {
-                return [];
-            }
-
-            return AssetsUtils::parseJsonResponse($responseBbody);
         } catch (Exception $e) {
             switch ($e->getCode()) {
                 case 401: // Unauthorized
@@ -353,12 +309,11 @@ class AssetsClient
                     throw $e;
             }
         }
+
+        return $httpResponse;
     }
 
 
-    /**
-     * @return Client
-     */
     protected function newHttpClient(): Client
     {
         $stack = HandlerStack::create();
@@ -375,9 +330,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @return string
-     */
     protected function getDefaultHttpUserAgent(): string
     {
         return sprintf(
@@ -387,19 +339,12 @@ class AssetsClient
     }
 
 
-    /**
-     * @return string
-     */
     public function getHttpUserAgent(): string
     {
         return $this->httpUserAgent;
     }
 
 
-    /**
-     * @param string $httpUserAgent
-     * @return self
-     */
     public function setHttpUserAgent(string $httpUserAgent): self
     {
         $this->httpUserAgent = $httpUserAgent;
@@ -407,9 +352,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @return bool
-     */
     private function reLogin(): bool
     {
         try {
@@ -421,10 +363,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param bool $force
-     * @return string
-     */
     public function getToken(bool $force = false): string
     {
         return match ($this->authMethod) {
@@ -452,10 +390,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param array $data
-     * @return array
-     */
     private function dataToMultipart(array $data): array
     {
         $multipart = [];
@@ -469,9 +403,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $bearerToken
-     */
     public function setBearerToken(string $bearerToken): void
     {
         $this->bearerToken = $bearerToken;
@@ -481,8 +412,6 @@ class AssetsClient
 
     /**
      * Perform API login and return Authorization token
-     * @param bool $force
-     * @return string
      */
     public function getBearerToken(bool $force = false): string
     {
@@ -522,10 +451,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $csrfToken
-     * @param array $cookies
-     */
     public function setCsrfToken(string $csrfToken, array $cookies = []): void
     {
         $this->csrfToken = $csrfToken;
@@ -534,18 +459,12 @@ class AssetsClient
     }
 
 
-    /**
-     * @return string
-     */
     public function getAuthCred(): string
     {
         return $this->authCred;
     }
 
 
-    /**
-     * @param string $authCred
-     */
     public function setAuthCred(string $authCred): void
     {
         $this->authCred = $authCred;
@@ -553,19 +472,12 @@ class AssetsClient
     }
 
 
-    /**
-     * @return array
-     */
     public function getCookies(): array
     {
         return $this->cookies;
     }
 
 
-    /**
-     * @param bool $force
-     * @return string
-     */
     public function getCsrfToken(bool $force = false): string
     {
         if ((strlen($this->csrfToken) > 0) && (!$force)) {
@@ -606,10 +518,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param bool $cleanUpToken
-     * @return LogoutResponse
-     */
     public function logout(bool $cleanUpToken = true): LogoutResponse
     {
         $httpResponse = $this->serviceRequest('POST', 'logout');
@@ -623,10 +531,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $url
-     * @param string $targetPath
-     */
     public function downloadFileToPath(string $url, string $targetPath): void
     {
         try {
@@ -663,10 +567,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param ResponseInterface $httpResponse
-     * @param string $targetPath
-     */
     public function writeResponseBodyToPath(ResponseInterface $httpResponse, string $targetPath): void
     {
         $fp = fopen($targetPath, 'wb');
@@ -705,10 +605,6 @@ class AssetsClient
     }
 
 
-    /**
-     * @param string $assetId
-     * @return string
-     */
     public function buildOriginalFileUrl(string $assetId): string
     {
         return "{$this->config->url}file/$assetId/*/$assetId";
