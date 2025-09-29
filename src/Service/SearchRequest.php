@@ -21,6 +21,7 @@ class SearchRequest extends Request
     const bool APPEND_REQUEST_SECRET_DEFAULT = false;
     const bool RETURN_HIGHLIGHTED_TEXT_DEFAULT = true;
     const bool RETURN_THUMBNAIL_HITS_DEFAULT = false;
+    const string EXPAND_ORIGINAL_STORAGE_PATH = 'originalStoragePath';
 
 
     public function __construct(
@@ -34,7 +35,8 @@ class SearchRequest extends Request
         readonly bool $appendRequestSecret = self::APPEND_REQUEST_SECRET_DEFAULT,
         readonly bool $returnHighlightedText = self::RETURN_HIGHLIGHTED_TEXT_DEFAULT,
         readonly bool $returnThumbnailHits = self::RETURN_THUMBNAIL_HITS_DEFAULT,
-        readonly string $json = ''
+        readonly string $json = '',
+        readonly array $expand = [],
     ) {
         parent::__construct($assetsClient);
     }
@@ -87,6 +89,10 @@ class SearchRequest extends Request
 
         if ($this->metadataToReturn !== [self::METADATA_TO_RETURN_DEFAULT]) {
             $params['metadataToReturn'] = implode(',', $this->metadataToReturn);
+        }
+
+        if (count($this->expand) > 0) {
+            $params['expand'] = implode(',', $this->expand);
         }
 
         if (count($this->facets) > 0) {
