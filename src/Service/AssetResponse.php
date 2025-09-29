@@ -23,7 +23,8 @@ class AssetResponse extends Response
         #[MapFromJson] readonly string                             $previewUrl = '',
         #[MapFromJson] readonly string                             $thumbnailUrl = '',
         #[MapFromJson] readonly array                              $relation = [],
-        readonly ?AssetResponseList                                $thumbnailHits = null
+        readonly ?AssetResponseList                                $thumbnailHits = null,
+        #[MapFromJson] readonly string                             $originalStoragePath = '',
     )
     {
     }

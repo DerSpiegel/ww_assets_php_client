@@ -1,12 +1,16 @@
 # Change Log
 
+## 9.4.2 - 2025-09-29
+
+Add support for expand=originalStoragePath in SearchRequest.
+
 ## 9.4.1 - 2025-09-11
 
 Return ProcessResponse from AssetUpdateStartRequest.
 
 ## 9.4.0 - 2025-09-10
 
-Added support for AssetUpdateStartRequest (private API).
+Add support for AssetUpdateStartRequest (private API).
 
 ## 9.3.0 - 2025-08-18
 
