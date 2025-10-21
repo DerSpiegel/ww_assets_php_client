@@ -11,22 +11,25 @@ post {
 }
 
 body:multipart-form {
-  q: 
+  ~appendRequestSecret:
+  ~facets:
+  ~facet.FIELD.selection:
+  ~format:
+  ~logSearch:
+  metadataToReturn:
   num: 1
-  metadataToReturn: 
-  ~start: 
-  ~sort: 
-  ~facets: 
-  ~facet.FIELD.selection: 
-  ~format: 
-  ~appendRequestSecret: 
-  ~returnHighlightedText: 
-  ~returnThumbnailHits: 
-  ~logSearch: 
+  q:
+  ~returnHighlightedText:
+  ~returnThumbnailHits:
+  ~sort:
+  ~start:
 }
 
 settings {
   encodeUrl: true
+  timeout: 60000
+  followRedirects: true
+  maxRedirects: 5
 }
 
 docs {
