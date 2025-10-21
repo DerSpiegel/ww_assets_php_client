@@ -1,0 +1,33 @@
+meta {
+  name: folder - update
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{assetsUrl}}/api/folder/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+body:json {
+  {
+    "metadata": {
+      "field": "value"
+    }
+  }
+}
+
+body:multipart-form {
+  path: 
+  ~metadata: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,33 @@
+meta {
+  name: folder - remove
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{assetsUrl}}/api/folder/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+body:json {
+  {
+    "metadata": {
+      "field": "value"
+    }
+  }
+}
+
+body:multipart-form {
+  path: 
+  ~metadata: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
