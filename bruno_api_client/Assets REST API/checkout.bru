@@ -1,0 +1,27 @@
+meta {
+  name: checkout
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{assetsUrl}}/services/checkout/:assetId?download=
+  body: none
+  auth: inherit
+}
+
+params:query {
+  download: 
+}
+
+params:path {
+  assetId: 
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - checkout](https://helpcenter.woodwing.com/hc/en-us/articles/360041851212-Assets-Server-REST-API-checkout)
+}

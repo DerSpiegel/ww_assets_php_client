@@ -1,0 +1,27 @@
+meta {
+  name: updatebulk using a query
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{assetsUrl}}/services/updatebulk
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  q: 
+  parseMetadataModifications: 
+  ~metadata: 
+  ~FIELD: 
+  ~async: 
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - updatebulk](https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk)
+}

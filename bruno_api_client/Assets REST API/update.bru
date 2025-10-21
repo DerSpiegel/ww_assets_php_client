@@ -1,0 +1,30 @@
+meta {
+  name: update
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{assetsUrl}}/services/update
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  id: 
+  metadataToReturn: 
+  parseMetadataModifications: 
+  ~Filedata: @file()
+  ~metadata: 
+  ~FIELD: 
+  ~nextUrl: 
+  ~clearCheckoutState: 
+}
+
+settings {
+  encodeUrl: true
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - update / check-in](https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in)
+}

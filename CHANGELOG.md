@@ -1,5 +1,7 @@
 # Change Log
 
+Switch API client examples from Postman to Bruno, see https://www.usebruno.com/compare/bruno-vs-postman.
+
 ## 9.4.2 - 2025-09-29
 
 Add support for expand=originalStoragePath in SearchRequest.
