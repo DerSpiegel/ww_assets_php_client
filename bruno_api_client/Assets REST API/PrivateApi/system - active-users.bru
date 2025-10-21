@@ -1,0 +1,16 @@
+meta {
+  name: system - active-users
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{assetsUrl}}/private-api/system/active-users
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
