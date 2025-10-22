@@ -1,0 +1,30 @@
+meta {
+  name: move
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{assetsUrl}}/services/move
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  source: 
+  target: 
+  ~folderReplacePolicy: 
+  ~fileReplacePolicy: 
+  ~filterQuery: 
+  ~flattenFolders: 
+  ~async: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - move / rename](https://helpcenter.woodwing.com/hc/en-us/articles/360042268891-Assets-Server-REST-API-move-rename)
+}
