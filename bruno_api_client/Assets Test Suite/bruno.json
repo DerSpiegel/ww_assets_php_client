@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Assets Test Suite",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

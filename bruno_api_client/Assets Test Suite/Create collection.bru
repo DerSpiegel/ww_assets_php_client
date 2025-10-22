@@ -1,0 +1,37 @@
+meta {
+  name: Create collection
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{assetsUrl}}/services/create
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  metadataToReturn: assetPath
+  folderPath: {{tempTestFolder}}
+  title: Test Collection from Bruno Test Suite
+  filename: Test.collection
+}
+
+assert {
+  res.status: eq 200
+  res.body: isJson
+  res.body.id: isNotEmpty
+}
+
+script:post-response {
+  bru.setEnvVar("tempTestCollectionId", res.body.id);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - create](https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create)
+}

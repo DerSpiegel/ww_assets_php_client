@@ -1,0 +1,39 @@
+meta {
+  name: Get collection relation
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{assetsUrl}}/services/search
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  q: relatedTo:{{tempTestCollectionId}} relationTarget:child relationType:contains id:{{tempTestAssetId}}
+  metadataToReturn: assetPath
+  num: 1
+}
+
+assert {
+  res.status: eq 200
+  res.body: isJson
+  res.body.totalHits: eq 1
+  res.body.hits[0].relation.relationId: isNotEmpty
+}
+
+script:post-response {
+  bru.setEnvVar("tempTestRelationId", res.body.hits[0].relation.relationId);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 60000
+  followRedirects: true
+  maxRedirects: 5
+}
+
+docs {
+  WoodWing Helpcenter: [The Assets Server query syntax - Additional queries](https://helpcenter.woodwing.com/hc/en-us/articles/360041854172-The-Assets-Server-query-syntax#additional-queries)
+}
