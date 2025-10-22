@@ -1,0 +1,30 @@
+meta {
+  name: Add to collection
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{assetsUrl}}/services/createRelation
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  relationType: contains
+  target1Id: {{tempTestCollectionId}}
+  target2Id: {{tempTestAssetId}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - create relation](https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation)
+}

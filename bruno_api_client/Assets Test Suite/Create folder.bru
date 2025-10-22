@@ -1,0 +1,32 @@
+meta {
+  name: Create folder
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{assetsUrl}}/api/folder
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "path": "{{tempTestFolder}}"
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body: isJson
+  res.body.id: isNotEmpty
+}
+
+script:post-response {
+  bru.setEnvVar("tempTestFolderId", res.body.id);
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

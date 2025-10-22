@@ -1,0 +1,30 @@
+meta {
+  name: Remove asset
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{assetsUrl}}/services/remove
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  ids: {{tempTestAssetId}}
+}
+
+assert {
+  res.status: eq 200
+  res.body: isJson
+  res.body.processedCount: eq 1
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - remove](https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove)
+}
