@@ -5,13 +5,13 @@ meta {
 }
 
 post {
-  url: {{assetsUrl}}/services/checkout/:assetId?download=
+  url: {{assetsUrl}}/services/checkout/:assetId?download=false
   body: none
   auth: inherit
 }
 
 params:query {
-  download: 
+  download: false
 }
 
 params:path {
