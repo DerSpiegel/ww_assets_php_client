@@ -1,0 +1,28 @@
+meta {
+  name: login
+  type: http
+  seq: 13
+}
+
+post {
+  url: {{assetsUrl}}/services/login
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  username: {{assetsUsername}}
+  password: {{assetsPassword}}
+  ~cred: 
+  ~clientType: 
+  ~returnProfile: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - login](https://helpcenter.woodwing.com/hc/en-us/articles/360042268831-Assets-Server-REST-API-login)
+}
