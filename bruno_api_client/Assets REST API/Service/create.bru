@@ -11,11 +11,13 @@ post {
 }
 
 body:multipart-form {
-  Filedata: @file()
-  metadataToReturn: 
+  ~Filedata: @file()
+  ~metadataToReturn: 
   ~metadata: 
   ~FIELD: 
+  ~folderPath: 
   ~nextUrl: 
+  ~autoRename: 
 }
 
 settings {
