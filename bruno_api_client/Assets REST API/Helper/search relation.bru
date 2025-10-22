@@ -1,0 +1,35 @@
+meta {
+  name: search relation
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{assetsUrl}}/services/search
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  q: relatedTo:{{containerId}} relationTarget:{{relationTarget}} relationType:{{relationType}} id:{{assetId}}
+  ~metadataToReturn: 
+  ~num: 
+}
+
+vars:pre-request {
+  containerId: 
+  relationTarget: child
+  relationType: contains
+  assetId: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 60000
+  followRedirects: true
+  maxRedirects: 5
+}
+
+docs {
+  WoodWing Helpcenter: [The Assets Server query syntax - Additional queries](https://helpcenter.woodwing.com/hc/en-us/articles/360041854172-The-Assets-Server-query-syntax#additional-queries)
+}
