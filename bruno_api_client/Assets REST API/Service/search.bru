@@ -1,7 +1,7 @@
 meta {
   name: search
   type: http
-  seq: 2
+  seq: 5
 }
 
 post {
@@ -11,9 +11,9 @@ post {
 }
 
 body:multipart-form {
-  metadataToReturn: 
-  num: 1
   q: 
+  ~metadataToReturn: 
+  ~num: 
   ~appendRequestSecret: 
   ~expand: 
   ~facets: 
