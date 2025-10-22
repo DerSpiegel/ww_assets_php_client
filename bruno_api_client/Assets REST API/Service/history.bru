@@ -1,0 +1,28 @@
+meta {
+  name: history
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{assetsUrl}}/services/asset/history
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  id: 
+  num: 
+  ~start: 
+  ~detailLevel: 
+  ~actions: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - Versioning and history](https://helpcenter.woodwing.com/hc/en-us/articles/360042269011-Assets-Server-REST-API-Versioning-and-history)
+}

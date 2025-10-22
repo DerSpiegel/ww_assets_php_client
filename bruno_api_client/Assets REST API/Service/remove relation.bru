@@ -1,0 +1,24 @@
+meta {
+  name: remove relation
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{assetsUrl}}/services/removeRelation
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  relationIds: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - remove relation](https://helpcenter.woodwing.com/hc/en-us/articles/360041851332-Assets-Server-REST-API-remove-relation)
+}

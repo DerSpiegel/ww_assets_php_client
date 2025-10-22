@@ -1,0 +1,30 @@
+meta {
+  name: copy
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{assetsUrl}}/services/copy
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  source: 
+  target: 
+  ~folderReplacePolicy: 
+  ~fileReplacePolicy: 
+  ~filterQuery: 
+  ~flattenFolders: 
+  ~async: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - copy](https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy)
+}

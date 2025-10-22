@@ -1,0 +1,26 @@
+meta {
+  name: download file
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{assetsUrl}}/file/:assetId/*/:filename?_=&forceDownload=true
+  body: none
+  auth: inherit
+}
+
+params:query {
+  _: 
+  forceDownload: true
+}
+
+params:path {
+  assetId: 
+  filename: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

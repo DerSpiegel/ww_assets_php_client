@@ -1,0 +1,38 @@
+meta {
+  name: search
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{assetsUrl}}/services/search
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  q: 
+  ~metadataToReturn: 
+  ~num: 
+  ~appendRequestSecret: 
+  ~expand: 
+  ~facets: 
+  ~facet.FIELD.selection: 
+  ~format: 
+  ~logSearch: 
+  ~returnHighlightedText: 
+  ~returnThumbnailHits: 
+  ~sort: 
+  ~start: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 60000
+  followRedirects: true
+  maxRedirects: 5
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - search](https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search)
+}

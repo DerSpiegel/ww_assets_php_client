@@ -1,0 +1,30 @@
+meta {
+  name: create
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{assetsUrl}}/services/create
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  ~Filedata: @file()
+  ~metadataToReturn: 
+  ~metadata: 
+  ~FIELD: 
+  ~folderPath: 
+  ~nextUrl: 
+  ~autoRename: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - create](https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create)
+}

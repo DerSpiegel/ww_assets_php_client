@@ -1,0 +1,28 @@
+meta {
+  name: browse
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{assetsUrl}}/services/browse
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  path: 
+  ~fromRoot: 
+  ~includeFolders: 
+  ~includeAsset: 
+  ~includeExtensions: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - browse](https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse)
+}

@@ -1,0 +1,25 @@
+meta {
+  name: folder - create
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{assetsUrl}}/api/folder
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "path": "",
+    "metadata": {
+      "field": "value"
+    }
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
