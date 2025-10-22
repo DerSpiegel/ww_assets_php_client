@@ -1,5 +1,9 @@
 # How to test the Assets REST API using the Bruno API client
 
+(If you prefer Postman, see the official WoodWing Postman collections:
+[ww-assets-postman-collection](https://github.com/WoodWing/ww-assets-postman-collection),
+[ww-assets-10-postman-collection](https://github.com/WoodWing/ww-assets-10-postman-collection))
+
 Download Bruno from https://www.usebruno.com/.
 
 In Bruno, open the “Assets REST API” subfolder as a collection.
