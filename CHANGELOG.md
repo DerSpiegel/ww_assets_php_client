@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.5.1 - 2025-11-21
+
+PHP 8.5 is now supported.
+
 ## 9.5.0 - 2025-10-22
 
 Switch API client examples from Postman to Bruno, see https://www.usebruno.com/compare/bruno-vs-postman.
