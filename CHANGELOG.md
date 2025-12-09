@@ -1,5 +1,7 @@
 # Change Log
 
+Add Bruno requests for undocumented API calls used by the Assets UI. 
+
 ## 9.5.1 - 2025-11-21
 
 PHP 8.5 is now supported.
