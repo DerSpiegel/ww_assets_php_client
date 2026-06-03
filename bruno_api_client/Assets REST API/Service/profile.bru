@@ -1,0 +1,20 @@
+meta {
+  name: profile
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{assetsUrl}}/services/profile
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Undocumented API call used by the Assets UI
+}

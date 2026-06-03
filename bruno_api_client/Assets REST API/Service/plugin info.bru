@@ -1,0 +1,24 @@
+meta {
+  name: plugin info
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{assetsUrl}}/services/plugin/info?localeChain=en_US
+  body: none
+  auth: inherit
+}
+
+params:query {
+  localeChain: en_US
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Undocumented API call used by the Assets UI
+}

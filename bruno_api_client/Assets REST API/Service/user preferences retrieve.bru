@@ -1,0 +1,24 @@
+meta {
+  name: user preferences retrieve
+  type: http
+  seq: 21
+}
+
+get {
+  url: {{assetsUrl}}/services/user/preferences/retrieve?keys=proClientUserPreferences
+  body: none
+  auth: inherit
+}
+
+params:query {
+  keys: proClientUserPreferences
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  Undocumented API call used by the Assets UI
+}
