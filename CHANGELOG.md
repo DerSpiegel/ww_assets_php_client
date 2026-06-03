@@ -1,5 +1,9 @@
 # Change Log
 
+## 9.6.0 - 2026-06-03
+
+Update to PHPUnit 13 and php-timer 9.
+
 Add Bruno requests for "Metadata report" and undocumented API calls used by the Assets UI. 
 
 ## 9.5.1 - 2025-11-21
