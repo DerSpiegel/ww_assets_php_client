@@ -1,5 +1,7 @@
 # Change Log
 
+Add Bruno request for undocumented "List versions" API call.
+
 ## 9.6.0 - 2026-06-03
 
 Update to PHPUnit 13 and php-timer 9.

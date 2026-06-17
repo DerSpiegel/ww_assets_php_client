@@ -1,0 +1,24 @@
+meta {
+  name: version list
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{assetsUrl}}/services/version/list
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  assetId: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
+
+docs {
+  WoodWing Helpcenter: [Assets Server REST API - promote](https://helpcenter.woodwing.com/hc/en-us/articles/4824964597009-Assets-Server-REST-API-promote)
+}
