@@ -1,0 +1,20 @@
+meta {
+  name: version list
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{assetsUrl}}/services/version/list
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  assetId: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
