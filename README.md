@@ -1,4 +1,4 @@
-# A PHP client for WoodWing Assets
+# A PHP client for WoodWing Assets 6
 
 [WoodWing Assets](https://www.woodwing.com/en/products/woodwing-assets) is a DAM (Digital Asset Management) system.
 This PHP client library uses its [REST API](https://helpcenter.woodwing.com/hc/en-us/sections/360008455892-APIs-REST).
