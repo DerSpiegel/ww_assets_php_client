@@ -4,6 +4,8 @@
 
 PHP 8.5 is now required.
 
+Add VersionListRequest.
+
 Add Bruno request for undocumented "List versions" API call.
 
 ## 9.6.0 - 2026-06-03
