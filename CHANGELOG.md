@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.0.0 - 2026-08-12
+
+PHP 8.5 is now required.
+
 Add Bruno request for undocumented "List versions" API call.
 
 ## 9.6.0 - 2026-06-03
