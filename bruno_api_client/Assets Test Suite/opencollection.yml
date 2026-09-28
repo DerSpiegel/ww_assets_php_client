@@ -1,0 +1,15 @@
+opencollection: 1.0.0
+
+info:
+  name: Assets Test Suite
+
+request:
+  auth:
+    type: bearer
+    token: "{{assetsAuthToken}}"
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

@@ -1,0 +1,35 @@
+info:
+  name: Remove from collection
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/removeRelation"
+  body:
+    type: multipart-form
+    data:
+      - name: relationIds
+        type: text
+        value: "{{tempTestRelationId}}"
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body
+      operator: isJson
+    - expression: res.body.processedCount
+      operator: eq
+      value: "1"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - remove relation](https://helpcenter.woodwing.com/hc/en-us/articles/360041851332-Assets-Server-REST-API-remove-relation)"

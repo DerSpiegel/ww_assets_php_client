@@ -1,0 +1,25 @@
+info:
+  name: welcome
+  type: http
+  seq: 23
+
+http:
+  method: GET
+  url: "{{assetsUrl}}/services/welcome?bundle=lvs&localeChain=en_US"
+  params:
+    - name: bundle
+      value: lvs
+      type: query
+    - name: localeChain
+      value: en_US
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: Undocumented API call used by the Assets UI

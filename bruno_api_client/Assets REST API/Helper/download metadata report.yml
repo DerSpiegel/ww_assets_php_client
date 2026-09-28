@@ -1,0 +1,28 @@
+info:
+  name: download metadata report
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{assetsUrl}}/metadata/:reportname?fields=id,assetPath,generalCountryName&q=generalCountryName:* assetCreated:[NOW-1DAY@DAY TO NOW@DAY]"
+  params:
+    - name: fields
+      value: id,assetPath,generalCountryName
+      type: query
+    - name: q
+      value: generalCountryName:* assetCreated:[NOW-1DAY@DAY TO NOW@DAY]
+      type: query
+    - name: reportname
+      value: report.csv
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - Metadata report](https://helpcenter.woodwing.com/hc/en-us/articles/360042268871-Assets-Server-REST-API-Metadata-report)"

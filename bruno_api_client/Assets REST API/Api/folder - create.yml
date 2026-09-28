@@ -1,0 +1,25 @@
+info:
+  name: folder - create
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/api/folder"
+  body:
+    type: json
+    data: |-
+      {
+        "path": "",
+        "metadata": {
+          "field": "value"
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

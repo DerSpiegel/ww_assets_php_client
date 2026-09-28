@@ -1,0 +1,22 @@
+info:
+  name: undo checkout
+  type: http
+  seq: 17
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/undocheckout/:assetId"
+  params:
+    - name: assetId
+      value: ""
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets REST API - undo checkout](https://helpcenter.woodwing.com/hc/en-us/articles/360042268951-Assets-REST-API-undo-checkout)"

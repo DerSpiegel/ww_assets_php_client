@@ -1,0 +1,22 @@
+info:
+  name: ping
+  type: http
+  seq: 11
+
+http:
+  method: GET
+  url: "{{assetsUrl}}/services/ping?uid"
+  params:
+    - name: uid
+      value: ""
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Configuring Assets Server session time-outs](https://helpcenter.woodwing.com/hc/en-us/articles/360042269271-Configuring-Assets-Server-session-time-outs)"

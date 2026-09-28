@@ -1,0 +1,20 @@
+info:
+  name: folder - remove
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: "{{assetsUrl}}/api/folder/:id"
+  params:
+    - name: id
+      value: ""
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

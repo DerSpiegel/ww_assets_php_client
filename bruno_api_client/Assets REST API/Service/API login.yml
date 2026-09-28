@@ -1,0 +1,36 @@
+info:
+  name: API login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/apilogin"
+  body:
+    type: multipart-form
+    data:
+      - name: username
+        type: text
+        value: "{{assetsUsername}}"
+      - name: password
+        type: text
+        value: "{{assetsPassword}}"
+      - name: clientId
+        type: text
+        value: "{{assetsClientId}}"
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        var data = res.getBody();
+        bru.setEnvVar("assetsAuthToken", data.authToken);
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - API login](https://helpcenter.woodwing.com/hc/en-us/articles/360041851192-Assets-Server-REST-API-API-login)"

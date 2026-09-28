@@ -1,0 +1,39 @@
+info:
+  name: updatebulk (using a query)
+  type: http
+  seq: 19
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/updatebulk"
+  body:
+    type: multipart-form
+    data:
+      - name: q
+        type: text
+        value: ""
+      - name: parseMetadataModifications
+        type: text
+        value: ""
+      - name: metadata
+        type: text
+        value: ""
+        disabled: true
+      - name: FIELD
+        type: text
+        value: ""
+        disabled: true
+      - name: async
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - updatebulk](https://helpcenter.woodwing.com/hc/en-us/articles/360042268991-Assets-Server-REST-API-updatebulk)"

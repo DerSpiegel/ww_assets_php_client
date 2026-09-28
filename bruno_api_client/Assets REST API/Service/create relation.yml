@@ -1,0 +1,30 @@
+info:
+  name: create relation
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/createRelation"
+  body:
+    type: multipart-form
+    data:
+      - name: relationType
+        type: text
+        value: ""
+      - name: target1Id
+        type: text
+        value: ""
+      - name: target2Id
+        type: text
+        value: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - create relation](https://helpcenter.woodwing.com/hc/en-us/articles/360042268751-Assets-Server-REST-API-create-relation)"
