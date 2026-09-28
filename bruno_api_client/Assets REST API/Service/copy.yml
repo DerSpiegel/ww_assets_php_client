@@ -1,0 +1,47 @@
+info:
+  name: copy
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/copy"
+  body:
+    type: multipart-form
+    data:
+      - name: source
+        type: text
+        value: ""
+      - name: target
+        type: text
+        value: ""
+      - name: folderReplacePolicy
+        type: text
+        value: ""
+        disabled: true
+      - name: fileReplacePolicy
+        type: text
+        value: ""
+        disabled: true
+      - name: filterQuery
+        type: text
+        value: ""
+        disabled: true
+      - name: flattenFolders
+        type: text
+        value: ""
+        disabled: true
+      - name: async
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - copy](https://helpcenter.woodwing.com/hc/en-us/articles/360042268731-Assets-Server-REST-API-copy)"

@@ -1,5 +1,9 @@
 # Change Log
 
+## 10.0.1 - 2026-09-28
+
+Migrate Bruno collections from .bru to YAML file format, see https://blog.usebruno.com/making-yaml-the-default-in-bruno-v3.1.
+
 ## 10.0.0 - 2026-08-12
 
 PHP 8.5 is now required.

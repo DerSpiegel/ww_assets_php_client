@@ -1,0 +1,37 @@
+info:
+  name: remove
+  type: http
+  seq: 14
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/remove"
+  body:
+    type: multipart-form
+    data:
+      - name: q
+        type: text
+        value: ""
+        disabled: true
+      - name: ids
+        type: text
+        value: ""
+        disabled: true
+      - name: folderPath
+        type: text
+        value: ""
+        disabled: true
+      - name: async
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - remove](https://helpcenter.woodwing.com/hc/en-us/articles/360041851352-Assets-Server-REST-API-remove)"

@@ -1,0 +1,40 @@
+info:
+  name: browse
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/browse"
+  body:
+    type: multipart-form
+    data:
+      - name: path
+        type: text
+        value: ""
+      - name: fromRoot
+        type: text
+        value: ""
+        disabled: true
+      - name: includeFolders
+        type: text
+        value: ""
+        disabled: true
+      - name: includeAsset
+        type: text
+        value: ""
+        disabled: true
+      - name: includeExtensions
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - browse](https://helpcenter.woodwing.com/hc/en-us/articles/360042268711-Assets-Server-REST-API-browse)"

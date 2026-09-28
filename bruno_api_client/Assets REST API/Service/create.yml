@@ -1,0 +1,49 @@
+info:
+  name: create
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/create"
+  body:
+    type: multipart-form
+    data:
+      - name: Filedata
+        type: file
+        value: []
+        disabled: true
+      - name: metadataToReturn
+        type: text
+        value: ""
+        disabled: true
+      - name: metadata
+        type: text
+        value: ""
+        disabled: true
+      - name: FIELD
+        type: text
+        value: ""
+        disabled: true
+      - name: folderPath
+        type: text
+        value: ""
+        disabled: true
+      - name: nextUrl
+        type: text
+        value: ""
+        disabled: true
+      - name: autoRename
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - create](https://helpcenter.woodwing.com/hc/en-us/articles/360042268771-Assets-Server-REST-API-create)"

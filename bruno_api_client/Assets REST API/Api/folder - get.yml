@@ -1,0 +1,20 @@
+info:
+  name: folder - get
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{assetsUrl}}/api/folder/get?path"
+  params:
+    - name: path
+      value: ""
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

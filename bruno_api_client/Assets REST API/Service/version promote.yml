@@ -1,0 +1,27 @@
+info:
+  name: version promote
+  type: http
+  seq: 22
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/version/promote"
+  body:
+    type: multipart-form
+    data:
+      - name: assetId
+        type: text
+        value: ""
+      - name: version
+        type: text
+        value: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - promote](https://helpcenter.woodwing.com/hc/en-us/articles/4824964597009-Assets-Server-REST-API-promote)"

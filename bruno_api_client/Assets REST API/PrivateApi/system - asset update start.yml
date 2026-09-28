@@ -1,0 +1,32 @@
+info:
+  name: system - asset update start
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/private-api/system/asset/update/start"
+  body:
+    type: json
+    data: |-
+      {
+        "filterQuery": "id:ASSET_ID",
+        "extractMetadata": false,
+        "reEmbedMetadata": false,
+        "extractTextContent": false,
+        "deleteRemovedAssetsFromIndex": false,
+        "regenerateThumbnailsAndPreviews": true,
+        "rebuildAutoCreatedRelations": false,
+        "pruneBlacklist": false,
+        "runExclusive": false,
+        "pauseMillis": 0,
+        "numThreads": 2
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

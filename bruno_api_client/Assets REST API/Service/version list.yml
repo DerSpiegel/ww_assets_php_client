@@ -1,0 +1,22 @@
+info:
+  name: version list
+  type: http
+  seq: 21
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/version/list"
+  body:
+    type: multipart-form
+    data:
+      - name: assetId
+        type: text
+        value: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

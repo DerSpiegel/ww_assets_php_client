@@ -1,0 +1,21 @@
+variables:
+  - name: assetsUrl
+    value: https://assets.example.com
+  - name: assetsUsername
+    value: username
+  - name: assetsClientId
+    value: ""
+  - name: tempTestFolder
+    value: /Tests/FolderToBeCreatedAndDeletedDuringTesting
+  - name: tempTestFolderId
+    value: ""
+  - name: tempTestAssetId
+    value: ""
+  - name: tempTestCollectionId
+    value: ""
+  - name: tempTestRelationId
+    value: ""
+  - secret: true
+    name: assetsAuthToken
+  - secret: true
+    name: assetsPassword

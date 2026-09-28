@@ -1,0 +1,46 @@
+info:
+  name: Get collection relation
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/search"
+  body:
+    type: multipart-form
+    data:
+      - name: q
+        type: text
+        value: relatedTo:{{tempTestCollectionId}} relationTarget:child relationType:contains id:{{tempTestAssetId}}
+      - name: metadataToReturn
+        type: text
+        value: assetPath
+      - name: num
+        type: text
+        value: "1"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setEnvVar("tempTestRelationId", res.body.hits[0].relation.relationId);
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+    - expression: res.body
+      operator: isJson
+    - expression: res.body.totalHits
+      operator: eq
+      value: "1"
+    - expression: res.body.hits[0].relation.relationId
+      operator: isNotEmpty
+
+settings:
+  encodeUrl: true
+  timeout: 60000
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [The Assets Server query syntax - Additional queries](https://helpcenter.woodwing.com/hc/en-us/articles/360041854172-The-Assets-Server-query-syntax#additional-queries)"

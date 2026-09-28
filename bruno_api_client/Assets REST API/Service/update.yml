@@ -1,0 +1,56 @@
+info:
+  name: update
+  type: http
+  seq: 18
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/update"
+  body:
+    type: multipart-form
+    data:
+      - name: id
+        type: text
+        value: ""
+      - name: metadataToReturn
+        type: text
+        value: ""
+        disabled: true
+      - name: parseMetadataModifications
+        type: text
+        value: ""
+        disabled: true
+      - name: Filedata
+        type: file
+        value: []
+        disabled: true
+      - name: metadata
+        type: text
+        value: ""
+        disabled: true
+      - name: FIELD
+        type: text
+        value: ""
+        disabled: true
+      - name: nextUrl
+        type: text
+        value: ""
+        disabled: true
+      - name: clearCheckoutState
+        type: text
+        value: ""
+        disabled: true
+      - name: keepMetadata
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: "WoodWing Helpcenter: [Assets Server REST API - update / check-in](https://helpcenter.woodwing.com/hc/en-us/articles/360042268971-Assets-Server-REST-API-update-check-in)"

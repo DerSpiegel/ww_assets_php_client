@@ -1,0 +1,83 @@
+info:
+  name: search
+  type: http
+  seq: 16
+
+http:
+  method: POST
+  url: "{{assetsUrl}}/services/search"
+  body:
+    type: multipart-form
+    data:
+      - name: q
+        type: text
+        value: ""
+      - name: metadataToReturn
+        type: text
+        value: ""
+        disabled: true
+      - name: num
+        type: text
+        value: ""
+        disabled: true
+      - name: appendRequestSecret
+        type: text
+        value: ""
+        disabled: true
+      - name: expand
+        type: text
+        value: ""
+        disabled: true
+      - name: facets
+        type: text
+        value: ""
+        disabled: true
+      - name: facet.FIELD.selection
+        type: text
+        value: ""
+        disabled: true
+      - name: format
+        type: text
+        value: ""
+        disabled: true
+      - name: logSearch
+        type: text
+        value: ""
+        disabled: true
+      - name: returnHighlightedText
+        type: text
+        value: ""
+        disabled: true
+      - name: returnThumbnailHits
+        type: text
+        value: ""
+        disabled: true
+      - name: sort
+        type: text
+        value: ""
+        disabled: true
+      - name: start
+        type: text
+        value: ""
+        disabled: true
+      - name: showAssetsOfSubfolders
+        type: text
+        value: ""
+        disabled: true
+      - name: showSubCollections
+        type: text
+        value: ""
+        disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 60000
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
+
+docs: |-
+  WoodWing Helpcenter: [Assets Server REST API - search](https://helpcenter.woodwing.com/hc/en-us/articles/360041851432-Assets-Server-REST-API-search)
+
+  The "expand" parameter is undocumented. It takes a comma-separated list of values, "originalStoragePath" is one possible value.

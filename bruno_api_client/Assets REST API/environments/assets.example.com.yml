@@ -1,0 +1,11 @@
+variables:
+  - name: assetsUrl
+    value: https://assets.example.com
+  - name: assetsUsername
+    value: username
+  - name: assetsClientId
+    value: ""
+  - secret: true
+    name: assetsAuthToken
+  - secret: true
+    name: assetsPassword
