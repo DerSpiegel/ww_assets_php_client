@@ -38,7 +38,16 @@ class AssetsUtils
 
     public static function buildGetUrl(Uri $url, array $data = []): Uri
     {
-        return $url->withQuery(http_build_query($data));
+        // Keep existing query string if present
+
+        $dataFromUrl = [];
+        $urlQuery = $url->getQuery();
+
+        if (!empty($urlQuery)) {
+            parse_str($urlQuery, $dataFromUrl);
+        }
+
+        return $url->withQuery(http_build_query(array_merge($dataFromUrl, $data)));
     }
 
 
