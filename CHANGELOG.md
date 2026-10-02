@@ -1,6 +1,6 @@
 # Change Log
 
-## 11.0.0
+## 11.0.0 - 2026-10-02
 
 Backward incompatible API change: AssetsConfig::$url, AssetResponse::$originalUrl, AssetResponse::$previewUrl, 
 AssetResponse::$thumbnailUrl, VersionResponse::$originalUrl, VersionResponse::$previewUrl and VersionResponse::$thumbnailUrl
