@@ -30,7 +30,9 @@ class AssetsActionList extends ArrayIterator
     public function offsetSet(mixed $key, mixed $value): void
     {
         if (!($value instanceof AssetsAction)) {
-            throw new InvalidArgumentException(sprintf('%s: Only <AssetsAction> supported, got <%s>', __METHOD__, get_class($value)));
+            throw new InvalidArgumentException(
+                sprintf('%s: Only <AssetsAction> supported, got <%s>', __METHOD__, get_class($value))
+            );
         }
 
         parent::offsetSet($key, $value);

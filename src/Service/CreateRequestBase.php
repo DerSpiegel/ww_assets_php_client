@@ -9,14 +9,13 @@ use DerSpiegel\WoodWingAssetsClient\Request;
 class CreateRequestBase extends Request
 {
     public function __construct(
-        AssetsClient   $assetsClient,
+        AssetsClient $assetsClient,
         /** @var resource */
         readonly mixed $filedata = null,
         readonly array $metadata = [],
         readonly array $metadataToReturn = ['all'],
-        readonly bool  $parseMetadataModification = false
-    )
-    {
+        readonly bool $parseMetadataModification = false
+    ) {
         parent::__construct($assetsClient);
     }
 

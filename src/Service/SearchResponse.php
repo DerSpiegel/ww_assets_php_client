@@ -13,14 +13,13 @@ use Psr\Http\Message\ResponseInterface;
 class SearchResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface   $httpResponse = null,
-        readonly ?AssetResponseList   $hits = null,
+        readonly ?ResponseInterface $httpResponse = null,
+        readonly ?AssetResponseList $hits = null,
         #[MapFromJson] readonly array $facets = [],
-        #[MapFromJson] readonly int   $firstResult = 0,
-        #[MapFromJson] readonly int   $maxResultHits = 0,
-        #[MapFromJson] readonly int   $totalHits = 0,
-    )
-    {
+        #[MapFromJson] readonly int $firstResult = 0,
+        #[MapFromJson] readonly int $maxResultHits = 0,
+        #[MapFromJson] readonly int $totalHits = 0,
+    ) {
     }
 
 
@@ -29,7 +28,7 @@ class SearchResponse extends Response
         $result = parent::applyJsonMapping($json);
 
         if (isset($result['totalHits'])) {
-            $result['totalHits'] =  max(0, $result['totalHits']);
+            $result['totalHits'] = max(0, $result['totalHits']);
         }
 
         if (isset($json['hits']) && is_array($json['hits'])) {

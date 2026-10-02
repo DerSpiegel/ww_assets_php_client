@@ -30,7 +30,9 @@ class VersionResponseList extends ArrayIterator
     public function offsetSet(mixed $key, mixed $value): void
     {
         if (!($value instanceof VersionResponse)) {
-            throw new InvalidArgumentException(sprintf('%s: Only <VersionResponse> supported, got <%s>', __METHOD__, get_class($value)));
+            throw new InvalidArgumentException(
+                sprintf('%s: Only <VersionResponse> supported, got <%s>', __METHOD__, get_class($value))
+            );
         }
 
         parent::offsetSet($key, $value);

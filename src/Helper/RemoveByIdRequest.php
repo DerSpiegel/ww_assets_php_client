@@ -15,11 +15,10 @@ use DerSpiegel\WoodWingAssetsClient\Service\RemoveRequest;
 class RemoveByIdRequest extends Request
 {
     public function __construct(
-        AssetsClient     $assetsClient,
+        AssetsClient $assetsClient,
         readonly AssetId $assetId,
-        readonly bool    $async = false
-    )
-    {
+        readonly bool $async = false
+    ) {
         parent::__construct($assetsClient);
     }
 

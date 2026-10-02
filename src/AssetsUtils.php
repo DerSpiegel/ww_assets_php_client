@@ -147,14 +147,17 @@ class AssetsUtils
         return str_replace(self::getInvalidFilenameCharacters(), $replace, $subject);
     }
 
-    
+
     /**
      * Get a Twig template for building an Assets query
      *
      * Call render($templateVariables) on the returned object to get the query string.
      */
-    public static function getQueryTemplate(string $templateString, array $allowedTags = [], array $allowedFilters = []): TemplateWrapper
-    {
+    public static function getQueryTemplate(
+        string $templateString,
+        array $allowedTags = [],
+        array $allowedFilters = []
+    ): TemplateWrapper {
         // Assuming that always recreating the Twig environment and template does not leak memory
 
         $twig = new Environment(

@@ -15,10 +15,9 @@ class MapFromJson
 
 
     public function __construct(
-        public string               $name = '', // Key in JSON
+        public string $name = '', // Key in JSON
         public ?ReflectionParameter $parameter = null,
-        public ?string              $conversion = null
-    )
-    {
+        public ?string $conversion = null
+    ) {
     }
 }

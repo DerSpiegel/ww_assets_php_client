@@ -28,7 +28,8 @@ class CreateRelationRequest extends Request
     public function __invoke(): EmptyResponse
     {
         $httpResponse = $this->assetsClient->serviceRequest(
-            'POST', 'createRelation',
+            'POST',
+            'createRelation',
             [
                 'relationType' => $this->relationType->value,
                 'target1Id' => $this->target1Id->id,

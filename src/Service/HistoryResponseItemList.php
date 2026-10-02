@@ -30,7 +30,9 @@ class HistoryResponseItemList extends ArrayIterator
     public function offsetSet(mixed $key, mixed $value): void
     {
         if (!($value instanceof HistoryResponseItem)) {
-            throw new InvalidArgumentException(sprintf('%s: Only <HistoryResponseItem> supported, got <%s>', __METHOD__, get_class($value)));
+            throw new InvalidArgumentException(
+                sprintf('%s: Only <HistoryResponseItem> supported, got <%s>', __METHOD__, get_class($value))
+            );
         }
 
         parent::offsetSet($key, $value);

@@ -16,18 +16,18 @@ use DerSpiegel\WoodWingAssetsClient\Service\SearchRequest;
 class SearchAssetRequest extends Request
 {
     public function __construct(
-        AssetsClient     $assetsClient,
+        AssetsClient $assetsClient,
         readonly AssetId $assetId,
-        readonly array   $metadataToReturn = []
-    )
-    {
+        readonly array $metadataToReturn = []
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): AssetResponse
     {
-        $response = new SearchRequest($this->assetsClient,
+        $response = new SearchRequest(
+            $this->assetsClient,
             q: 'id:' . $this->assetId->id,
             metadataToReturn: empty($this->metadataToReturn) ? [SearchRequest::METADATA_TO_RETURN_DEFAULT] : $this->metadataToReturn
         )();
@@ -38,7 +38,9 @@ class SearchAssetRequest extends Request
 
         if ($response->totalHits > 1) {
             // god help us if this happens
-            throw new AssetsException(sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $this->assetId), 404);
+            throw new AssetsException(
+                sprintf('%s: Multiple assets with ID <%s> found', __METHOD__, $this->assetId), 404
+            );
         }
 
         return $response->hits[0];
