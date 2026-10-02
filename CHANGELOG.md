@@ -6,6 +6,8 @@ Backward incompatible API change: AssetsConfig::$url, AssetResponse::$originalUr
 AssetResponse::$thumbnailUrl, VersionResponse::$originalUrl, VersionResponse::$previewUrl and VersionResponse::$thumbnailUrl
 are now Uri\Rfc3986\Uri objects instead of string.
 
+Backward incompatible API change: Remove $elasticsearchUrl from AssetsConfig::create() and constructor.
+
 ## 10.0.1 - 2026-09-28
 
 Migrate Bruno collections from .bru to YAML file format, see https://blog.usebruno.com/making-yaml-the-default-in-bruno-v3.1.
