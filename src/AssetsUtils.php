@@ -4,14 +4,13 @@ namespace DerSpiegel\WoodWingAssetsClient;
 
 use DerSpiegel\WoodWingAssetsClient\Exception\AssetsException;
 use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\SyntaxError;
 use Twig\Extension\EscaperExtension;
 use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
 use Twig\Runtime\EscaperRuntime;
 use Twig\Sandbox\SecurityPolicy;
 use Twig\TemplateWrapper;
+use Uri\Rfc3986\Uri;
 
 
 /**
@@ -37,11 +36,9 @@ class AssetsUtils
     }
 
 
-    public static function buildGetUrl(string $url, array $data = []): string
+    public static function buildGetUrl(Uri $url, array $data = []): Uri
     {
-        return $url
-            . (str_contains($url, '?') ? '&' : '?')
-            . http_build_query($data);
+        return $url->withQuery(http_build_query($data));
     }
 
 

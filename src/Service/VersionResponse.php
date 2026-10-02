@@ -5,6 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClient\Service;
 use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
+use Uri\Rfc3986\Uri;
 
 
 class VersionResponse extends Response
@@ -14,9 +15,9 @@ class VersionResponse extends Response
         readonly ?int $versionNumber = null,
         #[MapFromJson] readonly string $permissionMask = '',
         #[MapFromJson] readonly array $metadata = [],
-        #[MapFromJson] readonly string $originalUrl = '',
-        #[MapFromJson] readonly string $previewUrl = '',
-        #[MapFromJson] readonly string $thumbnailUrl = '',
+        readonly ?Uri $originalUrl = null,
+        readonly ?Uri $previewUrl = null,
+        readonly ?Uri $thumbnailUrl = null,
     ) {
     }
 
@@ -31,6 +32,12 @@ class VersionResponse extends Response
 
         if (isset($json['metadata']['versionNumber'])) {
             $result['versionNumber'] = intval($json['metadata']['versionNumber']);
+        }
+
+        foreach (['originalUrl', 'previewUrl', 'thumbnailUrl'] as $key) {
+            if (!empty($json[$key])) {
+                $result[$key] = new Uri($json[$key]);
+            }
         }
 
         return $result;
