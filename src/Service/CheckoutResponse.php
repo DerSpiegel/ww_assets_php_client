@@ -14,11 +14,10 @@ use Psr\Http\Message\ResponseInterface;
 class CheckoutResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface                                             $httpResponse = null,
+        readonly ?ResponseInterface $httpResponse = null,
         #[MapFromJson(conversion: 'intToDateTime')] readonly ?DateTimeImmutable $checkedOut = null,
-        #[MapFromJson] readonly string                                          $checkedOutBy = '',
-        #[MapFromJson] readonly string                                          $checkedOutOnClient = ''
-    )
-    {
+        #[MapFromJson] readonly string $checkedOutBy = '',
+        #[MapFromJson] readonly string $checkedOutOnClient = ''
+    ) {
     }
 }

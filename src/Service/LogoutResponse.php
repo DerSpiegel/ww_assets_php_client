@@ -13,9 +13,8 @@ use Psr\Http\Message\ResponseInterface;
 class LogoutResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface  $httpResponse = null,
+        readonly ?ResponseInterface $httpResponse = null,
         #[MapFromJson] readonly bool $logoutSuccess = false
-    )
-    {
+    ) {
     }
 }

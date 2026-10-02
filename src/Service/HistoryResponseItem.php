@@ -13,8 +13,7 @@ class HistoryResponseItem extends Response
     public function __construct(
         readonly ?AssetResponse $hit = null,
         readonly ?UsageStatsRecord $usageStatsRecord = null
-    )
-    {
+    ) {
     }
 
 

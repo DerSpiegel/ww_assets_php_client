@@ -17,8 +17,7 @@ class CreateCollectionRequest extends Request
         AssetsClient $assetsClient,
         readonly string $assetPath,
         readonly array $metadata = []
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 

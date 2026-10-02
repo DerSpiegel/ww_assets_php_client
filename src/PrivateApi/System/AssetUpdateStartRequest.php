@@ -22,8 +22,7 @@ class AssetUpdateStartRequest extends Request
         readonly ?bool $runExclusive = null,
         readonly ?int $pauseMillis = null,
         readonly ?int $numThreads = null,
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 

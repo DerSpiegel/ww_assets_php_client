@@ -13,9 +13,8 @@ class BrowseResponse extends Response
 {
     public function __construct(
         readonly ?ResponseInterface $httpResponse = null,
-        readonly array              $items = []
-    )
-    {
+        readonly array $items = []
+    ) {
     }
 
 

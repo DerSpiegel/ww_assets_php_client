@@ -12,13 +12,12 @@ use Psr\Http\Message\ResponseInterface;
 class LoginResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface    $httpResponse = null,
-        #[MapFromJson] readonly bool   $loginSuccess = false,
+        readonly ?ResponseInterface $httpResponse = null,
+        #[MapFromJson] readonly bool $loginSuccess = false,
         #[MapFromJson] readonly string $loginFaultMessage = '',
         #[MapFromJson] readonly string $serverVersion = '',
-        #[MapFromJson] readonly array  $userProfile = [],
+        #[MapFromJson] readonly array $userProfile = [],
         #[MapFromJson] readonly string $csrfToken = ''
-    )
-    {
+    ) {
     }
 }

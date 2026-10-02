@@ -13,11 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 class HistoryResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface       $httpResponse = null,
-        #[MapFromJson] readonly int       $totalHits = 0,
+        readonly ?ResponseInterface $httpResponse = null,
+        #[MapFromJson] readonly int $totalHits = 0,
         readonly ?HistoryResponseItemList $hits = null
-    )
-    {
+    ) {
     }
 
 

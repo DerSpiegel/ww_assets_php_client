@@ -6,6 +6,7 @@ use DerSpiegel\WoodWingAssetsClient\AssetId;
 use DerSpiegel\WoodWingAssetsClient\MapFromJson;
 use DerSpiegel\WoodWingAssetsClient\Response;
 use Psr\Http\Message\ResponseInterface;
+use Uri\Rfc3986\Uri;
 
 
 /**
@@ -14,19 +15,18 @@ use Psr\Http\Message\ResponseInterface;
 class AssetResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface                                $httpResponse = null,
+        readonly ?ResponseInterface $httpResponse = null,
         #[MapFromJson(conversion: 'stringToId')] readonly ?AssetId $id = null,
-        #[MapFromJson] readonly string                             $permissions = '',
-        #[MapFromJson] readonly array                              $metadata = [],
-        #[MapFromJson] readonly string                             $highlightedText = '',
-        #[MapFromJson] readonly string                             $originalUrl = '',
-        #[MapFromJson] readonly string                             $previewUrl = '',
-        #[MapFromJson] readonly string                             $thumbnailUrl = '',
-        #[MapFromJson] readonly array                              $relation = [],
-        readonly ?AssetResponseList                                $thumbnailHits = null,
-        #[MapFromJson] readonly string                             $originalStoragePath = '',
-    )
-    {
+        #[MapFromJson] readonly string $permissions = '',
+        #[MapFromJson] readonly array $metadata = [],
+        #[MapFromJson] readonly string $highlightedText = '',
+        readonly ?Uri $originalUrl = null,
+        readonly ?Uri $previewUrl = null,
+        readonly ?Uri $thumbnailUrl = null,
+        #[MapFromJson] readonly array $relation = [],
+        readonly ?AssetResponseList $thumbnailHits = null,
+        #[MapFromJson] readonly string $originalStoragePath = '',
+    ) {
     }
 
 
@@ -39,6 +39,12 @@ class AssetResponse extends Response
 
             foreach ($json['thumbnailHits'] as $hitJson) {
                 $result['thumbnailHits']->addValue(AssetResponse::createFromJson($hitJson));
+            }
+        }
+
+        foreach (['originalUrl', 'previewUrl', 'thumbnailUrl'] as $key) {
+            if (!empty($json[$key])) {
+                $result[$key] = new Uri($json[$key]);
             }
         }
 

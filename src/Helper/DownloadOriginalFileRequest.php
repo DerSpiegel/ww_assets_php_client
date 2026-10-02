@@ -13,12 +13,11 @@ use DerSpiegel\WoodWingAssetsClient\Service\AssetResponse;
 class DownloadOriginalFileRequest extends Request
 {
     public function __construct(
-        AssetsClient            $assetsClient,
-        readonly string         $targetPath,
-        readonly ?AssetId       $assetId = null,
+        AssetsClient $assetsClient,
+        readonly string $targetPath,
+        readonly ?AssetId $assetId = null,
         readonly ?AssetResponse $assetResponse = null
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
@@ -27,7 +26,9 @@ class DownloadOriginalFileRequest extends Request
     {
         if ($this->assetResponse === null) {
             if ($this->assetId === null) {
-                throw new BadFunctionCallException(sprintf("%s: Both assetId and assetResponse are null - one of them must be given", __METHOD__));
+                throw new BadFunctionCallException(
+                    sprintf("%s: Both assetId and assetResponse are null - one of them must be given", __METHOD__)
+                );
             } elseif (trim($this->assetId->id) === '') {
                 throw new BadFunctionCallException(sprintf("%s: assetId is empty", __METHOD__));
             }
@@ -43,13 +44,16 @@ class DownloadOriginalFileRequest extends Request
             $assetResponse = new SearchAssetRequest($this->assetsClient, assetId: $this->assetId)();
         }
 
-        if (strlen($assetResponse->originalUrl) === 0) {
-            throw new AssetsException(sprintf('%s: Original URL of <%s> is empty', __METHOD__, $assetResponse->id), 404);
+        if ($assetResponse->originalUrl === null) {
+            throw new AssetsException(
+                sprintf('%s: Original URL of <%s> is empty', __METHOD__, $assetResponse->id), 404
+            );
         }
 
         $this->assetsClient->downloadFileToPath($assetResponse->originalUrl, $this->targetPath);
 
-        $this->logger->debug(sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->id, $this->targetPath),
+        $this->logger->debug(
+            sprintf('Original file of <%s> downloaded to <%s>', $assetResponse->id, $this->targetPath),
             [
                 'method' => __METHOD__,
                 'assetId' => $assetResponse->id

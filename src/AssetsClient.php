@@ -17,11 +17,11 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\RequestOptions;
-use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use SebastianBergmann\Timer\Timer;
+use Uri\Rfc3986\Uri;
 
 
 /**
@@ -93,7 +93,7 @@ class AssetsClient
 
     public function request(
         string $method,
-        string $url,
+        Uri $url,
         array $data = [],
         bool $multipart = true, // Whether to send the data as multipart or application/json
         bool $sendToken = true
@@ -158,14 +158,14 @@ class AssetsClient
         $timer->start();
 
         try {
-            $response = $httpClient->request($method, $url, $options);
+            $response = $httpClient->request($method, $url->toRawString(), $options);
         } catch (GuzzleException $e) {
             $this->health->setServiceIsAvailableByException($e);
             throw $e;
         }
 
         $duration = $timer->stop();
-        $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url, $duration->asString()));
+        $this->logger->debug(sprintf('%s request to %s took %s.', $method, $url->toRawString(), $duration->asString()));
 
         $this->health->setServiceIsAvailable(true);
 
@@ -182,11 +182,7 @@ class AssetsClient
         array $data = [],
         bool $multipart = true
     ): ResponseInterface {
-        $url = sprintf(
-            '%sservices/%s',
-            $this->config->url,
-            $service
-        );
+        $url = $this->config->url->withPath('/services/' . $service);
 
         $loginRequest = in_array($service, ['login', 'apilogin']);
 
@@ -221,7 +217,7 @@ class AssetsClient
                             '%s: %s request to <%s> failed: <%d> "%s"',
                             __METHOD__,
                             $method,
-                            $url,
+                            $url->toRawString(),
                             $e->getCode(),
                             $e->getMessage()
                         )
@@ -236,11 +232,7 @@ class AssetsClient
 
     public function apiRequest(string $method, string $urlPath, array $data = []): array
     {
-        $url = sprintf(
-            '%sapi/%s',
-            $this->config->url,
-            $urlPath
-        );
+        $url = $this->config->url->withPath('/api/' . $urlPath);
 
         try {
             $httpResponse = $this->request($method, $url, $data, false);
@@ -271,7 +263,7 @@ class AssetsClient
                             '%s: %s request to <%s> failed: <%d> "%s"',
                             __METHOD__,
                             $method,
-                            $url,
+                            $url->toRawString(),
                             $e->getCode(),
                             $e->getMessage()
                         )
@@ -284,11 +276,7 @@ class AssetsClient
 
     public function privateApiRequest(string $method, string $urlPath, array $data = []): ResponseInterface
     {
-        $url = sprintf(
-            '%sprivate-api/%s',
-            $this->config->url,
-            $urlPath
-        );
+        $url = $this->config->url->withPath('/api/' . $urlPath);
 
         try {
             $httpResponse = $this->request($method, $url, $data, false);
@@ -531,7 +519,7 @@ class AssetsClient
     }
 
 
-    public function downloadFileToPath(string $url, string $targetPath): void
+    public function downloadFileToPath(Uri $url, string $targetPath): void
     {
         try {
             $httpResponse = $this->request('GET', $url, ['forceDownload' => 'true'], false);
@@ -554,7 +542,7 @@ class AssetsClient
                         sprintf(
                             '%s: GET request to <%s> failed: <%d> "%s"',
                             __METHOD__,
-                            $url,
+                            $url->toRawString(),
                             $e->getCode(),
                             $e->getMessage()
                         )
@@ -607,6 +595,6 @@ class AssetsClient
 
     public function buildOriginalFileUrl(string $assetId): string
     {
-        return "{$this->config->url}file/$assetId/*/$assetId";
+        return $this->config->url->withPath(sprintf('/file/%s/*/%s', $assetId, $assetId))->toRawString();
     }
 }

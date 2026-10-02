@@ -30,7 +30,9 @@ class AssetResponseList extends ArrayIterator
     public function offsetSet(mixed $key, mixed $value): void
     {
         if (!($value instanceof AssetResponse)) {
-            throw new InvalidArgumentException(sprintf('%s: Only <AssetResponse> supported, got <%s>', __METHOD__, get_class($value)));
+            throw new InvalidArgumentException(
+                sprintf('%s: Only <AssetResponse> supported, got <%s>', __METHOD__, get_class($value))
+            );
         }
 
         parent::offsetSet($key, $value);

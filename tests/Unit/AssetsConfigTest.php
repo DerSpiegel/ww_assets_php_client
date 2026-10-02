@@ -10,20 +10,18 @@ class AssetsConfigTest extends TestCase
 {
     public function testGetUrl(): void
     {
-        $expected = 'https://a.com/';
-
         $config1 = AssetsConfig::create('https://a.com', 'u', 'p');
-        $this->assertEquals($expected, $config1->url);
+        $this->assertEquals('https://a.com', $config1->url->toRawString());
 
         $config2 = AssetsConfig::create('https://a.com/', 'u', 'p');
-        $this->assertEquals($expected, $config2->url);
+        $this->assertEquals('https://a.com/', $config2->url->toRawString());
     }
 
 
     public function testValidateUrlEmpty(): void
     {
-        $config = AssetsConfig::create('', 'u', 'p');
         $this->expectExceptionMessage('URL is empty.');
+        $config = AssetsConfig::create('', 'u', 'p');
         $config->validate();
     }
 

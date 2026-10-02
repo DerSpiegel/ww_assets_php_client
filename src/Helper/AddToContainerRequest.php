@@ -18,15 +18,15 @@ class AddToContainerRequest extends Request
         AssetsClient $assetsClient,
         readonly AssetId $assetId,
         readonly AssetId $containerId
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): void
     {
-        new CreateRelationRequest($this->assetsClient,
+        new CreateRelationRequest(
+            $this->assetsClient,
             relationType: RelationType::Contains,
             target1Id: $this->containerId,
             target2Id: $this->assetId

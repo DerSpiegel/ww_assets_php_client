@@ -13,11 +13,10 @@ use Psr\Http\Message\ResponseInterface;
 class ProcessResponse extends Response
 {
     public function __construct(
-        readonly ?ResponseInterface    $httpResponse = null,
-        #[MapFromJson] readonly int    $processedCount = 0,
-        #[MapFromJson] readonly int    $errorCount = 0,
+        readonly ?ResponseInterface $httpResponse = null,
+        #[MapFromJson] readonly int $processedCount = 0,
+        #[MapFromJson] readonly int $errorCount = 0,
         #[MapFromJson] readonly string $processId = ''
-    )
-    {
+    ) {
     }
 }

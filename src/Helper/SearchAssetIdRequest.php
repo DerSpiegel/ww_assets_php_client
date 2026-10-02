@@ -18,15 +18,15 @@ class SearchAssetIdRequest extends Request
         AssetsClient $assetsClient,
         readonly string $q,
         readonly bool $failIfMultipleHits
-    )
-    {
+    ) {
         parent::__construct($assetsClient);
     }
 
 
     public function __invoke(): AssetId
     {
-        $response = new SearchRequest($this->assetsClient,
+        $response = new SearchRequest(
+            $this->assetsClient,
             q: $this->q,
             num: 2,
             metadataToReturn: ['']
@@ -37,8 +37,14 @@ class SearchAssetIdRequest extends Request
         }
 
         if (($response->totalHits > 1) && $this->failIfMultipleHits) {
-            throw new AssetsException(sprintf('%s: %d assets found for query <%s>', __METHOD__,
-                $response->totalHits, $this->q), 404);
+            throw new AssetsException(
+                sprintf(
+                    '%s: %d assets found for query <%s>',
+                    __METHOD__,
+                    $response->totalHits,
+                    $this->q
+                ), 404
+            );
         }
 
         return $response->hits[0]->id;

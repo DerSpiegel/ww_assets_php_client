@@ -12,8 +12,7 @@ abstract class Request
 
     public function __construct(
         readonly AssetsClient $assetsClient
-    )
-    {
+    ) {
         $this->logger = $this->assetsClient->logger;
     }
 

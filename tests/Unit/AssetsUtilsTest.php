@@ -5,6 +5,7 @@ namespace DerSpiegel\WoodWingAssetsClientTests\Unit;
 use DerSpiegel\WoodWingAssetsClient\AssetsUtils;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Uri\Rfc3986\Uri;
 
 
 final class AssetsUtilsTest extends TestCase
@@ -55,17 +56,17 @@ EOT;
         $this->assertEquals(
             'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?forceDownload=true',
             AssetsUtils::buildGetUrl(
-                'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg',
+                new Uri('https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg'),
                 ['forceDownload' => 'true']
-            )
+            )->toRawString()
         );
 
         $this->assertEquals(
             'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?_=6&forceDownload=true',
             AssetsUtils::buildGetUrl(
-                'https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?_=6',
+                new Uri('https://assets.example.com/file/Bp4asHe6KaH9DqbgnARv9p/*/IMG_1420.jpeg?_=6'),
                 ['forceDownload' => 'true']
-            )
+            )->toRawString()
         );
     }
 
