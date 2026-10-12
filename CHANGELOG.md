@@ -1,5 +1,11 @@
 # Change Log
 
+## 11.1.1 - 2026-10-12
+
+Allow guzzlehttp/guzzle version 8.
+
+Fix PHPUnit deprecation warnings.
+
 ## 11.1.0 - 2026-10-12
 
 Add factory method AssetId::dummy().
