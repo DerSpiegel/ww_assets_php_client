@@ -1,5 +1,9 @@
 # Change Log
 
+## 11.1.0 - 2026-10-12
+
+Add factory method AssetId::dummy().
+
 ## 11.0.0 - 2026-10-02
 
 Backward incompatible API change: AssetsConfig::$url, AssetResponse::$originalUrl, AssetResponse::$previewUrl, 
