@@ -1,5 +1,7 @@
 # Change Log
 
+Fix PHPUnit deprecation warnings.
+
 ## 11.1.0 - 2026-10-12
 
 Add factory method AssetId::dummy().
