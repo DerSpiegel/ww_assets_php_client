@@ -276,7 +276,7 @@ class AssetsClient
 
     public function privateApiRequest(string $method, string $urlPath, array $data = []): ResponseInterface
     {
-        $url = $this->config->url->withPath('/api/' . $urlPath);
+        $url = $this->config->url->withPath('/private-api/' . $urlPath);
 
         try {
             $httpResponse = $this->request($method, $url, $data, false);
