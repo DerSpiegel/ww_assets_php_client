@@ -1,5 +1,9 @@
 # Change Log
 
+## 11.2.0 - 2026-10-15
+
+Fix private API requests broken since 11.0.0.
+
 ## 11.1.1 - 2026-10-12
 
 Allow guzzlehttp/guzzle version 8.
