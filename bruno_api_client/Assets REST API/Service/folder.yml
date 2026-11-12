@@ -1,7 +1,7 @@
 info:
   name: Service
   type: folder
-  seq: 8
+  seq: 4
 
 request:
   auth: inherit

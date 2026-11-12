@@ -1,5 +1,7 @@
 # Change Log
 
+Add Bruno request for "System metrics" API call.
+
 ## 11.2.0 - 2026-10-15
 
 Fix private API requests broken since 11.0.0.

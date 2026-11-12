@@ -1,7 +1,7 @@
 info:
   name: undo checkout
   type: http
-  seq: 17
+  seq: 18
 
 http:
   method: POST
